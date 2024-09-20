@@ -1,6 +1,7 @@
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import type {CartLayout} from '~/components/CartMain';
 import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
+import { Link } from '@remix-run/react';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -13,17 +14,19 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
-      <h4>Totals</h4>
-      <dl className="cart-subtotal">
-        <dt>Subtotal</dt>
-        <dd>
+      <div className="cart-subtotal">
+        <div className='title'>
+          Subtotal
+          <small>Tax included and shipping<br />calculated at checkout</small>
+        </div>
+        <div className='amount'>
           {cart.cost?.subtotalAmount?.amount ? (
             <Money data={cart.cost?.subtotalAmount} />
           ) : (
-            '-'
+            '--'
           )}
-        </dd>
-      </dl>
+        </div>
+      </div>
       <CartDiscounts discountCodes={cart.discountCodes} />
       <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
     </div>
@@ -34,10 +37,19 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
 
   return (
     <div>
-      <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
+      <a 
+        className='btn-checkout'
+        href={checkoutUrl}  
+        target="_self"
+      >
+        Check out
       </a>
-      <br />
+      <Link 
+        to='/cart'
+        className='btn-gotocart'
+      >
+        Go to Cart
+      </Link>
     </div>
   );
 }
@@ -69,13 +81,13 @@ function CartDiscounts({
       </dl>
 
       {/* Show an input to apply a discount */}
-      <UpdateDiscountForm discountCodes={codes}>
+      {/* <UpdateDiscountForm discountCodes={codes}>
         <div>
           <input type="text" name="discountCode" placeholder="Discount code" />
           &nbsp;
           <button type="submit">Apply</button>
         </div>
-      </UpdateDiscountForm>
+      </UpdateDiscountForm> */}
     </div>
   );
 }

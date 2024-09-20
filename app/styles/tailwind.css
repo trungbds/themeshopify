@@ -4,3 +4,77 @@
  */
 
 @import 'tailwindcss';
+
+@theme {
+    --font-family-display: "inter", sans-serif;
+
+    --breakpoint-3xl: 1920px;
+
+    /* Breakpoints */
+    --breakpoint-sm: 40rem;
+    --breakpoint-md: 48rem;
+    --breakpoint-lg: 64rem;
+    --breakpoint-xl: 80rem;
+    --breakpoint-2xl: 96rem;
+
+    /* Spacing */
+    --spacing-px: 1px;
+    --spacing-0: 0px;
+    --spacing-0_5: 0.125rem;
+    --spacing-1: 0.25rem;
+    --spacing-1_5: 0.375rem;
+    --spacing-2: 0.5rem;
+    --spacing-2_5: 0.625rem;
+    --spacing-3: 0.75rem;
+    --spacing-3_5: 0.875rem;
+    --spacing-4: 1rem;
+    --spacing-5: 1.25rem;
+    --spacing-6: 1.5rem;
+    --spacing-7: 1.75rem;
+    --spacing-8: 2rem;
+    --spacing-9: 2.25rem;
+    --spacing-10: 2.5rem;
+    --spacing-11: 2.75rem;
+    --spacing-12: 3rem;
+    --spacing-14: 3.5rem;
+    --spacing-16: 4rem;
+    --spacing-20: 5rem;
+    --spacing-24: 6rem;
+    --spacing-28: 7rem;
+    --spacing-32: 8rem;
+    --spacing-36: 9rem;
+    --spacing-40: 10rem;
+    --spacing-44: 11rem;
+    --spacing-48: 12rem;
+    --spacing-52: 13rem;
+    --spacing-56: 14rem;
+    --spacing-60: 15rem;
+    --spacing-64: 16rem;
+    --spacing-72: 18rem;
+    --spacing-80: 20rem;
+    --spacing-96: 24rem;
+
+    /* Widths */
+    --width-3xs: 16rem;
+    --width-2xs: 18rem;
+    --width-xs: 20rem;
+    --width-sm: 24rem;
+    --width-md: 28rem;
+    --width-lg: 32rem;
+    --width-xl: 36rem;
+    --width-2xl: 42rem;
+    --width-3xl: 48rem;
+    --width-4xl: 56rem;
+    --width-5xl: 64rem;
+    --width-6xl: 72rem;
+    --width-7xl: 80rem;
+    --width-prose: 65ch;
+
+    /* Fonts */
+    --font-family-sans: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+      'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-family-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+    --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
+      'Courier New', monospace;
+
+  }

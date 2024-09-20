@@ -18,6 +18,10 @@ import tailwindCss from './styles/tailwind.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 export type RootLoader = typeof loader;
 
 /**
@@ -40,6 +44,19 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 
 export function links() {
   return [
+    {
+      rel:'preconnect',
+      href:'https://fonts.googleapis.com'
+    },
+    {
+      rel:'preconnect',
+      href:'https://fonts.gstatic.com',
+      crossOrigin: "true"
+    },
+    {
+      rel:'stylesheet',
+      href:'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+    },
     {rel: 'stylesheet', href: tailwindCss},
     {rel: 'stylesheet', href: resetStyles},
     {rel: 'stylesheet', href: appStyles},

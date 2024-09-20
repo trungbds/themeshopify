@@ -6,7 +6,9 @@ import {
   urlWithTrackingParams,
   type PredictiveSearchReturn,
 } from '~/lib/search';
-import {useAside} from './Aside';
+// import {useAside} from './Aside';
+import {useSearchExpand} from '~/components/custom-components/SearchHeaderExpand'
+
 
 type PredictiveSearchItems = PredictiveSearchReturn['result']['items'];
 
@@ -42,7 +44,7 @@ type SearchResultsPredictiveProps = {
 export function SearchResultsPredictive({
   children,
 }: SearchResultsPredictiveProps) {
-  const aside = useAside();
+  const expand = useSearchExpand();
   const {term, inputRef, fetcher, total, items} = usePredictiveSearch();
 
   /*
@@ -56,11 +58,11 @@ export function SearchResultsPredictive({
   }
 
   /**
-   * Utility that resets the search input and closes the search aside
+   * Utility that resets the search input and closes the search expand
    */
   function closeSearch() {
     resetInput();
-    aside.close();
+    expand.close();
   }
 
   return children({
@@ -208,7 +210,7 @@ function SearchResultsPredictiveProducts({
       <ul>
         {products.map((product) => {
           const productUrl = urlWithTrackingParams({
-            baseUrl: `/products/${product.handle}`,
+            baseUrl: `/p/${product.handle}`,
             trackingParams: product.trackingParameters,
             term: term.current,
           });

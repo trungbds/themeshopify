@@ -5,6 +5,9 @@ import {vitePlugin as remix} from '@remix-run/dev';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
 
+// 
+import { flatRoutes} from 'remix-flat-routes';
+
 export default defineConfig({
   plugins: [
     tailwindcss(),
@@ -17,7 +20,26 @@ export default defineConfig({
         v3_relativeSplatPath: true,
         v3_throwAbortReason: true,
       },
+
+      routes(definedRoutes){
+        return {
+          ...flatRoutes('routes',definedRoutes),
+          // ...definedRoutes((route)=>{
+          //   route("/c","routes/c/_index/route.tsx",() =>{
+          //     route("all","routes/c/all/route.tsx",()=>{
+          //       route(":handle","routes/api-routes/c/collection.tsx",()=>{
+          //         route("quickview","routes/api-routes/c/quickview.tsx")
+          //       });
+          //     });
+          //   });
+          // })
+
+          
+
+        }
+      },
     }),
+
     tsconfigPaths(),
   ],
   build: {

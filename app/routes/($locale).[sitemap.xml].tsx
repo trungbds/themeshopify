@@ -59,7 +59,7 @@ function generateSitemap({
   const products = flattenConnection(data.products)
     .filter((product) => product.onlineStoreUrl)
     .map((product) => {
-      const url = `${baseUrl}/products/${xmlEncode(product.handle)}`;
+      const url = `${baseUrl}/p/${xmlEncode(product.handle)}`;
 
       const productEntry: Entry = {
         url,
@@ -87,7 +87,7 @@ function generateSitemap({
   const collections = flattenConnection(data.collections)
     .filter((collection) => collection.onlineStoreUrl)
     .map((collection) => {
-      const url = `${baseUrl}/collections/${collection.handle}`;
+      const url = `${baseUrl}/c/${collection.handle}`;
 
       return {
         url,

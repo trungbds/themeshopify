@@ -1,0 +1,132 @@
+variantBySelectedOptions(
+caseInsensitiveMatch: Boolean = false
+ignoreUnknownOptions: Boolean = false
+selectedOptions: [SelectedOptionInput!]!
+): ProductVariant
+
+Trong GraphQL, các kiểu dữ liệu giúp định nghĩa cấu trúc và cách thức mà dữ liệu được truy vấn và trả về từ server. Dưới đây là giải thích cho từng loại kiểu dữ liệu trong GraphQL:
+
+1. Objects
+Object Types đại diện cho các kiểu dữ liệu tùy chỉnh mà bạn có thể định nghĩa trong schema của bạn. Chúng mô tả các đối tượng với các trường có tên và kiểu dữ liệu cụ thể. Ví dụ, nếu bạn có một kiểu đối tượng User, nó có thể có các trường như id, name, và email.
+
+graphql
+--------------
+type User {
+  id: ID!
+  name: String!
+  email: String!
+}
+2. Scalars
+Scalar Types là các loại dữ liệu cơ bản mà GraphQL hỗ trợ mặc định. Chúng không thể phân tách thành các trường con. Các kiểu scalar cơ bản bao gồm:
+
+Int: Số nguyên
+Float: Số thực
+String: Chuỗi ký tự
+Boolean: Giá trị đúng/sai
+ID: Định danh duy nhất (thường là chuỗi)
+graphql
+--------------
+type Query {
+  age: Int
+  height: Float
+  name: String
+  isActive: Boolean
+  userId: ID
+}
+3. Enums
+Enum Types là các kiểu dữ liệu cho phép bạn định nghĩa một tập hợp các giá trị cố định. Chúng hữu ích khi bạn muốn giới hạn giá trị cho một trường chỉ trong một số tùy chọn cụ thể.
+
+graphql
+--------------
+enum Role {
+  ADMIN
+  USER
+  GUEST
+}
+
+type User {
+  id: ID!
+  name: String!
+  role: Role!
+}
+4. Input Objects
+Input Objects là các kiểu dữ liệu được sử dụng làm tham số cho các query và mutation. Chúng cho phép bạn nhóm các giá trị lại với nhau và truyền chúng như một đối tượng.
+
+graphql
+--------------
+input UserInput {
+  name: String!
+  email: String!
+}
+
+type Mutation {
+  createUser(input: UserInput!): User
+}
+5. Interfaces
+Interfaces là các kiểu dữ liệu trừu tượng mà bạn có thể sử dụng để định nghĩa các trường mà các đối tượng khác phải thực hiện. Chúng giúp bạn tái sử dụng các trường giữa các kiểu đối tượng khác nhau.
+
+graphql
+--------------
+interface Person {
+  id: ID!
+  name: String!
+}
+
+type User implements Person {
+  id: ID!
+  name: String!
+  email: String!
+}
+
+type Admin implements Person {
+  id: ID!
+  name: String!
+  permissions: [String!]!
+}
+6. Unions
+Unions cho phép bạn định nghĩa một kiểu dữ liệu mà có thể trả về nhiều kiểu khác nhau. Khi bạn sử dụng unions, bạn cần xác định các kiểu mà union có thể trả về.
+
+graphql
+--------------
+union SearchResult = User | Post
+
+type Query {
+  search(term: String!): SearchResult
+}
+7. Connections
+Connections là một cách để phân trang các kết quả. Chúng thường được sử dụng trong các query để trả về danh sách các đối tượng cùng với thông tin phân trang.
+
+graphql
+--------------
+type UserConnection {
+  edges: [UserEdge]
+  pageInfo: PageInfo
+}
+
+type UserEdge {
+  node: User
+  cursor: String
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  endCursor: String
+}
+8. Payloads
+Payloads thường được sử dụng trong các mutation để trả về kết quả của việc thực hiện mutation. Một payload bao gồm thông tin về trạng thái của mutation và có thể bao gồm các đối tượng khác.
+
+graphql
+--------------
+type CreateUserPayload {
+  user: User
+  success: Boolean!
+}
+
+type Mutation {
+  createUser(input: UserInput!): CreateUserPayload
+}
+Các kiểu dữ liệu này giúp bạn xây dựng một schema GraphQL linh hoạt và mạnh mẽ, cho phép truy vấn và thao tác dữ liệu một cách hiệu quả.
+
+
+# Hiển thị hình ảnh sản phẩm
+- Muốn hiển thị hình ảnh biến thể sản phẩm bắt buộc biến thể đó phải MATCH với Color

@@ -1,0 +1,34 @@
+{
+    "collectionsschema": {
+
+        "hero": [
+            { "id": "gid://shopify/Collection/333462438083", "index": 1 },
+            { "id": "gid://shopify/Collection/333488357571", "index": 2 },
+            { "id": "gid://shopify/Collection/333488554179", "index": 3 }
+        ],
+
+        "heroList": [
+            { "id": "gid://shopify/Collection/333490159811", "index": 1 },
+            { "id": "gid://shopify/Collection/333492388035", "index": 2 },
+            { "id": "gid://shopify/Collection/333492420803", "index": 3 },
+            { "id": "gid://shopify/Collection/333492453571", "index": 4 },
+            { "id": "gid://shopify/Collection/333492486339", "index": 5 },
+            { "id": "gid://shopify/Collection/333490159811", "index": 6 }
+        ],
+
+        "ourfeaturedoffers": [
+            { "id": "gid://shopify/Collection/333496877251", "index": 1 },
+            { "id": "gid://shopify/Collection/333496484035", "index": 2 },
+            { "id": "gid://shopify/Collection/333496942787", "index": 3 },
+            { "id": "gid://shopify/Collection/333496975555", "index": 4 }
+        ],
+
+        "todayinteresting": [
+            { "id": "gid://shopify/Collection/333517160643", "index": 1 }
+        ],
+        "idealseasons": [
+            { "id": "gid://shopify/Collection/333536985283", "index": 1 }
+        ]
+    }
+}
+  

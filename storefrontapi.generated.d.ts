@@ -1,6 +1,7 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable eslint-comments/no-unlimited-disable */
 /* eslint-disable */
+
 import type * as StorefrontAPI from '@shopify/hydrogen/storefront-api-types';
 
 export type MoneyFragment = Pick<
@@ -770,7 +771,18 @@ export type ProductFragment = Pick<
   StorefrontAPI.Product,
   'id' | 'title' | 'vendor' | 'handle' | 'descriptionHtml' | 'description'
 > & {
-  options: Array<Pick<StorefrontAPI.ProductOption, 'name' | 'values'>>;
+  //!EDITED add images list
+  images: {
+    edges: Array<{
+      node: Pick<
+        StorefrontAPI.Image,
+        'id' | 'url' | 'altText' | 'width' | 'height'
+      >;
+    }>;
+  };
+
+  // !EDITED
+  options: Array<Pick<StorefrontAPI.ProductOption, 'name' | 'values' | 'optionValues'>>;
   selectedVariant?: StorefrontAPI.Maybe<
     Pick<
       StorefrontAPI.ProductVariant,
@@ -793,6 +805,9 @@ export type ProductFragment = Pick<
       unitPrice?: StorefrontAPI.Maybe<
         Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
       >;
+      // !EDITED Thêm trường quantityAvailable
+      quantityAvailable?: StorefrontAPI.Maybe<Scalars['Int']['output']>;
+      
     }
   >;
   variants: {

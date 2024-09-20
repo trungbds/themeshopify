@@ -18,11 +18,18 @@
     "@remix-run/server-runtime": "^2.10.1",
     "@shopify/hydrogen": "2024.7.4",
     "@shopify/remix-oxygen": "^2.0.6",
+    "autoprefixer": "^10.4.20",
+    "embla-carousel-react": "^8.2.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "isbot": "^3.8.0",
+    "lightgallery": "^2.7.2",
+    "postcss": "^8.4.41",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "swiper": "^11.1.11",
+    "tailwindcss": "^4.0.0-alpha.17"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "5.0.2",
@@ -38,11 +45,15 @@
     "@types/eslint": "^8.4.10",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.3.1",
     "eslint": "^8.20.0",
     "eslint-plugin-hydrogen": "0.12.2",
     "prettier": "^2.8.4",
+    "remix-flat-routes": "^0.6.5",
+    "sass": "^1.78.0",
     "typescript": "^5.2.2",
     "vite": "^5.1.0",
+    "vite-plugin-svgr": "^4.2.0",
     "vite-tsconfig-paths": "^4.3.1"
   },
   "engines": {
