@@ -30,7 +30,6 @@ export function ProductItemCustom({
 }: ProductItemProps ) {
   const variant = product.variants.nodes[0];
   const variantUrl = useVariantUrl(product.handle, variant.selectedOptions);
-  console.log (product.featuredImage);
 
   //  Discount
   const DiscountsMetafield = product.collections?.nodes;

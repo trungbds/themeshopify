@@ -99,7 +99,7 @@ function CartHeaderBtn (
 
         }}
       >
-        <img src={iconcart} width={'20px'} />
+        <img src={iconcart} width={'24px'} />
         <span className='cart-badge'>{count === null ? <span>&nbsp;</span> : count}</span>
         
       </a>

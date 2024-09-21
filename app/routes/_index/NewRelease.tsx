@@ -26,12 +26,7 @@ export default function NewRelease({ products }: { products: any }) {
     return (
         <section className="new-release">
             <div className="container">
-                <div className="text-center border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
-                    <div className="flex flex-wrap -mb-px items-baseline bestseller-list">
-                        <h2 className="title-selection">  New Release</h2>
-                    
-                    </div>
-                </div>
+                <h2 className="title-selection"> New Release</h2>
 
                 <div className="products-grid">
                     {selectedProducts.map((product: any) => (

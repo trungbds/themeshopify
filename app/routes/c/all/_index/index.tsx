@@ -104,66 +104,71 @@ export default function Collection() {
   };
 
   return (
-    <div className="collection">
+    <section>
+      <div className="container">
+        <div className="collection">
 
-      <div className="collection-header">
-        <h1 className='collection-title'>All Products</h1>
-        <CategoryClass />
-      </div>
+          <div className="collection-header">
+            <h1 className='collection-title'>All Products</h1>
+            <CategoryClass />
+          </div>
 
-      <FilterProductSideBar />
+          {/* Filter Sidebar */}
+          <FilterProductSideBar />
 
-      <div className="collection-result">
-        {/* sort by */}
-        <BoxSort />
+          <div className="collection-result">
+            {/* sort by */}
+            <BoxSort />
 
-        {/* pagination */}
-        <PaginatedResourceSection
-          connection={products}
-          resourcesClassName="products-grid"
-        >
-          {({node: product, index}) => (
-            <Suspense fallback={<div>Loading color variants...</div>}>
-              <Await 
-                errorElement="There was a problem loading product variants"
-                resolve={colorVariantsByProductId}
+            {/* pagination */}
+            <PaginatedResourceSection
+              connection={products}
+              resourcesClassName="products-grid"
+            >
+              {({node: product, index}) => (
+                <Suspense fallback={<div>Loading color variants...</div>}>
+                  <Await 
+                    errorElement="There was a problem loading product variants"
+                    resolve={colorVariantsByProductId}
+                  >
+                    {(colorVariantsByProductId) => (
+                      <ProductItemCustom
+                        type ='dafault'
+                        key={product.id}
+                        loading={index < 8 ? 'eager' : undefined}
+                        product={product}
+                        colorVariants={colorVariantsByProductId[product.id] || []}
+                        onAddToCart={() => handleAddToCart(product.handle)} // Truyền hàm mở modal cho ProductItem
+                      />
+                    )}
+                  </Await>
+                </Suspense>
+              )}
+            </PaginatedResourceSection> 
+
+          </div>
+
+          {/* product modal  -- click "Add to cart()"*/}
+          {isModalOpen && (
+            <Suspense fallback={<div>Loading product...</div>}>
+              <Await
+                resolve={fetcher.data}
+                errorElement="There was a problem loading product"  
               >
-                {(colorVariantsByProductId) => (
-                  <ProductItemCustom
-                    type ='dafault'
-                    key={product.id}
-                    loading={index < 8 ? 'eager' : undefined}
+                {(product) => (
+                  <ProductModal
+                    onClose={closeModal}
                     product={product}
-                    colorVariants={colorVariantsByProductId[product.id] || []}
-                    onAddToCart={() => handleAddToCart(product.handle)} // Truyền hàm mở modal cho ProductItem
+                    loading={fetcher.state === 'loading'}
                   />
                 )}
               </Await>
             </Suspense>
           )}
-        </PaginatedResourceSection> 
 
+          
+        </div>
       </div>
-
-      {/* product modal  -- click "Add to cart()"*/}
-      {isModalOpen && (
-        <Suspense fallback={<div>Loading product...</div>}>
-          <Await
-            resolve={fetcher.data}
-            errorElement="There was a problem loading product"  
-          >
-            {(product) => (
-              <ProductModal
-                onClose={closeModal}
-                product={product}
-                loading={fetcher.state === 'loading'}
-              />
-            )}
-          </Await>
-        </Suspense>
-      )}
-
-      
-    </div>
+    </section>
   );
 }

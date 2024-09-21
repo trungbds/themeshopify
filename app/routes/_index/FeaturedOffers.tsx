@@ -11,7 +11,6 @@ import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
 export default function FeaturedOffers(
     {collections} : {collections ?: any}
 ){
-    console.log(collections) // For debugging purposes
     return (
         <section className="featured-offers">
             <div className="container">

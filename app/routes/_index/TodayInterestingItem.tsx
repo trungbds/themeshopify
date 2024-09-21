@@ -12,8 +12,6 @@ export default function TodayInterestingItem({ collections }: { collections: any
     const products = collections.collection?.products.nodes || [];
     // const { products } = collections;
 
-    console.log('collectionsTodayInterestingItem',collections);
-
     return (
         <section className="today-interesting">
             <div className="container">

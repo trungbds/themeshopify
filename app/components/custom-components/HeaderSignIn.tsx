@@ -35,8 +35,7 @@ export default function HeaderSignIn() {
 
 
     return (
-        <div className="relative inline-block text-left" ref={dropdownRef}>
-
+        <div className="header-cta__block relative inline-block text-left" ref={dropdownRef}>
             <div className='btn-user'>
                 <button
                     type="button"
@@ -54,59 +53,61 @@ export default function HeaderSignIn() {
 
             {isOpen && (
                 <div
-                    className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    className="header-cta__block-expand absolute z-10 mt-2 bg-white shadow-lg focus:outline-none"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="menu-button"
                     tabIndex={-1}
                 >
-                    <div className="py-1" role="none">
-                        <a
-                            href="#"
-                            className="block px-4 py-2"
-                            role="menuitem"
-                            tabIndex={-1}
-                            id="menu-item-0"
-                        >
-                            Register
-                        </a>
-                        <a
-                            href="#"
-                            className="block px-4 py-2"
-                            role="menuitem"
-                            tabIndex={-1}
-                            id="menu-item-1"
-                        >
-                            Login
-                        </a>
-                        <a
-                            href="#"
-                            className="block px-4 py-2"
-                            role="menuitem"
-                            tabIndex={-1}
-                            id="menu-item-2"
-                        >
-                            Wish list
-                        </a>
-                        <a
-                            href="#"
-                            className="block px-4 py-2"
-                            role="menuitem"
-                            tabIndex={-1}
-                            id="menu-item-3"
-                        >
-                            Track order
-                        </a>
-                        <a
-                            href="#"
-                            className="block px-4 py-2"
-                            role="menuitem"
-                            tabIndex={-1}
-                            id="menu-item-4"
-                        >
-                            Help center
-                        </a>
-                    </div>
+                    
+                    <a
+                        href="/account"
+                        className="block px-4 py-2"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-1"
+                    >
+                        <strong>Login</strong>
+                    </a>
+                    <div className="border-b border-gray-200"></div>
+
+                    <a
+                        href="#"
+                        className="block px-4 py-2"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-2"
+                    >
+                        Wish list
+                    </a>
+                    <div className="border-b border-gray-200"></div>
+                    <a
+                        href="#"
+                        className="block px-4 py-2"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-3"
+                    >
+                        Track order
+                    </a>
+                    <a
+                        href="#"
+                        className="block px-4 py-2"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-4"
+                    >
+                        Help center
+                    </a>
+                    <a
+                        href="#"
+                        className="block px-4 py-2"
+                        role="menuitem"
+                        tabIndex={-1}
+                        id="menu-item-4"
+                    >
+                        FaQ
+                    </a>
                 </div>
             )}
         </div>

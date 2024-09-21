@@ -14,8 +14,6 @@ export default function HeroHomepage(
     // console.log(collections) // For debugging purposes
     const {hero, heroList} = collections;
 
-    console.log (hero[0].handle)
-
     return (
         <section className="hero-homepage">
             <div className="container">

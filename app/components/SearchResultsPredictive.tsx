@@ -7,7 +7,9 @@ import {
   type PredictiveSearchReturn,
 } from '~/lib/search';
 // import {useAside} from './Aside';
-import {useSearchExpand} from '~/components/custom-components/SearchHeaderExpand'
+import {useSearchExpand} from '~/components/custom-components/SearchHeaderExpand';
+
+import noImage from '~/assets/images/no-image-available.png';
 
 
 type PredictiveSearchItems = PredictiveSearchReturn['result']['items'];
@@ -106,7 +108,7 @@ function SearchResultsPredictiveArticles({
                 {article.image?.url && (
                   <Image
                     alt={article.image.altText ?? ''}
-                    src={article.image.url}
+                    src={article.image.url?? noImage}
                     width={50}
                     height={50}
                   />
@@ -147,7 +149,7 @@ function SearchResultsPredictiveCollections({
                 {collection.image?.url && (
                   <Image
                     alt={collection.image.altText ?? ''}
-                    src={collection.image.url}
+                    src={collection.image.url ?? noImage}
                     width={50}
                     height={50}
                   />
@@ -222,7 +224,7 @@ function SearchResultsPredictiveProducts({
                 {image && (
                   <Image
                     alt={image.altText ?? ''}
-                    src={image.url}
+                    src={image.url ?? noImage}
                     width={50}
                     height={50}
                   />

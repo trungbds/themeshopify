@@ -162,7 +162,7 @@ function HeaderCtas({
   isLoggedIn,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas" role="navigation">
+    <div className="header-ctas" role="navigation">
       {/* header menu mobile btn */}
       <HeaderMenuMobileToggle />
 
@@ -178,7 +178,7 @@ function HeaderCtas({
           
         </Await>
       </Suspense>
-    </nav>
+    </div>
   );
 }
 

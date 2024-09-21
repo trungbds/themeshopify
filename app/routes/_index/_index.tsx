@@ -139,10 +139,6 @@ export default function Homepage() {
 
   const ourfeaturedoffersData = homepageDataCollections.ourfeaturedoffers;
 
-  console.log('Todays', IdealSeasons);
-
-
-
   // Bestseller 
   // const getProductsBestSeller = (id : string) => {
   //   fetcher.load(`/${id}/bestseller`);

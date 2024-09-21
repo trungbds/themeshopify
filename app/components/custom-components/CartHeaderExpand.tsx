@@ -27,7 +27,7 @@ export function CartHeaderExpand({
       className={`cart-expand ${expanded ? 'expanded' : ''}`}
     >
       <div className='cart-expand__header flex items-center justify-between'>
-        <h3>Your cart: <strong>{count} items</strong> </h3>
+        <h3>Your cart: <strong>{count} {count <= 1 ? 'item' : 'items'}</strong></h3>
         <button className='close reset' onClick={close}>
           <img src={iconclose} width='24px' />
         </button>

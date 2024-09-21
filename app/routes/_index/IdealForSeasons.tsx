@@ -13,8 +13,6 @@ import noImage from '~/assets/images/no-image-available.png';
 
 export default function IdealForSeasons({ collections }: { collections: any }) {
 
-    console.log('aaaaa',collections);
-
     const {collection: { image: collectionImage }} = collections;
     const {
         collection: {

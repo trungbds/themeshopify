@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { useAside } from '~/components/Aside';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { ProductModalVariantOptions } from './ProductModalVariantOptions';
+import { Link } from '@remix-run/react';
 
 // type Loading = 'loading' | 'idle' | 'submitting';
 
@@ -31,7 +32,7 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
 
   // image
   const images = productItem.images;
-  const imageList = images.edges.map(edge => edge.node);
+  const imageList = images.edges.map((edge:any) => edge.node);
 
   // product form
   const { open } = useAside();
@@ -42,7 +43,7 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
   };
 
   return (
-    <div className="modal">
+    <div className="modal product-modal">
       <div className="modal-overlay" onClick={onClose} />
       <div className="modal-content">
         <button className='btn btn-close' onClick={onClose}>
@@ -52,7 +53,7 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
         <div className="product-modal__detail">
           {/* Hiển thị hình ảnh sản phẩm */}
           <Swiper className='product-image flex-auto' spaceBetween={50} slidesPerView={1}>
-            {imageList.map(img => (
+            {imageList.map((img: any) => (
               <SwiperSlide key={img.id}>
                 <a data-src={img.url}>
                   <Image
@@ -73,7 +74,6 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
               price={selectedVariant?.price}
               compareAtPrice={selectedVariant?.compareAtPrice}
             />
-
             <div className="product-form">
               {/* Gọi component ProductModalVariantOptions và truyền hàm handleVariantSelected */}
               <ProductModalVariantOptions
@@ -81,7 +81,6 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
                 variants={productItem.variants.nodes}
                 onVariantSelected={handleVariantSelected}
               />
-              <br />
               <AddToCartButton
                 disabled={!selectedVariant || !selectedVariant.availableForSale}
                 onClick={() => {
@@ -111,11 +110,19 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
                   ) : (
                     <>
                       Add to cart
-                      <div className="product-price">--</div>
+                      <div className="product-price"></div>
                     </>
                   )}
                   
               </AddToCartButton>
+              <Link
+                to={`/p/${productItem.handle}`}
+                className="link-underline text-center"
+              >
+                <span className='link-hover'>
+                  View product details
+                </span>
+              </Link>
             </div>
           </div>
         </div>
