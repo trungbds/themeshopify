@@ -1,4 +1,4 @@
-import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 
 export async function loader({request}: LoaderFunctionArgs) {
   throw new Response(`${new URL(request.url).pathname} not found`, {
@@ -7,5 +7,5 @@ export async function loader({request}: LoaderFunctionArgs) {
 }
 
 export default function CatchAllPage() {
-  return null;
+  return redirect('/404');
 }

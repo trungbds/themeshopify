@@ -23,9 +23,6 @@ export default async function handleRequest(
       'https://fonts.googleapis.com', 
     ],
 
-
-    
-    
   });
 
   const body = await renderToReadableStream(

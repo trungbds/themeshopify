@@ -252,7 +252,7 @@ function SearchResultsPredictiveQueries({
 
   return (
     <div className="predictive-search-result" key="queries">
-      <h5>Queries</h5>
+      {/* <h5>Queries</h5> */}
       <ul>
         {queries.map((suggestion) => {
           if (!suggestion) return null;

@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Await, NavLink } from '@remix-run/react';
+import { Await, Link, NavLink } from '@remix-run/react';
 import type { FooterQuery, HeaderQuery } from 'storefrontapi.generated';
 
 interface FooterProps {
@@ -12,6 +12,14 @@ import iconship from '~/assets/fonts/icons/icon-ship.svg';
 import iconmoneyback from '~/assets/fonts/icons/icon-moneyback.svg';
 import iconsupport247 from '~/assets/fonts/icons/icon-support247.svg';
 import iconregularsale from '~/assets/fonts/icons/icon-regularsale.svg';
+import iconpackagewhite from '~/assets/fonts/icons/icon-package-white.svg';
+import iconpaymentlist from '~/assets/fonts/icons/icon-paymentlist.svg';
+import iconsociallist from '~/assets/fonts/icons/icon-sociallist.svg';
+
+
+import { ButtonOptionSelect } from './custom-components/ButtonOptionSelect';
+
+
 
 
 
@@ -102,12 +110,70 @@ function FooterMenu({
                 ))}
 
                 <div className="sm:col-span-4 md:col-span-4">
-                  <div className=''>
-                    <button>Track order</button>
-                    <div>Returns and exchanges</div>
+                  <div className='footer-right__area'>
+
+                    <Link
+                      prefetch="intent"
+                      to={'/account/orders'}
+                      className='btn btn-primary btn-dark'
+                    >
+                      <img src={iconpackagewhite} alt="Track order" />
+                      <span>Track order</span>
+                    </Link>
+                    
+                    <div className='live-chat'>
+                      If You Have any Questions<br/>Please Contact Us 24/7:
+                      <a className='' href="_blank"><strong>Live chat</strong></a>
+                    </div>
+
                   </div>
 
                 </div>
+
+                <div className='sm:col-span-12 md:col-span-12 '>
+                  <div className='footer-block__ulti flex gap-16'>
+                    <ButtonOptionSelect 
+                      label="Language"
+                      selectedDefault ="English"
+                    />
+                    
+                    <div className='footer-block__payment'>
+                      <h3>Payment accept</h3>
+                      <ul className="payment-methods">
+                        <li>
+                          <Link
+                            to = '/'
+                          >
+                            <img src={iconpaymentlist} alt="" />
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                    
+                    <div className='footer-block__socical'>
+                      <h3>Follow us</h3>
+                      <ul className="payment-methods">
+                        <li>
+                          <Link
+                            to = '/'
+                          >
+                            <img src={iconsociallist} alt="" />
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className="footer-block__newsletter">
+                      <h3 className="footer-block__heading inline-richtext">
+                        Subscribe to <br/>
+                        Our Newsletter
+                      </h3>
+                      <NewsLetter />
+                    </div>
+
+                  </div>
+                </div>
+
               </div>
             </div>
           </section>
@@ -292,12 +358,76 @@ function ShopFeature(){
                   </p>
                 </div>
               </div>
-            
           </div>
-          
         </div>
       </div>
     </section>
+  )
+}
+
+function NewsLetter() {
+  return (
+    <form className="footer__newsletter newsletter-form">
+      <input type="hidden" name="form_type" value="customer" />
+      <input type="hidden" name="utf8" value="✓" />
+      <input type="hidden" name="contact[tags]" value="newsletter" />
+
+      <div className="newsletter-form__field-wrapper">
+        <div className="field">
+          <input
+            id="NewsletterForm--sections--17168244539587__footer"
+            type="email"
+            name="contact[email]"
+            className="field__input"
+            aria-required="true"
+            autoCorrect="off"
+            autoCapitalize="off"
+            autoComplete="email"
+            aria-describedby="ContactFooter-success"
+            placeholder="Email"
+            required
+          />
+          <button
+            type="submit"
+            className="newsletter-form__button field__button"
+            name="commit"
+            id="Subscribe"
+            aria-label="Subscribe"
+          >
+            <svg
+              viewBox="0 0 14 10"
+              fill="none"
+              aria-hidden="true"
+              focusable="false"
+              className="icon icon-arrow"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      
+      <h3 className="newsletter-form__message newsletter-form__message--success form__message" id="ContactFooter-success" tabIndex={-1} autoFocus>
+        <svg aria-hidden="true" focusable="false" className="icon icon-success" viewBox="0 0 13 13">
+          <path
+            d="M6.5 12.35C9.73087 12.35 12.35 9.73086 12.35 6.5C12.35 3.26913 9.73087 0.65 6.5 0.65C3.26913 0.65 0.65 3.26913 0.65 6.5C0.65 9.73086 3.26913 12.35 6.5 12.35Z"
+            fill="#428445"
+            stroke="white"
+            strokeWidth="0.7"
+          />
+          <path d="M5.53271 8.66357L9.25213 4.68197" stroke="white" />
+          <path d="M4.10645 6.7688L6.13766 8.62553" stroke="white" />
+        </svg>
+        Thanks for subscribing
+      </h3>
+    </form>
+
   )
 }
 

@@ -197,6 +197,17 @@ export const HEADER_QUERY = `#graphql
         }
       }
     }
+    paymentSettings {
+      acceptedCardBrands
+      countryCode
+      currencyCode
+      enabledPresentmentCurrencies
+      shopifyPaymentsAccountId
+      supportedDigitalWallets
+    }
+    shipsToCountries
+
+
   }
   query Header(
     $country: CountryCode
