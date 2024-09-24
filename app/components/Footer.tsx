@@ -68,7 +68,6 @@ function FooterMenu({
   const items = (menu || FALLBACK_FOOTER_MENU).items;
   const hasMoreThanThreeItems = items.length > 3;
 
-  console.log('SHOP', shop);
   const logoUrl: string = shop.brand?.logo?.image?.url ?? '';
 
   return (

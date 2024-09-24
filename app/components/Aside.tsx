@@ -1,4 +1,6 @@
 import {createContext, type ReactNode, useContext, useState} from 'react';
+import iconclose from '~/assets/fonts/icons/icon-close.svg';
+
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
 type AsideContextValue = {
@@ -40,7 +42,7 @@ export function Aside({
         <header>
           <h3>{heading}</h3>
           <button className="close reset" onClick={close}>
-            &times;
+            <img src={iconclose}/>
           </button>
         </header>
         <main>{children}</main>

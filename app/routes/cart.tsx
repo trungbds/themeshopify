@@ -3,7 +3,6 @@ import {Suspense} from 'react';
 import type {CartQueryDataReturn} from '@shopify/hydrogen';
 import {CartForm} from '@shopify/hydrogen';
 import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
-import {CartMain} from '~/components/CartMain';
 import type {RootLoader} from '~/root';
 
 export const meta: MetaFunction = () => {
@@ -85,21 +84,96 @@ export default function Cart() {
   if (!rootData) return null;
 
   return (
-    <div className="cart">
-      <h1>Your Cart</h1>
-      <Suspense fallback={<p>Loading ...</p>}>
-        <Await
-          resolve={rootData.cart}
-          errorElement={<div>An error occurred</div>}
-        >
-          {(cart) => {
-            return <CartMain layout="page" cart={cart} />;
-          }}
-        </Await>
-      </Suspense>
-    </div>
+    <section>
+      <div className="container">
+      <div className="cart">
+
+        <h1>Your Cart22</h1>
+        <Suspense fallback={<p>Loading ...</p>}>
+          <Await
+            resolve={rootData.cart}
+            errorElement={<div>An error occurred</div>}
+          >
+            {(cart) => {
+              return <CartMain layout="page" cart={cart} />;
+            }}
+          </Await>
+        </Suspense>
+        </div>
+        
+      </div>
+    </section>
+    
   );
 }
 
 // -------
+import {useOptimisticCart} from '@shopify/hydrogen';
+import {Link} from '@remix-run/react';
+import type {CartApiQueryFragment} from 'storefrontapi.generated';
+import {CartLineItem} from '~/components/CartLineItem';
+import {CartSummary} from '~/components/CartSummary';
+import { useCartHeader } from '~/components/custom-components/CartHeaderExpand';
+
+export type CartLayout = 'page' | 'aside';
+
+export type CartMainProps = {
+  cart: CartApiQueryFragment | null;
+  layout: CartLayout;
+};
+
+/**
+ * The main cart component that displays the cart items and summary.
+ * It is used by both the /cart route and the cart aside dialog.
+ */
+function CartMain({layout, cart: originalCart}: CartMainProps) {
+  // The useOptimisticCart hook applies pending actions to the cart
+  // so the user immediately sees feedback when they modify the cart.
+  const cart = useOptimisticCart(originalCart);
+
+  const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
+  const withDiscount =
+    cart &&
+    Boolean(cart?.discountCodes?.filter((code) => code.applicable)?.length);
+  const className = `cart-main ${withDiscount ? 'with-discount' : ''}`;
+  const cartHasItems = cart?.totalQuantity! > 0;
+
+  return (
+    <div className={className}>
+      <CartEmpty hidden={linesCount} layout={layout} />
+      <div className="cart-details">
+        <div aria-labelledby="cart-lines" className='cart-lines'>
+          <ul>
+            {(cart?.lines?.nodes ?? []).map((line) => (
+              <CartLineItem key={line.id} line={line} layout={layout} />
+            ))}
+          </ul>
+        </div>
+        {cartHasItems && <CartSummary cart={cart} layout={layout} />}
+      </div>
+    </div>
+  );
+}
+
+function CartEmpty({
+  hidden = false,
+}: {
+  hidden: boolean;
+  layout?: CartMainProps['layout'];
+}) {
+  const {close} = useCartHeader();
+  return (
+    <div hidden={hidden}>
+      <br />
+      <p>
+        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you 
+        started!
+      </p>
+      <br />
+      <Link to="/c/all" onClick={close} prefetch="viewport">
+        Continue shopping →
+      </Link>
+    </div>
+  );
+}
 

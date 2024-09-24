@@ -1,324 +1,251 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import iconreset from '~/assets/fonts/icons/icon-reset.svg';
+import iconclose from '~/assets/fonts/icons/icon-close.svg';
+import iconcheckbox from '~/assets/fonts/icons/icon-checkbox.svg';
+import iconcheckboxoutline from '~/assets/fonts/icons/icon-checkbox-outline.svg';
 
-export function FilterProductSideBar() {
-  const [colorExpanded, setColorExpanded] = useState(false);
-  const [categoryExpanded, setCategoryExpanded] = useState(false);
-  const [sizeExpanded, setSizeExpanded] = useState(false);
 
-  const toggleColorSection = () => setColorExpanded(!colorExpanded);
-  const toggleCategorySection = () => setCategoryExpanded(!categoryExpanded);
-  const toggleSizeSection = () => setSizeExpanded(!sizeExpanded);
+
+
+
+type FilterProductSideBarProps = {
+  isActive?: boolean;
+  data?: any;
+};
+
+export function FilterProductSideBar({ isActive, data }: FilterProductSideBarProps) {
+  if (!isActive) return null;
+
+  console.log('Data', data);
+
+  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
+    // 'filter.p.vendor': true,
+    // 'filter.v.option.color': true
+  });
+
+  const [stickyTop, setStickyTop] = useState(0);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
+  const toggleSection = (section: string) => {
+    setExpandedSections(prevState => ({
+      ...prevState,
+      [section]: !prevState[section],
+    }));
+  };
+
+  const getElementDistanceTop = (selector: string) => {
+    const element = document.querySelector(selector) as HTMLElement;
+    if (element) {
+      const computedStyles = window.getComputedStyle(element);
+      const paddingTop = parseFloat(computedStyles.paddingTop);
+      const marginTop = parseFloat(computedStyles.marginTop);
+      return paddingTop + marginTop;
+    }
+    return 0;
+  };
+
+  const getElementHeight = (selector: string) => {
+    const element = document.querySelector(selector) as HTMLElement;
+    if (element) {
+      return element.offsetHeight;
+    }
+    return 0;
+  };
+
+  const calculateStickyTop = () => {
+    const breadcrumbsHeight = getElementHeight('.breadcrumbs-section');
+    const collectionHeaderHeight = getElementHeight('.collection-page__header');
+    const collectionDetailPadding = getElementDistanceTop('.collection-page__detail');
+    const mainDetailPadding = getElementDistanceTop('.collection-page__detail');
+    const selfDetailPadding = getElementDistanceTop('.filter-form__product');
+
+    const totalHeight = breadcrumbsHeight + collectionHeaderHeight - collectionDetailPadding - mainDetailPadding - selfDetailPadding;
+    setStickyTop(totalHeight);
+  };
+
+  useEffect(() => {
+    calculateStickyTop();
+    window.addEventListener('resize', calculateStickyTop);
+
+    return () => {
+      window.removeEventListener('resize', calculateStickyTop);
+    };
+  }, []);
+
+  const IconDropdown = ({ className }: { className: string }) => {
+    return (
+      <div className={`icon ${className}`}>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.9998 11.3252L4.51855 6.8252H13.4811L8.9998 11.3252Z" fill="#000" />
+        </svg>
+      </div>
+    );
+  };
+
+  const handleOptionChange = (optionId: string) => {
+    setSelectedFilters(prevSelected => 
+      prevSelected.includes(optionId) 
+        ? prevSelected.filter(item => item !== optionId) 
+        : [...prevSelected, optionId]
+    );
+  };
+
+  const handleReset = () => {
+    setSelectedFilters([]);
+  };
 
   return (
-    <form className="filter-form__product border-gray-200">
-      <h3>Filter</h3>
-      <ul role="list" className="px-2 py-3 font-medium text-gray-900">
-        <li>
-          <a href="#" className="block px-2 py-3">
-            Totes
-          </a>
-        </li>
-        <li>
-          <a href="#" className="block px-2 py-3">
-            Backpacks
-          </a>
-        </li>
-        <li>
-          <a href="#" className="block px-2 py-3">
-            Travel Bags
-          </a>
-        </li>
-        <li>
-          <a href="#" className="block px-2 py-3">
-            Hip Bags
-          </a>
-        </li>
-        <li>
-          <a href="#" className="block px-2 py-3">
-            Laptop Sleeves
-          </a>
-        </li>
-      </ul>
-
-      {/* Color Section */}
-      <div className="border-t border-gray-200 px-4 py-6">
-        <h3 className="-mx-2 -my-3 flow-root">
-          <button
-            type="button"
-            className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
-            aria-controls="filter-section-mobile-0"
-            aria-expanded={colorExpanded}
-            onClick={toggleColorSection}
-          >
-            <span className="font-medium text-gray-900">Color</span>
-            <span className="ml-6 flex items-center">
-              {colorExpanded ? (
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-                </svg>
-              )}
-            </span>
-          </button>
-        </h3>
-        {colorExpanded && (
-          <div className="pt-6" id="filter-section-mobile-0">
-            <div className="space-y-6">
-              <div className="flex items-center">
-                <input
-                  id="filter-mobile-color-0"
-                  name="color[]"
-                  value="white"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="filter-mobile-color-0"
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  White
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="filter-mobile-color-1"
-                  name="color[]"
-                  value="beige"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="filter-mobile-color-1"
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  Beige
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="filter-mobile-color-2"
-                  name="color[]"
-                  value="blue"
-                  type="checkbox"
-                  checked
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="filter-mobile-color-2"
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  Blue
-                </label>
-              </div>
-              {/* Add more color options as necessary */}
-            </div>
-          </div>
-        )}
+    <div
+      className="filter-form__product border-gray-200"
+      style={{ top: `${stickyTop}px` }}
+    >
+      <div className="filter-form__product-header">
+        <h3 className="title font-medium">Filter</h3>
+        <button
+          type="button"
+          className="btn link-primary text-sm inline-flex font-semibold gap-1 items-center"
+          onClick={handleReset}
+        >
+          <img src={iconreset} alt="reset icon" />
+          <span className="link-hover">Reset all</span>
+        </button>
+        <ul className="filter-result">
+          {selectedFilters.map((filter, index) => (
+            <li
+              onClick={() => handleOptionChange(filter)}
+              className="filter-result__item btn" key={index}>
+              {filter}
+              <img src={iconclose} width='16px' height='16px'/>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      {/* Category Section */}
-      <div className="border-t border-gray-200 px-4 py-6">
-        <h3 className="-mx-2 -my-3 flow-root">
-          <button
-            type="button"
-            className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
-            aria-controls="filter-section-mobile-1"
-            aria-expanded={categoryExpanded}
-            onClick={toggleCategorySection}
-          >
-            <span className="font-medium text-gray-900">Category</span>
-            <span className="ml-6 flex items-center">
-              {categoryExpanded ? (
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-                </svg>
-              )}
-            </span>
-          </button>
-        </h3>
-        {categoryExpanded && (
-          <div className="pt-6" id="filter-section-mobile-1">
-            <div className="space-y-6">
-              <div className="flex items-center">
-                <input
-                  id="filter-mobile-category-0"
-                  name="category[]"
-                  value="new-arrivals"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="filter-mobile-category-0"
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  New Arrivals
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="filter-mobile-category-1"
-                  name="category[]"
-                  value="sale"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="filter-mobile-category-1"
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  Sale
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="filter-mobile-category-2"
-                  name="category[]"
-                  value="travel"
-                  type="checkbox"
-                  checked
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="filter-mobile-category-2"
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  Travel
-                </label>
-              </div>
-              {/* Add more category options as necessary */}
-            </div>
-          </div>
-        )}
-      </div>
+      {data.map((item: any) => (
+        <div key={item.id} className="filter-form__block border-t border-gray-200 py-6">
+          <div className="-mx-2 -my-3 flow-root">
+            <button
+              type="button"
+              className="btn flex w-full items-center justify-between bg-white px-2"
+              aria-controls={`filter-block-${item.id}`}
+              aria-expanded={expandedSections[item.id]}
+              onClick={() => toggleSection(item.id)}
+            >
+              <h5 className="font-medium">{item.label}</h5>
+              <span className="ml-6 flex items-center">
+                <IconDropdown className={expandedSections[item.id] ? "expanded" : "collapsed"} />
+              </span>
+            </button>
 
-      {/* Size Section */}
-      <div className="border-t border-gray-200 px-4 py-6">
-        <h3 className="-mx-2 -my-3 flow-root">
-          <button
-            type="button"
-            className="flex w-full items-center justify-between bg-white px-2 py-3 text-gray-400 hover:text-gray-500"
-            aria-controls="filter-section-mobile-2"
-            aria-expanded={sizeExpanded}
-            onClick={toggleSizeSection}
-          >
-            <span className="font-medium text-gray-900">Size</span>
-            <span className="ml-6 flex items-center">
-              {sizeExpanded ? (
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M4 10a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H4.75A.75.75 0 014 10z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="h-5 w-5"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
-                </svg>
-              )}
-            </span>
-          </button>
-        </h3>
-        {sizeExpanded && (
-          <div className="pt-6" id="filter-section-mobile-2">
-            <div className="space-y-6">
-              <div className="flex items-center">
-                <input
-                  id="filter-mobile-size-0"
-                  name="size[]"
-                  value="2l"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="filter-mobile-size-0"
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  2L
-                </label>
+            {expandedSections[item.id] && (
+              <div
+                className={`filter-options__list pt-6 ${
+                  item.id === "filter.v.price" ? "filter-options__list--price" :
+                  item.id === "filter.v.availability" ? "filter-options__list--availability" :
+                  ""
+                }`}
+                id={`filter-block-${item.id}`}
+              >
+                {(() => {
+                  {/* Nội dung tùy chỉnh cho "filter.v.price" */}
+                  switch (item.id) {
+                    case "filter.v.price":
+                      return (
+                        <>
+                          <div 
+                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('Under $50') ? "selected" : ""}`}
+                            onClick={() => handleOptionChange('Under $50')}
+                          >
+                            <img src={selectedFilters.includes('Under $50') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            Under $50
+                          </div>
+
+                          <div 
+                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('$50 - $100') ? "selected" : ""}`}
+                            onClick={() => handleOptionChange('$50 - $100')}
+                          >
+                            <img src={selectedFilters.includes('$50 - $100') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            $50 - $100
+                          
+                          </div>
+
+                          <div 
+                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('$100 - $150') ? "selected" : ""}`}
+                            onClick={() => handleOptionChange('$100 - $150')}
+                          >
+                            <img src={selectedFilters.includes('$100 - $150') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            $100 - $150
+                          </div>
+
+                          <div 
+                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('$150 - $250') ? "selected" : ""}`}
+                            onClick={() => handleOptionChange('$150 - $250')}
+                          >
+                            <img src={selectedFilters.includes('$150 - $250') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            $150 - $250
+                           
+                          </div>
+
+                          <div 
+                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('$250 - $500') ? "selected" : ""}`}
+                            onClick={() => handleOptionChange('$250 - $500')}
+                          >
+                            <img src={selectedFilters.includes('$250 - $500') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            $250 - $500
+                          </div>
+
+                          <div 
+                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('Over $500') ? "selected" : ""}`}
+                            onClick={() => handleOptionChange('Over $500')}
+                          >
+                            <img src={selectedFilters.includes('Over $500') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            Over $500
+                          </div>
+                        </>
+                      );
+                    {/* Nội dung tùy chỉnh cho "filter.v.availability" */}
+                    case "filter.v.availability":
+                      return item.values.map((option: any, index: number) => {
+                        const inputValue = JSON.parse(option.input);
+                        return (
+                          <div 
+                            key={index} 
+                            className={`items-center option-item cursor-pointer ${selectedFilters.includes(option.label) ? "selected" : ""}`}
+                            onClick={() => handleOptionChange(option.label)}
+                            data-input={inputValue}
+                          >
+                            <div className="min-w-0 flex-1">
+                              {option.label}
+                            </div>
+                          </div>
+                        );
+                      });
+
+                    default:
+                      return item.values.map((option: any, index: number) => {
+                        const inputValue = JSON.parse(option.input);
+                        return (
+                          <div 
+                            key={index} 
+                            className={`items-center option-item cursor-pointer ${selectedFilters.includes(option.label) ? "selected" : ""}`}
+                            onClick={() => handleOptionChange(option.label)}
+                            data-input={inputValue}
+                          >
+                            <div className="min-w-0 flex-1">
+                              {option.label}
+                            </div>
+                          </div>
+                        );
+                      });
+                  }
+                })()}
               </div>
-              <div className="flex items-center">
-                <input
-                  id="filter-mobile-size-1"
-                  name="size[]"
-                  value="6l"
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="filter-mobile-size-1"
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  6L
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  id="filter-mobile-size-2"
-                  name="size[]"
-                  value="12l"
-                  type="checkbox"
-                  checked
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label
-                  htmlFor="filter-mobile-size-2"
-                  className="ml-3 min-w-0 flex-1 text-gray-500"
-                >
-                  12L
-                </label>
-              </div>
-              {/* Add more size options as necessary */}
-            </div>
+            )}
           </div>
-        )}
-      </div>
-    </form>
+        </div>
+      ))}
+
+
+    </div>
   );
 }
-

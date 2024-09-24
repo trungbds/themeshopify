@@ -37,7 +37,7 @@ export function BoxSort({ selectedSort = "Featured", countProducts }: BoxSortPro
         </button>
         {isOpen && (
           <div
-            className="box-sort__expand absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+            className="box-sort__expand absolute right-0 z-10 mt-2 bg-white shadow-lg focus:outline-none"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="menu-button"

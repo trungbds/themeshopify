@@ -180,69 +180,74 @@ export default function Product() {
 
   return (
     <div className="product">
-      <div className="product-sku">SKU: <span>{sku}</span></div>
-      <div className="product-detail">
-        
-        <div className="product-content">
-          {selectedVariant?.image && (
-            <ProductImage
-              currentImage={selectedVariant?.image}
-              images={images} 
-            />
-          )}
-          <div className='product-description'>
-            <h2> Description</h2>
-            <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-          </div>
-        </div>
-        <div className="product-main">
-          <div className="product-header">
-            <div className='product-title'>
-              <div className='brand'> Brand: <strong>{vendor}</strong>  </div>
-              <h1>{title}</h1>
-              <RatingCount />
+      <section className='product-page__section'>
+        <div className="container">
+          <div className="product-sku">SKU: <span>{sku}</span></div>
+          <div className="product-detail">
+            
+            <div className="product-content">
+              {selectedVariant?.image && (
+                <ProductImage
+                  currentImage={selectedVariant?.image}
+                  images={images} 
+                />
+              )}
+              <div className='product-description'>
+                <h2> Description</h2>
+                <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+              </div>
             </div>
-            <button className='btn-wishlist' onClick={handleWistlistClick}>
-              <img src={iconWishlist}  width={'20px'} />
-            </button>
-          </div>
+            <div className="product-main">
+              <div className="product-header">
+                <div className='product-title'>
+                  <div className='brand'> Brand: <strong>{vendor}</strong>  </div>
+                  <h1>{title}</h1>
+                  <RatingCount />
+                </div>
+                <button className='btn-wishlist' onClick={handleWistlistClick}>
+                  <img src={iconWishlist}  width={'20px'} />
+                </button>
+              </div>
 
-          
+              
 
-          <ProductPriceV2
-            discountSelected={DiscountMetafieldSelected}
-            // priceRange={product.priceRange}
-            price={selectedVariant?.price}
-            compareAtPrice={selectedVariant?.compareAtPrice}
-          />
-
-          <br />
-          <Suspense
-            fallback={
-              <ProductFormCustom
-                product={product}
-                selectedVariant={selectedVariant}
-                variants={[]}
+              <ProductPriceV2
+                discountSelected={DiscountMetafieldSelected}
+                // priceRange={product.priceRange}
+                price={selectedVariant?.price}
+                compareAtPrice={selectedVariant?.compareAtPrice}
               />
-            }
-          >
-            <Await
-              errorElement="There was a problem loading product variants"
-              resolve={variants}
-            >
-              {(data) => {
-                return (
+
+              <br />
+              <Suspense
+                fallback={
                   <ProductFormCustom
                     product={product}
                     selectedVariant={selectedVariant}
-                    variants={data?.product?.variants.nodes || []}
+                    variants={[]}
                   />
-                );
-              }}
-            </Await>
-          </Suspense>
+                }
+              >
+                <Await
+                  errorElement="There was a problem loading product variants"
+                  resolve={variants}
+                >
+                  {(data) => {
+                    return (
+                      <ProductFormCustom
+                        product={product}
+                        selectedVariant={selectedVariant}
+                        variants={data?.product?.variants.nodes || []}
+                      />
+                    );
+                  }}
+                </Await>
+              </Suspense>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+      
       
 
       {/* Analytics */}

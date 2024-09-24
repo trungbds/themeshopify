@@ -30,8 +30,6 @@ export function ProductFormCustom({
 
   // Tạo mảng options với isVariantColor
 
-  console.log('selectedVariant',selectedVariant); 
-
   const options = product.options.map(option => {
     const hasColor = option.optionValues.some(value => value.swatch && value.swatch.color);
 
@@ -119,7 +117,7 @@ function ProductVariantOptions({
               preventScrollReset
               to={to}
               style={{
-                border: isActive ? '2px solid black' : '2px solid transparent',
+                border: isActive ? '1px solid #000' : '1px solid transparent',
                 opacity: isAvailable ? 1 : 0.3,
               }}
               onClick={() => {

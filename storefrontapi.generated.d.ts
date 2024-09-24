@@ -520,7 +520,17 @@ export type ProductItemFragment = Pick<
       >;
     }>;
   };
+  collections: {
+    nodes: Array<
+      Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'> & {
+        metafield?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+        >;
+      }
+    >;
+  };
 };
+
 
 export type CollectionQueryVariables = StorefrontAPI.Exact<{
   handle: StorefrontAPI.Scalars['String']['input'];
@@ -837,6 +847,77 @@ export type ProductFragment = Pick<
     >;
   };
   seo: Pick<StorefrontAPI.Seo, 'description' | 'title'>;
+};
+
+// !EDITED add product quick view
+export type ProductQuickViewFragment = Pick<
+  StorefrontAPI.Product,
+  'id' | 'title' | 'vendor' | 'handle' | 'descriptionHtml' | 'description'
+> & {
+
+  images: {
+    edges: Array<{
+      node: Pick<
+        StorefrontAPI.Image,
+        'id' | 'url' | 'altText' | 'width' | 'height'
+      >;
+    }>;
+  };
+
+  options: Array<Pick<StorefrontAPI.ProductOption, 'name' | 'values' | 'optionValues'>>;
+  selectedVariant?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.ProductVariant,
+      'availableForSale' | 'id' | 'sku' | 'title'
+    > & {
+      compareAtPrice?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+      >;
+      image?: StorefrontAPI.Maybe<
+        {__typename: 'Image'} & Pick<
+          StorefrontAPI.Image,
+          'id' | 'url' | 'altText' | 'width' | 'height'
+        >
+      >;
+      price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      product: Pick<StorefrontAPI.Product, 'title' | 'handle'>;
+      selectedOptions: Array<
+        Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+      >;
+      unitPrice?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+      >;
+
+      quantityAvailable?: StorefrontAPI.Maybe<Scalars['Int']['output']>;
+      
+    }
+  >;
+  variants: {
+    nodes: Array<
+      Pick<
+        StorefrontAPI.ProductVariant,
+        'availableForSale' | 'id' | 'sku' | 'title'
+      > & {
+        compareAtPrice?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+        >;
+        image?: StorefrontAPI.Maybe<
+          {__typename: 'Image'} & Pick<
+            StorefrontAPI.Image,
+            'id' | 'url' | 'altText' | 'width' | 'height'
+          >
+        >;
+        price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+        product: Pick<StorefrontAPI.Product, 'title' | 'handle'>;
+        selectedOptions: Array<
+          Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+        >;
+        unitPrice?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+        >;
+      }
+    >;
+  };
 };
 
 export type ProductQueryVariables = StorefrontAPI.Exact<{

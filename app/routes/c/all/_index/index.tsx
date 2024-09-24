@@ -7,7 +7,7 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {ProductItemCustom} from './ProductItemCustom';
 import {ProductModal} from './ProductModal'; 
 import {CategoryClass , BoxSort, FilterProductSideBar} from '~/components/custom-components';
-import type {ProductFragment} from 'storefrontapi.generated';
+import type {ProductItemFragment, ProductQuickViewFragment} from 'storefrontapi.generated';
 
 
 // Query 
@@ -60,7 +60,6 @@ export async function loader(args: LoaderFunctionArgs) {
   const { context, request } = args;
 
   const paginationVariables = getPaginationVariables(request, { pageBy: 8 });
-
   const criticalData = await loadCriticalData({ context, paginationVariables });
 
   if (!criticalData.products || !criticalData.products.nodes) {
@@ -84,17 +83,17 @@ export async function loader(args: LoaderFunctionArgs) {
 
 export default function Collection() {
   const {products, colorVariantsByProductId } = useLoaderData<typeof loader>();
+
   const [isModalOpen, setModalOpen] = useState(false); // Quản lý trạng thái modal
   const fetcher = useFetcher(); // Đặt fetcher ở đây
-  const [selectedProduct, setSelectedProduct] = useState<ProductFragment>() ;
-  
+  const [selectedProduct, setSelectedProduct] = useState<ProductQuickViewFragment>() ;
   const handleAddToCart = (handle : string) => {
     fetcher.load(`/c/all/${handle}/quickview`);
   };
 
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data) {
-      setSelectedProduct(fetcher.data);
+      setSelectedProduct(fetcher.data as ProductQuickViewFragment);
       setModalOpen(true);
     }
   }, [fetcher.state, fetcher.data]);
@@ -104,71 +103,83 @@ export default function Collection() {
   };
 
   return (
-    <section>
-      <div className="container">
-        <div className="collection">
-
-          <div className="collection-header">
-            <h1 className='collection-title'>All Products</h1>
-            <CategoryClass />
+    <>
+      <section>
+        <section className='collection-page__header'>
+          <div className="container">
+            <div className="collection-header">
+              <div className='collection-title'>
+                <h1>All Products</h1>
+              </div>
+              <CategoryClass />
+            </div>
           </div>
+        </section>
+        <section className='collection-page__detail'>
+          <div className="container">
+            <div className="collection">
 
-          {/* Filter Sidebar */}
-          <FilterProductSideBar />
+              {/* Filter Sidebar */}
+              <FilterProductSideBar />
 
-          <div className="collection-result">
-            {/* sort by */}
-            <BoxSort />
+              <div className="collection-result">
+                {/* sortby */}
+                <BoxSort />
 
-            {/* pagination */}
-            <PaginatedResourceSection
-              connection={products}
-              resourcesClassName="products-grid"
-            >
-              {({node: product, index}) => (
-                <Suspense fallback={<div>Loading color variants...</div>}>
-                  <Await 
-                    errorElement="There was a problem loading product variants"
-                    resolve={colorVariantsByProductId}
+                {/* pagination */}
+                <PaginatedResourceSection<ProductItemFragment>
+                  connection={products}
+                  resourcesClassName="products-grid"
+                >
+                  {({node: product, index}) => (
+                    <Suspense fallback={<div>Loading color variants...</div>}>
+                      <Await 
+                        errorElement="There was a problem loading product variants"
+                        resolve={colorVariantsByProductId}
+                      >
+                        {(colorVariantsByProductId) => (
+                          <ProductItemCustom
+                            type ='default'
+                            key={product.id}
+                            loading={index < 8 ? 'eager' : undefined}
+                            product={product}
+                            colorVariants={colorVariantsByProductId[product.id] || []}
+                            onAddToCart={() => handleAddToCart(product.handle)} // Truyền hàm mở modal cho ProductItem
+                          />
+                        )}
+                      </Await>
+                    </Suspense>
+                  )}
+                </PaginatedResourceSection> 
+
+              </div>
+
+              {/* product modal  -- click "Add to cart()"*/}
+              {isModalOpen && (
+                <Suspense fallback={<div>Loading product...</div>}>
+                  <Await
+                    resolve={fetcher.data}
+                    errorElement="There was a problem loading product"  
                   >
-                    {(colorVariantsByProductId) => (
-                      <ProductItemCustom
-                        type ='dafault'
-                        key={product.id}
-                        loading={index < 8 ? 'eager' : undefined}
+                    {(product) => (
+                      <ProductModal
+                        onClose={closeModal}
                         product={product}
-                        colorVariants={colorVariantsByProductId[product.id] || []}
-                        onAddToCart={() => handleAddToCart(product.handle)} // Truyền hàm mở modal cho ProductItem
+                        loading={fetcher.state === 'loading'}
                       />
                     )}
                   </Await>
                 </Suspense>
               )}
-            </PaginatedResourceSection> 
-
+            </div>
           </div>
 
-          {/* product modal  -- click "Add to cart()"*/}
-          {isModalOpen && (
-            <Suspense fallback={<div>Loading product...</div>}>
-              <Await
-                resolve={fetcher.data}
-                errorElement="There was a problem loading product"  
-              >
-                {(product) => (
-                  <ProductModal
-                    onClose={closeModal}
-                    product={product}
-                    loading={fetcher.state === 'loading'}
-                  />
-                )}
-              </Await>
-            </Suspense>
-          )}
+        </section>
 
-          
-        </div>
-      </div>
-    </section>
+
+        
+      </section>
+    </>
+
   );
 }

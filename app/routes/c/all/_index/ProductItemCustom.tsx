@@ -18,7 +18,7 @@ interface ProductItemProps {
   }>;
   loading?: 'eager' | 'lazy';
   onAddToCart: () => void;
-  type?: 'dafault' | 'minus';
+  type?: 'default' | 'minus';
 }
 
 export function ProductItemCustom({
@@ -90,7 +90,7 @@ export function ProductItemCustom({
   );
 }
 
-function RenderColorVariants({ colorVariants }: ProductItemProps['colorVariants']) {
+function RenderColorVariants({ colorVariants }: { colorVariants: ProductItemProps['colorVariants'] }) {
   
   //Error '.leight'
   const numberOfVariantColors = colorVariants.length;

@@ -30,6 +30,15 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
         }
       }
     }
+    collections(first: 10) {
+      nodes {
+        metafield(key: "discount_fixed", namespace: "sale") {
+          type
+          value
+        }
+        title
+      }
+    }
   }
 ` as const;
 
@@ -44,6 +53,8 @@ export const COLLECTION_QUERY = `#graphql
     $last: Int
     $startCursor: String
     $endCursor: String
+    $filters: [ProductFilter!]
+
   ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
@@ -54,8 +65,9 @@ export const COLLECTION_QUERY = `#graphql
         first: $first,
         last: $last,
         before: $startCursor,
-        after: $endCursor
-      ) {
+        after: $endCursor,
+        filters: $filters
+      ){
         nodes {
           ...ProductItem
         }
@@ -64,6 +76,42 @@ export const COLLECTION_QUERY = `#graphql
           hasNextPage
           endCursor
           startCursor
+        }
+          
+        filters {
+          id
+          label
+          presentation
+          type
+          values {
+            input
+            label
+            count
+            id
+          }
+        }
+          
+      }
+    }
+  }
+` as const;
+
+export const COLOR_VARIANTS_COLLECTION_QUERY = `#graphql
+  query ColorVariants($ids: [ID!]!) {
+    nodes(ids: $ids) {
+      ... on Product {
+        id
+        options {
+          optionValues {
+            swatch {
+              color
+              image {
+                previewImage {
+                  transformedSrc(crop: CENTER, maxHeight: 60, maxWidth: 60)
+                }
+              }
+            }
+          }
         }
       }
     }
