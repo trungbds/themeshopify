@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "@remix-run/react";
+
 import iconreset from '~/assets/fonts/icons/icon-reset.svg';
 import iconclose from '~/assets/fonts/icons/icon-close.svg';
 import iconcheckbox from '~/assets/fonts/icons/icon-checkbox.svg';
 import iconcheckboxoutline from '~/assets/fonts/icons/icon-checkbox-outline.svg';
 
-
-
-
-
 type FilterProductSideBarProps = {
   isActive?: boolean;
   data?: any;
+  filtersParams?:any
 };
 
-export function FilterProductSideBar({ isActive, data }: FilterProductSideBarProps) {
+export function FilterProductSideBar({ isActive, data, filtersParams }: FilterProductSideBarProps) {
+  
   if (!isActive) return null;
+  const navigate = useNavigate();
 
-  console.log('Data', data);
 
   const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({
     // 'filter.p.vendor': true,
@@ -24,8 +24,9 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
   });
 
   const [stickyTop, setStickyTop] = useState(0);
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-
+  const [selectedFilters, setSelectedFilters] = useState<any[]>(filtersParams);
+  const [selectedInputValues, setSelectedInputValues] = useState<any[]>(filtersParams);
+  
   const toggleSection = (section: string) => {
     setExpandedSections(prevState => ({
       ...prevState,
@@ -66,7 +67,6 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
   useEffect(() => {
     calculateStickyTop();
     window.addEventListener('resize', calculateStickyTop);
-
     return () => {
       window.removeEventListener('resize', calculateStickyTop);
     };
@@ -82,16 +82,108 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
     );
   };
 
-  const handleOptionChange = (optionId: string) => {
-    setSelectedFilters(prevSelected => 
-      prevSelected.includes(optionId) 
-        ? prevSelected.filter(item => item !== optionId) 
-        : [...prevSelected, optionId]
-    );
+  const priceOptions = [
+    { value: {price:{min:0 ,max:50}}, label: 'Under $50' },
+    { value: {price:{min:50 ,max:100}}, label: '$50 - $100' },
+    { value: {price:{min:100 ,max:150}}, label: '$100 - $150' },
+    { value: {price:{min:150 ,max:250}}, label: '$150 - $250' },
+    { value: {price:{min:250 ,max:500}}, label: '$250 - $500' },
+    { value: {price:{max:50}}, label: 'Over $500' },
+  ];
+
+  const handleOptionChange = (optionValue: any, inputValue?: any, reset?:boolean) => {
+    let newSelectedFilters;
+
+    if (reset) {
+      navigate(window.location.pathname); // Điều hướng đến URL hiện tại mà không có query params
+        return;
+    }
+
+    const priceRanges = priceOptions.map(option => option.value);
+    // Xử lý trường hợp chọn mức giá, chỉ giữ lại 1 giá trị duy nhất
+    if (priceRanges.some(priceRange => 
+      JSON.stringify(priceRange) === JSON.stringify(optionValue))) {
+      
+      setSelectedFilters((prevSelected) => {
+        newSelectedFilters = prevSelected.some((item) => JSON.stringify(item) === JSON.stringify(optionValue))
+          ? prevSelected.filter((item) => JSON.stringify(item) !== JSON.stringify(optionValue)) // Nếu đã chọn, bỏ chọn
+          : [optionValue]; // Nếu chưa chọn, thay thế bằng giá trị mới
+
+        return newSelectedFilters;
+      });
+    } else {
+      // Logic mặc định cho các trường hợp khác
+      setSelectedFilters((prevSelected) => {
+        newSelectedFilters = prevSelected.some((val) => JSON.stringify(val) === JSON.stringify(inputValue))
+          ? prevSelected.filter((val) => JSON.stringify(val) !== JSON.stringify(inputValue)) // Bỏ chọn
+          : [...prevSelected, inputValue]; // Thêm giá trị vào mảng nếu chưa tồn tại
+
+        return newSelectedFilters;
+      });
+    }
+
+    // Xử lý inputValues
+    setSelectedInputValues((prevInputValues) => {
+
+      let newInputValues;
+
+      // Xử lý logic chọn/bỏ chọn cho các input values
+      newInputValues = prevInputValues.some((val) => JSON.stringify(val) === JSON.stringify(inputValue))
+        ? prevInputValues.filter((val) => JSON.stringify(val) !== JSON.stringify(inputValue)) // Bỏ chọn
+        : [...prevInputValues, inputValue]; // Thêm giá trị vào mảng nếu chưa tồn tại
+
+      
+  
+      // Nhóm các giá trị theo `variantOption`, `productVendor`, và `price`
+      const groupedInputValues = newInputValues.reduce((acc, curr) => {
+        if (curr.variantOption) {
+          const { name, value } = curr.variantOption;
+          acc['variantOption'] = acc['variantOption'] || [];
+          acc['variantOption'].push({ [name]: value }); // Thay đổi định dạng thành { name: value }
+        } else if (curr.productVendor) {
+          acc['productVendor'] = acc['productVendor'] || [];
+          acc['productVendor'].push(curr.productVendor); // Thêm vào danh sách productVendor
+        } else if (curr.price) {
+          acc['price'] = curr.price; // Chỉ lưu giá trị price duy nhất
+        }
+        return acc;
+      }, {});
+  
+      // Tạo query param từ groupedInputValues
+      const queryParams = Object.entries(groupedInputValues)
+        .map(([key, values]) => {
+          if (key === 'price') {
+            // Encode giá trị price dưới dạng JSON
+            return `${key}=${encodeURIComponent(JSON.stringify(values))}`;
+          } else if (key === 'variantOption') {
+            // Encode `variantOption` với định dạng yêu cầu và mã hóa toàn bộ chuỗi
+            return `${key}=${encodeURIComponent(JSON.stringify(values))}`;
+          } else if (Array.isArray(values)) {
+            // Ép kiểu các giá trị thành chuỗi trước khi mã hóa
+            return `${encodeURIComponent(key)}=${(values as string[]).map(value => encodeURIComponent(value)).join(',')}`;
+          }
+          return `${encodeURIComponent(key)}=${encodeURIComponent(values as string)}`;
+        })
+        .join('&');
+  
+      // Gán URL với các query parameters
+      const urlNewInputValues = `${window.location.pathname}?${queryParams}`;
+      
+      navigate(urlNewInputValues);
+      return newInputValues;
+    });
+
   };
 
+  useEffect(() => {
+    // console.log("Selected Input Values Updated:", selectedInputValues);
+    // console.log("selectedFilters Values Updated:", selectedFilters);
+  }, [selectedInputValues, selectedFilters]);
+  
   const handleReset = () => {
     setSelectedFilters([]);
+    setSelectedInputValues([]);
+    handleOptionChange(undefined, undefined, true); 
   };
 
   return (
@@ -110,14 +202,37 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
           <span className="link-hover">Reset all</span>
         </button>
         <ul className="filter-result">
-          {selectedFilters.map((filter, index) => (
-            <li
-              onClick={() => handleOptionChange(filter)}
-              className="filter-result__item btn" key={index}>
-              {filter}
-              <img src={iconclose} width='16px' height='16px'/>
-            </li>
-          ))}
+          {selectedFilters.map((filter, index) => {
+            let filterLabel = '';
+
+            // Kiểm tra filter là loại giá (price)
+            if (filter.price) {
+              // Tìm trong priceOptions để lấy label tương ứng
+              const priceOption = priceOptions.find(option => 
+                JSON.stringify(option.value.price) === JSON.stringify(filter.price));
+              filterLabel = priceOption ? priceOption.label : '';
+            } 
+            // Kiểm tra filter là loại vendor (productVendor)
+            else if (filter.productVendor) {
+              filterLabel = filter.productVendor;
+            } 
+            // Kiểm tra filter là loại biến thể (variantOption)
+            else if (filter.variantOption) {
+              filterLabel = filter.variantOption.value;
+            }
+
+            return (
+              <li
+                onClick={() => handleOptionChange(filter, filter)} // Pass empty object for now
+                className="filter-result__item btn"
+                key={index}
+              >
+                {filterLabel} {/* Hiển thị nhãn đã xác định */}
+                <img src={iconclose} width='16px' height='16px' alt="Remove filter" />
+              </li>
+            );
+          })}
+
         </ul>
       </div>
 
@@ -152,9 +267,11 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
                     case "filter.v.price":
                       return (
                         <>
+                        
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('Under $50') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('Under $50')}
+                            onClick={() => handleOptionChange('Under $50',{price:{min: 0, max: 50}})}
+                            data-input="{price:{min: 0, max: 50}}"
                           >
                             <img src={selectedFilters.includes('Under $50') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             Under $50
@@ -162,16 +279,17 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
 
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('$50 - $100') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('$50 - $100')}
+                            onClick={() => handleOptionChange('$50 - $100',{price:{min: 50, max: 100}})}
+                            data-input="{price:{min: 50, max: 100}}"
                           >
                             <img src={selectedFilters.includes('$50 - $100') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             $50 - $100
-                          
                           </div>
 
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('$100 - $150') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('$100 - $150')}
+                            onClick={() => handleOptionChange('$100 - $150',{price:{min: 100, max: 150}})}
+                            data-input="{price:{min: 100, max: 150}}"
                           >
                             <img src={selectedFilters.includes('$100 - $150') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             $100 - $150
@@ -179,7 +297,8 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
 
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('$150 - $250') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('$150 - $250')}
+                            onClick={() => handleOptionChange('$150 - $250',{price:{min: 150, max: 250}})}
+                            data-input="{price:{min: 150, max: 250}}"
                           >
                             <img src={selectedFilters.includes('$150 - $250') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             $150 - $250
@@ -188,7 +307,8 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
 
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('$250 - $500') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('$250 - $500')}
+                            onClick={() => handleOptionChange('$250 - $500',{price:{min: 250, max: 500}})}
+                            data-input="{price:{min: 250, max: 500}}"
                           >
                             <img src={selectedFilters.includes('$250 - $500') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             $250 - $500
@@ -196,23 +316,26 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
 
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('Over $500') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('Over $500')}
+                            onClick={() => handleOptionChange('Over $500',{price:{min: 500}})}
+                            data-input="{price:{min: 500}"
                           >
                             <img src={selectedFilters.includes('Over $500') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             Over $500
                           </div>
                         </>
                       );
+
                     {/* Nội dung tùy chỉnh cho "filter.v.availability" */}
                     case "filter.v.availability":
                       return item.values.map((option: any, index: number) => {
+                        // const inputValue = JSON.parse(option.input);
                         const inputValue = JSON.parse(option.input);
                         return (
                           <div 
                             key={index} 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes(option.label) ? "selected" : ""}`}
-                            onClick={() => handleOptionChange(option.label)}
-                            data-input={inputValue}
+                            onClick={() => handleOptionChange(inputValue, inputValue)}
+                            data-input={JSON.stringify(inputValue)}
                           >
                             <div className="min-w-0 flex-1">
                               {option.label}
@@ -224,12 +347,14 @@ export function FilterProductSideBar({ isActive, data }: FilterProductSideBarPro
                     default:
                       return item.values.map((option: any, index: number) => {
                         const inputValue = JSON.parse(option.input);
+                        let check = selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify(inputValue));
+
                         return (
                           <div 
                             key={index} 
-                            className={`items-center option-item cursor-pointer ${selectedFilters.includes(option.label) ? "selected" : ""}`}
-                            onClick={() => handleOptionChange(option.label)}
-                            data-input={inputValue}
+                            className={`items-center option-item cursor-pointer ${check? "selected" : ""}`}
+                            onClick={() => handleOptionChange(inputValue, inputValue)}
+                            data-input={JSON.stringify(inputValue)}
                           >
                             <div className="min-w-0 flex-1">
                               {option.label}

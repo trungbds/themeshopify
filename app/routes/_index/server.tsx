@@ -66,7 +66,7 @@ export const FEATURED_COLLECTION_QUERY = `#graphql
 ` as const;
 
 
-export const RECOMMENDED_PRODUCTS_QUERY = `#graphql
+export const RECOMMENDED_PRODUCTS_HOMEPAGE_QUERY = `#graphql
   fragment RecommendedProduct on Product {
     id
     title

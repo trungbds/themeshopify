@@ -81,7 +81,7 @@ export function ProductImage({
         >
           <Swiper
             modules={[Navigation, PaginationSwiper]}
-            spaceBetween={50}
+            spaceBetween={32}
             slidesPerView={1}
             navigation= {{
               prevEl: '.carousel-btn-prev',

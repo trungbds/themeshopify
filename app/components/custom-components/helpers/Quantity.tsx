@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import iconadd from '~/assets/fonts/icons/icon-add.svg';
 import iconremove from '~/assets/fonts/icons/icon-remove.svg';
+import iconclose from '~/assets/fonts/icons/icon-close.svg';
 
 export default function Quantity({
   quantityAvailable,
@@ -83,9 +84,19 @@ export default function Quantity({
         {error && (
           <div 
             id="helper-text-explanation"
-            className=" text-red-500 dark:text-red-400 btn-tooltip"
+            className=" btn-tooltip"
           >
-            {error}
+            <div className='tooltip-header'>
+              <h5>Note</h5>
+              <button className='btn-icon'>
+                <img src={iconclose} width={20} />
+              </button>
+              
+            </div>
+          
+            <div className="tooltip-inner text-red-500 dark:text-red-400">
+              {error}
+            </div>
             <div className="tooltip-arrow"/>
           </div>
         )}

@@ -18,6 +18,20 @@ import { ProductItemCustom } from '../all/_index/ProductItemCustom';
 import { ProductModal } from '../all/_index/ProductModal';
 import ProductsEmpty from '~/components/empty/ProductsEmpty';
 
+
+interface FilterParam {
+  productVendor?: string;
+  variantOption?: {
+    name: string;
+    value: string;
+  };
+  price?: {
+    min: number;
+    max: number;
+  };
+}
+
+
 // export const meta: MetaFunction<typeof loader> = ({data}) => {
 //   return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
 // };
@@ -66,26 +80,60 @@ async function loadCriticalData({
   request,
   paginationVariables,
 }: LoadCriticalDataArgs) {
-  const {handle} = params;
-  const {storefront} = context;
+  const { handle } = params;
+  const { storefront } = context;
 
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
 
-  // Tạo mảng đối tượng JSON từ tham số 'productVendor' và 'productColor'
-  const filtersParams = [
-    ...searchParams.getAll('productVendor').map(vendor => ({ productVendor: vendor })),
-    // ...searchParams.getAll('productColor').map(color => ({ productColor: color })),
-  ];  
-    // const filterParams: any[] = [];
+  // Tạo mảng đối tượng JSON từ tham số 'productVendor'
+  const filtersParams: FilterParam[] = [];
+
+  // Xử lý productVendor: Tách các giá trị thành mảng
+  const productVendors = searchParams.get('productVendor');
+  if (productVendors) {
+    const vendorList = productVendors.split(','); // Tách các giá trị bằng dấu phẩy
+    vendorList.forEach(vendor => {
+      filtersParams.push({ productVendor: vendor });
+    });
+  }
+
+  // Xử lý variantOption: Lấy từ URL và chuyển thành mảng đối tượng JSON
+  const variantOptionsParam = searchParams.get('variantOption');
+  if (variantOptionsParam) {
+    try {
+      // Giải mã và phân tích JSON từ URL
+      const variantOptions = JSON.parse(decodeURIComponent(variantOptionsParam)) as { [key: string]: any }[];
+
+      // Thêm variantOption vào filtersParams
+      variantOptions.forEach(option => {
+        Object.entries(option).forEach(([name, value]) => {
+          filtersParams.push({ variantOption: { name, value } });
+        });
+      });
+    } catch (error) {
+      console.error('Error parsing variantOption from URL:', error);
+    }
+  }
+
+  // Xử lý giá trị price nếu có
+  const priceParam = searchParams.get('price');
+  if (priceParam) {
+    try {
+      const price = JSON.parse(decodeURIComponent(priceParam)) as { min: number; max: number };
+      filtersParams.push({ price });
+    } catch (error) {
+      console.error('Error parsing price from URL:', error);
+    }
+  }
 
   if (!handle) {
     throw redirect('/c');
   }
-
-  const [{collection}] = await Promise.all([
+  
+  const [{ collection }] = await Promise.all([
     storefront.query(COLLECTION_QUERY, {
-      variables: {handle,filters : filtersParams, ...paginationVariables},
+      variables: { handle, filters: filtersParams, ...paginationVariables },
     }),
   ]);
 
@@ -97,14 +145,9 @@ async function loadCriticalData({
 
   return {
     collection,
+    filtersParams,
   };
 }
-
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
 async function loadDeferredData({ context, productIds }: { context: any; productIds: string[] }) {
   const { storefront } = context;
   const { nodes } = await storefront.query(COLOR_VARIANTS_COLLECTION_QUERY, {
@@ -128,9 +171,8 @@ async function loadDeferredData({ context, productIds }: { context: any; product
 }
 
 export default function Collection() {
-
-
-  const {collection, colorVariantsByProductId } = useLoaderData<typeof loader>();
+  const {collection, colorVariantsByProductId, filtersParams} = useLoaderData<typeof loader>();
+  
   const {products} = collection;
 
   const [isModalOpen, setModalOpen] = useState(false); // Quản lý trạng thái modal
@@ -139,8 +181,6 @@ export default function Collection() {
   const handleAddToCart = (handle : string) => {
     fetcher.load(`/c/all/${handle}/quickview`);
   };
-
-  // console.log('testFilter', testFilter)
 
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data) {
@@ -153,15 +193,16 @@ export default function Collection() {
     setModalOpen(false); 
   };
 
-  const fiilterColectionData = collection.products.filters; 
-
-  console.log('products' ,products )
-
+  //fiilterColectionData
+  const fiilterColectionData :any[] =collection.products.filters ; 
 
   if (!products.nodes || products.nodes.length === 0) {
     return <ProductsEmpty title ={collection.title} />
   }
-  
+
+  // useEffect(() =>{
+  //   console.log('change');
+  // },[fiilterColectionData]);
 
   return (
     <>
@@ -184,6 +225,7 @@ export default function Collection() {
             <FilterProductSideBar
               isActive={true}
               data = {fiilterColectionData}
+              filtersParams = {filtersParams}
             />
             
             <div className="collection-result">
@@ -219,7 +261,12 @@ export default function Collection() {
             </div>
             {/* product modal  -- click "Add to cart()"*/}
             {isModalOpen && (
-              <Suspense fallback={<div>Loading product...</div>}>
+              <Suspense fallback={
+                <div className="modal product-modal loading">
+                  <div className="modal-overlay" />
+                  <div>Loading product item...</div>
+                </div>
+              }>
                 <Await
                   resolve={fetcher.data}
                   errorElement="There was a problem loading product"  

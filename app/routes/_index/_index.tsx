@@ -10,7 +10,7 @@ import RecommendedProducts from '~/components/custom-components/RecommendedProdu
 
 import {
   FEATURED_COLLECTION_QUERY,
-  RECOMMENDED_PRODUCTS_QUERY,
+  RECOMMENDED_PRODUCTS_HOMEPAGE_QUERY,
   HOMEPAGE_COLLECTIONS_RENDER,
   HOMEPAGE_BESTSELLER_LIST,
   TODAY_INTERSTING_ITEM, 
@@ -70,7 +70,7 @@ async function loadCriticalData({context}: LoaderFunctionArgs) {
  */
 function loadDeferredData({context}: LoaderFunctionArgs) {
   const recommendedProducts = context.storefront
-    .query(RECOMMENDED_PRODUCTS_QUERY)
+    .query(RECOMMENDED_PRODUCTS_HOMEPAGE_QUERY)
     .catch((error) => {
       // Log query errors, but don't throw them so the page can still render
       console.error(error);
@@ -81,29 +81,6 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
     recommendedProducts,
   };
 }
-
-function FeaturedCollection({
-  collection,
-}: {
-  collection: FeaturedCollectionFragment;
-}) {
-  if (!collection) return null;
-  const image = collection?.image;
-  return (
-    <Link
-      className="featured-collection"
-      to={`/c/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
-  );
-}
-
 
 function groupCollectionsByTypeWithNulls(data: { [key: string]: any }) {
   const grouped: { [key: string]: any[] } = {};
@@ -174,13 +151,6 @@ export default function Homepage() {
       <NewRelease 
         products={NewReleaseData}
       />
-      
-
-
-      
-      {/* <RecommendedProducts products={data.recommendedProducts} /> */}
-
-      
     </div>
   );
 }

@@ -1,11 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProductPrice } from '~/components/ProductPrice';
-import { Image } from '@shopify/hydrogen';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Image, Money } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { ProductModalVariantOptions } from './ProductModalVariantOptions';
 import { Link } from '@remix-run/react';
+import type {MoneyV2} from '@shopify/hydrogen/storefront-api-types';
+
+import iconclosewhite from '~/assets/fonts/icons/icon-close-white.svg';
+
+// Swiper
+import { Navigation,  Pagination as PaginationSwiper  } from 'swiper/modules';
+import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+
+import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
+import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
+import iconwishlist from '~/assets/fonts/icons/icon-wishlist.svg';
+import iconwishlistactived from '~/assets/fonts/icons/icon-wishlist__active.svg';
+import { ProductPriceV3 } from './ProductPriceV3';
 
 // type Loading = 'loading' | 'idle' | 'submitting';
 
@@ -17,17 +29,20 @@ interface ModalProps {
 
 export function ProductModal({ onClose, product, loading }: ModalProps) {
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
+   // Hàm xử lý việc chọn biến thể
+  const handleVariantSelected = (variant: any | null) => {
+    setSelectedVariant(variant);
+  };
 
   if (loading) {
     return (
       <div className="modal">
         <div className="modal-overlay" />
-        <div>Loading...</div>
+        <div>Loading product...</div>
         <button onClick={onClose}>Close</button>
       </div>
     );
   }
-
   const productItem = product.product;
 
   // image
@@ -37,22 +52,66 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
   // product form
   const { open } = useAside();
 
-  // Hàm xử lý việc chọn biến thể
-  const handleVariantSelected = (variant: any | null) => {
-    setSelectedVariant(variant);
-  };
+   //  iconwishlist
+   const [iconWishlist, setIconWishlist] = useState(iconwishlist);
+   const handleWistlistClick = () => {
+     setIconWishlist(prevIcon =>
+       prevIcon === iconwishlist ? iconwishlistactived : iconwishlist
+     );
+   };
+
+  // Discount
+  const DiscountsMetafield = productItem.collections?.nodes;
+  let DiscountMetafieldSelected: any | null = null;
+
+  if (DiscountsMetafield && DiscountsMetafield.length > 0) {
+    const filteredMetafields = DiscountsMetafield.filter(
+      (collection : any) => collection.metafield !== null
+    );
+
+    if (filteredMetafields.length > 0) {
+      DiscountMetafieldSelected = filteredMetafields.reduce(
+        (max : any, collection: any) => {
+          return parseInt(collection.metafield!.value) >
+            parseInt(max.metafield!.value)
+            ? collection
+            : max;
+        }
+      );
+    }
+  }
+
+  // Add to cart price
+
+  
 
   return (
     <div className="modal product-modal">
       <div className="modal-overlay" onClick={onClose} />
       <div className="modal-content">
-        <button className='btn btn-close' onClick={onClose}>
-          Close
+        <button className='btn btn-close link-primary' onClick={onClose}>
+          <img src={iconclosewhite} alt="close" />
+          <span className='link-hover'>Close</span>
         </button>
 
         <div className="product-modal__detail">
           {/* Hiển thị hình ảnh sản phẩm */}
-          <Swiper className='product-image flex-auto' spaceBetween={50} slidesPerView={1}>
+          <div className="carousel">
+          <Swiper className='product-image flex-auto' 
+            modules={[Navigation, PaginationSwiper]}
+            spaceBetween={50} 
+            slidesPerView={1}
+            navigation= {{
+              prevEl: '.carousel-btn-prev',
+              nextEl: '.carousel-btn-next',
+              
+            }}
+            pagination={{ 
+              el: '.images-pagination',
+              type: 'fraction' 
+            }}
+
+          >
             {imageList.map((img: any) => (
               <SwiperSlide key={img.id}>
                 <a data-src={img.url}>
@@ -66,17 +125,44 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
                 </a>
               </SwiperSlide>
             ))}
+            <div className="carousel-btn-prev">
+              <img src={iconchevronleft} alt="" width='24px' height='auto' />
+            </div>
+            <div className="carousel-btn-next">
+              <img src={iconchevronright} alt=""  width='24px' height='auto'/>
+            </div>
+            <div className="images-pagination"></div>
           </Swiper>
 
+          </div>
           <div className="content">
-            <h2>{productItem.title}</h2>
-            <ProductPrice
+      
+            <div className="product-header">
+              <div className='product-title'>
+                <div className='brand'> Brand: <strong>{productItem.vendor}</strong>  </div>
+                <h2>{productItem.title}</h2>
+              </div>
+              <button className='btn-wishlist' onClick={handleWistlistClick}>
+                <img src={iconWishlist}  width={'20px'} />
+              </button>
+            </div>
+
+            <ProductPriceV3 
+              discountSelected={DiscountMetafieldSelected}
+              priceRange={productItem.priceRange}
+              priceShow={selectedVariant?.price}
+            />
+
+            {/* <ProductPrice
               price={selectedVariant?.price}
               compareAtPrice={selectedVariant?.compareAtPrice}
-            />
+            /> */}
+
+
             <div className="product-form">
               {/* Gọi component ProductModalVariantOptions và truyền hàm handleVariantSelected */}
               <ProductModalVariantOptions
+                handle ={productItem.handle}
                 options={productItem.options}
                 variants={productItem.variants.nodes}
                 onVariantSelected={handleVariantSelected}
@@ -101,11 +187,10 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
                   {selectedVariant?.availableForSale ? (
                     <>
                       Add to cart
-                      <ProductPrice
-                        price={selectedVariant?.price}
-                        // compareAtPrice={selectedVariant?.compareAtPrice}
+                      <AddToCartPrice 
+                        price = {selectedVariant?.price}
+                        discountSelected = {DiscountMetafieldSelected}
                       />
-                      
                     </>
                   ) : (
                     <>
@@ -117,7 +202,7 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
               </AddToCartButton>
               <Link
                 to={`/p/${productItem.handle}`}
-                className="link-underline text-center"
+                className="btn link-underline text-center product-link"
               >
                 <span className='link-hover'>
                   View product details
@@ -130,3 +215,36 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
     </div>
   );
 }
+
+
+
+function AddToCartPrice ({
+  price, 
+  discountSelected
+}:{
+  price?: MoneyV2;
+  discountSelected?: any | null;
+}) {
+  let discountedPriceShow: string | null = null;
+  if (discountSelected) {
+    const discountPercentage = parseFloat(discountSelected.metafield.value) / 100;
+
+    discountedPriceShow = price
+      ? (parseFloat(price.amount) * (1 - discountPercentage)).toFixed(2)
+      : null;
+  }
+  return (
+    <div className="product-price">
+      <div className="after-discount">
+        {discountedPriceShow && price ? (
+          <Money data={{ amount: discountedPriceShow, currencyCode: price.currencyCode }} />
+        ) : price ? (
+          <Money data={price} />
+        ) : (
+          <div>No price available</div> 
+        )}
+      </div>
+    </div>
+  );
+}
+

@@ -15,6 +15,8 @@ import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
 import { Image } from '@shopify/hydrogen';
 import Quantity from './custom-components/helpers/Quantity';
+import iconcheckcircle from '~/assets/fonts/icons/icon-check-circle.svg';
+
 
 // Cập nhật ProductFormCustom để truyền options vào ProductVariantOptions
 export function ProductFormCustom({
@@ -29,15 +31,14 @@ export function ProductFormCustom({
   const { open } = useAside();
 
   // Tạo mảng options với isVariantColor
-
   const options = product.options.map(option => {
     const hasColor = option.optionValues.some(value => value.swatch && value.swatch.color);
-
     return {
       name: option.name,
       values: option.values,
       isVariantColor: hasColor
     };
+
   });
 
   return (
@@ -53,10 +54,23 @@ export function ProductFormCustom({
           return <ProductVariantOptions key={option.name} option={option} isVariantColor={isVariantColor} />;
         }}
       </VariantSelector>
+      <div className='purchase-method'>
+        <div className="purchase-method__detail">
+          <h3 className='title'>
+            Delivery: <span>Ship Economy</span> 
+          </h3>
+          <p className='description'>
+            5 to 8 business days, shipping cost calculated at checkout
+          </p>
+        </div>
+        <img src={iconcheckcircle} className="icon-check"/>
+      </div>
       
       <Quantity 
         quantityAvailable={selectedVariant?.quantityAvailable ?? 0}
       />
+
+      
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
@@ -67,7 +81,7 @@ export function ProductFormCustom({
             ? [
                 {
                   merchandiseId: selectedVariant.id,
-                  quantity: 1,
+                  quantity: selectedVariant?.quantityAvailable ?? 1,
                   selectedVariant,
                 },
               ]
@@ -102,7 +116,6 @@ function ProductVariantOptions({
       <div className="product-options-grid">
         {option.values.map(({ value, isAvailable, isActive, to, variant }) => {
           const image = variant?.image;
-
           const linkClassName = [
             'product-options-item',
             isActive ? 'active' : '',
@@ -117,7 +130,7 @@ function ProductVariantOptions({
               preventScrollReset
               to={to}
               style={{
-                border: isActive ? '1px solid #000' : '1px solid transparent',
+                border: isActive ? '1px solid #000' : '',
                 opacity: isAvailable ? 1 : 0.3,
               }}
               onClick={() => {
@@ -140,7 +153,6 @@ function ProductVariantOptions({
           );
         })}
       </div>
-      <br />
     </div>
   );
 }

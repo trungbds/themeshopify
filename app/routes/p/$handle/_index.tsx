@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Suspense} from 'react';
 import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, type MetaFunction} from '@remix-run/react';
@@ -8,26 +8,39 @@ import {
   Analytics,
   useOptimisticVariant,
 } from '@shopify/hydrogen';
+
 import type {SelectedOption} from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/lib/variants';
-import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductFormCustom} from '~/components/ProductFormCustom';
 
-import { PRODUCT_QUERY, VARIANTS_QUERY } from './server';
+import { PRODUCT_QUERY, RECOMMENDED_PRODUCTS_QUERY, VARIANTS_QUERY } from './server';
 
 import iconwishlist from '~/assets/fonts/icons/icon-wishlist.svg';
 import iconwishlistactived from '~/assets/fonts/icons/icon-wishlist__active.svg';
+import icondropdown from '~/assets/fonts/icons/icon-dropdown.svg';
+
 import { RatingCount } from './RatingCount';
 
-//custom components
 import {ProductPriceV2} from '~/components/custom-components/ProductPriceV2'; 
+import RecommendedProducts from '~/components/custom-components/RecommendedProducts';
+import RecentlyViewedProducts from './RecentlyViewedProducts';
+import type {
+  ProductRecentlyViewedFragment
+} from 'storefrontapi.generated';
 
+
+type ViewedProduct = {
+  id: string;
+  title: string;
+  handle: string;
+};
 
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
 };
+
 
 export async function loader(args: LoaderFunctionArgs) {
   // Start fetching non-critical data without blocking time to first byte
@@ -103,13 +116,20 @@ function loadDeferredData({context, params}: LoaderFunctionArgs) {
       variables: {handle: params.handle!},
     })
     .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
+      console.error(error);
+      return null;
+    });
+
+    const recommendedproducts = context.storefront
+    .query(RECOMMENDED_PRODUCTS_QUERY)
+    .catch((error) => {
       console.error(error);
       return null;
     });
 
   return {
     variants,
+    recommendedproducts
   };
 }
 
@@ -139,7 +159,8 @@ function redirectToFirstVariant({
 
 
 export default function Product() {
-  const {product, variants} = useLoaderData<typeof loader>();
+  const {product, variants, recommendedproducts} = useLoaderData<typeof loader>();
+  
   const selectedVariant = useOptimisticVariant(
     product.selectedVariant,
     variants,
@@ -177,6 +198,44 @@ export default function Product() {
     );
   };
 
+  const [viewedProducts, setViewedProducts] = useState<ProductRecentlyViewedFragment[]>([]);
+ 
+  // viewed product
+  useEffect(() => {
+    // Lấy danh sách sản phẩm đã xem từ localStorage
+    const storedProducts: ProductRecentlyViewedFragment[] = JSON.parse(localStorage.getItem('viewedProducts') || '[]') as ProductRecentlyViewedFragment[];
+
+    // Tạo một danh sách mới bằng cách lọc các sản phẩm đã xem để xóa sản phẩm hiện tại (nếu có)
+    const updatedViewedProducts = storedProducts.filter(item => item.id !== product.id);
+
+    // Thêm sản phẩm mới vào đầu danh sách
+    updatedViewedProducts.unshift({
+      id: product.id,
+      title: product.title,
+      handle: product.handle,
+      image: product.images?.edges[0]?.node || null,
+      price: product.priceRange?.minVariantPrice
+        ? {
+            amount: product.priceRange.minVariantPrice.amount,
+            currencyCode: product.priceRange.minVariantPrice.currencyCode,
+          }
+        : { amount: "0", currencyCode: "USD" },
+      collections: product.collections || [],
+    });
+
+    // Giới hạn số lượng sản phẩm đã xem
+    const limitedViewedProducts = updatedViewedProducts.slice(0, 20); // Giữ lại tối đa 20 sản phẩm
+
+    // Lưu danh sách đã cập nhật vào localStorage
+    localStorage.setItem('viewedProducts', JSON.stringify(limitedViewedProducts));
+    setViewedProducts(limitedViewedProducts); // Cập nhật state
+  }, [product]);
+
+  // Lấy lại danh sách sản phẩm đã xem từ localStorage khi component mount
+  useEffect(() => {
+    const storedProducts: ProductRecentlyViewedFragment[] = JSON.parse(localStorage.getItem('viewedProducts') || '[]') as ProductRecentlyViewedFragment[];
+    setViewedProducts(storedProducts);
+  }, []);
 
   return (
     <div className="product">
@@ -193,9 +252,19 @@ export default function Product() {
                 />
               )}
               <div className='product-description'>
-                <h2> Description</h2>
-                <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+                <div className='product-description__header'>
+                  <h3 className='title btn btn-title'> Description</h3>
+                  <button className='btn icon btn-icon'>
+                    <img src={icondropdown} alt="Description"/>
+                  </button>
+                </div>
+                <div className='product-description__content'
+                  dangerouslySetInnerHTML={{__html: descriptionHtml}} 
+                />
+
               </div>
+
+
             </div>
             <div className="product-main">
               <div className="product-header">
@@ -209,8 +278,6 @@ export default function Product() {
                 </button>
               </div>
 
-              
-
               <ProductPriceV2
                 discountSelected={DiscountMetafieldSelected}
                 // priceRange={product.priceRange}
@@ -218,7 +285,6 @@ export default function Product() {
                 compareAtPrice={selectedVariant?.compareAtPrice}
               />
 
-              <br />
               <Suspense
                 fallback={
                   <ProductFormCustom
@@ -243,13 +309,34 @@ export default function Product() {
                   }}
                 </Await>
               </Suspense>
+              
             </div>
           </div>
         </div>
       </section>
-      
-      
 
+      <section className='recommended-products'>
+        <div className="container">
+          <Suspense fallback={<div>Loading...</div>}>
+            <Await
+              errorElement="There was a problem loading recommended products"
+              resolve={recommendedproducts}
+            >
+              {(resolvedProducts) => (
+                <RecommendedProducts products={resolvedProducts} />
+              )}
+            </Await>
+          </Suspense>
+          
+        </div>
+      </section>
+
+      <section>
+        <div className="container">
+          <RecentlyViewedProducts viewedProducts={viewedProducts.filter(item => item.id !== product.id)} />
+        </div>
+      </section>
+      
       {/* Analytics */}
       <Analytics.ProductView
         data={{
@@ -266,8 +353,6 @@ export default function Product() {
           ],
         }}
       />
-
-
     </div>
   );
 }

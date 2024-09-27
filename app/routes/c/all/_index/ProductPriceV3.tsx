@@ -4,26 +4,35 @@ import icondiscount from '~/assets/fonts/icons/icon-discount.svg';
 
 export function ProductPriceV3({
   discountSelected,
-  priceRange
+  priceRange,
+  priceShow
 }: {
   discountSelected?: any | null;
   priceRange?: {
     minVariantPrice: MoneyV2;
     maxVariantPrice: MoneyV2;
   } | null;
+  priceShow?: MoneyV2
 }) {
   if (!priceRange) return null;
+
+  
 
   const { minVariantPrice, maxVariantPrice } = priceRange;
   const isSamePrice = minVariantPrice.amount === maxVariantPrice.amount;
 
   let discountedMinPrice: string | null = null;
   let discountedMaxPrice: string | null = null;
+  let discountedPriceShow: string | null = null;
   let title = '';
 
   if (discountSelected) {
     const discountPercentage = parseFloat(discountSelected.metafield.value) / 100;
     discountedMinPrice = (parseFloat(minVariantPrice.amount) * (1 - discountPercentage)).toFixed(2);
+
+    discountedPriceShow = priceShow
+      ? (parseFloat(priceShow.amount) * (1 - discountPercentage)).toFixed(2)
+      : null;
     
     if (!isSamePrice) {
       discountedMaxPrice = (parseFloat(maxVariantPrice.amount) * (1 - discountPercentage)).toFixed(2);
@@ -44,51 +53,69 @@ export function ProductPriceV3({
 
       <div className="price-detail">
         {/* Nếu có chiết khấu, hiển thị giá cũ với gạch ngang */}
-        {discountSelected && (
-          <div>
-            <div className="before-discount">
-              <s>
-                <div>
-                  <Money data={minVariantPrice} />
+
+        {priceShow ? (
+          <>
+            {discountSelected ? (
+              <>
+                <s className="before-discount">
+                  <Money data={priceShow} />
+                </s>
+                <div className="after-discount">
+                  {discountedPriceShow && (
+                    <Money data={{ amount: discountedPriceShow, currencyCode: priceShow.currencyCode }} />
+                  )}
                 </div>
-              </s>
-              {!isSamePrice && (
-                <>
-                  {' - '}
-                  <s>
-                    <div>
+              </>
+            ) : (
+              <div className="after-discount">
+                <Money data={priceShow} />
+              </div>
+            )}
+          </>
+        ) : (
+          
+          <>
+            {discountSelected && (
+              <div className="before-discount">
+                <s>
+                    <Money data={minVariantPrice} />
+                </s>
+                {!isSamePrice && (
+                  <>
+                    {' - '}
+                    <s>
                       <Money data={maxVariantPrice} />
-                    </div>
-                  </s>
-                </>
-              )}
-            </div>
-          </div>
+                    </s>
+                  </>
+                )}
+              </div>
+            )}
+
+            {/* Hiển thị giá mới (sau khi chiết khấu) hoặc giá thông thường nếu không có chiết khấu */}
+            {discountedMinPrice ? (
+              <div className="after-discount">
+                <Money data={{ amount: discountedMinPrice, currencyCode: minVariantPrice.currencyCode }} />
+                {!isSamePrice && discountedMaxPrice && (
+                  <>
+                    {' - '}
+                    <Money data={{ amount: discountedMaxPrice, currencyCode: maxVariantPrice.currencyCode }} />
+                  </>
+                )}
+              </div>
+            ) : (
+              <div className="after-discount">
+                <Money data={minVariantPrice} />
+                {!isSamePrice && (
+                  <>
+                    {' - '}
+                    <Money data={maxVariantPrice} />
+                  </>
+                )}
+              </div>
+            )}
+          </>
         )}
-
-        {/* Hiển thị giá mới (sau khi chiết khấu) hoặc giá thông thường nếu không có chiết khấu */}
-          {discountedMinPrice ? (
-            <div className='after-discount'>
-              <Money data={{ amount: discountedMinPrice, currencyCode: minVariantPrice.currencyCode }} />
-              {!isSamePrice && discountedMaxPrice && (
-                <>
-                  {' - '}
-                  <Money data={{ amount: discountedMaxPrice, currencyCode: maxVariantPrice.currencyCode }} />
-                </>
-              )}
-            </div>
-          ) : (
-            <div className='after-discount'>
-              <Money data={minVariantPrice} />
-              {!isSamePrice && (
-                <>
-                  {' - '}
-                  <Money data={maxVariantPrice} />
-                </>
-              )}
-            </div>
-          )}
-
       </div>
     </div>
   );

@@ -47,7 +47,7 @@ async function loadCriticalData({
 }
 
 // product modal
-export const PRODUCT_MODAL_VARIANT_FRAGMENT = `#graphql
+const PRODUCT_MODAL_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariant on ProductVariant {
     availableForSale
     compareAtPrice {
@@ -84,8 +84,14 @@ export const PRODUCT_MODAL_VARIANT_FRAGMENT = `#graphql
 ` as const;
 
 export const PRODUCT_MODAL_FRAGMENT = `#graphql
+  fragment MoneyProductModalItem on MoneyV2 {
+    amount
+    currencyCode
+  }
+
   fragment Product on Product {
     id
+    handle
     title
     images(first: 20) {
       edges {
@@ -97,15 +103,34 @@ export const PRODUCT_MODAL_FRAGMENT = `#graphql
       }
     }
     vendor
-    handle
     options {
       name
       values
+      optionValues {
+        name
+        swatch {
+          color
+        }
+      }
     }
-
-    selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {
-      ...ProductVariant
+    priceRange {
+      minVariantPrice {
+        ...MoneyProductModalItem
+      }
+      maxVariantPrice {
+        ...MoneyProductModalItem
+      }
     }
+    collections(first: 20) {
+      nodes {
+        metafield(key: "discount_fixed", namespace: "sale") {
+          type
+          value
+        }
+        title
+      }
+    }
+      
     variants(first: 250) {
       nodes {
         ...ProductVariant
@@ -122,7 +147,6 @@ export const PRODUCT_MODAL_QUERY = `#graphql
     $country: CountryCode
     $handle: String!
     $language: LanguageCode
-    $selectedOptions: [SelectedOptionInput!]!
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...Product

@@ -147,3 +147,47 @@ export const VARIANTS_QUERY = `#graphql
     }
   }
 ` as const;
+
+export const RECOMMENDED_PRODUCTS_QUERY = `#graphql
+  fragment RecommendedProduct on Product {
+    id
+    title
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    images(first: 1) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
+    collections(first: 20) {
+      nodes {
+        id
+        title
+        handle
+        metafield(key: "discount_fixed", namespace: "sale") {
+          type
+          value
+        }
+      }
+    }
+  }
+    
+  query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 16, sortKey: UPDATED_AT, reverse: true) {
+      nodes {
+        ...RecommendedProduct
+      }
+    }
+  }
+` as const;
+

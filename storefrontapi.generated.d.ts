@@ -380,10 +380,42 @@ export type RecommendedProductsQuery = {
             >
           >;
         };
+
+        collections: {
+          nodes: Array<
+            Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'> & {
+              metafield?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+              >;
+            }
+          >;
+        };
+
       }
     >;
   };
 };
+
+export type RecommendedProductItemQuery = Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+    priceRange: {
+      minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+    };
+    images: {
+      nodes: Array<
+        Pick<StorefrontAPI.Image, 'id' | 'url' | 'altText' | 'width' | 'height'>
+      >;
+    };
+    collections: {
+      nodes: Array<
+        Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'> & {
+          metafield?: StorefrontAPI.Maybe<
+            Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+          >;
+        }
+      >;
+    };
+  };
+
 
 export type ArticleQueryVariables = StorefrontAPI.Exact<{
   articleHandle: StorefrontAPI.Scalars['String']['input'];
@@ -914,6 +946,31 @@ export type ProductQuickViewFragment = Pick<
         >;
         unitPrice?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+        >;
+      }
+    >;
+  };
+};
+
+export type ProductRecentlyViewedFragment = Pick<
+  StorefrontAPI.Product,
+  'id' | 'title' | 'handle' 
+> & {
+  vendor?: string;
+  image?: StorefrontAPI.Maybe<
+    {__typename: 'Image'} & Pick<
+      StorefrontAPI.Image,
+      'id' | 'url' | 'altText' | 'width' | 'height'
+    >
+  >;
+
+  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+
+  collections?: {
+    nodes: Array<
+      Pick<StorefrontAPI.Collection, 'id' | 'title' | 'handle'> & {
+        metafield?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
         >;
       }
     >;
