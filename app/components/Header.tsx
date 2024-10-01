@@ -8,7 +8,7 @@ import {useAside} from '~/components/Aside';
 // custom
 import { SearchHeader } from './custom-components/SearchHeader';
 import { CategoriesMegaMenu } from './custom-components/CategoriesMegaMenu';
-import iconcart from '~/assets/fonts/icons/icon-bag.svg';
+import iconmenu from '~/assets/fonts/icons/icon-menu.svg';
 import HeaderSignIn  from './custom-components/HeaderSignIn';
 import HeaderAccount  from './custom-components/HeaderAccount';
 import HeaderSupportBtn from './custom-components/HeaderSupportBtn';
@@ -57,8 +57,8 @@ export function Header({
     // HEADER
     <header className="header">
 
-      <div className="header-container grid grid-cols-12 gap-4">
-        <div className="col-span-3 flex items-center">
+      <div className="header-container grid md:grid-cols-12 grid-cols-4 gap-4">
+        <div className="col-span-1 md:col-span-3 flex items-center">
           <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
             <img src={logoUrl} alt={shop.name} />
           </NavLink>
@@ -67,17 +67,19 @@ export function Header({
             viewport="desktop"
             primaryDomainUrl={header.shop.primaryDomain.url}
             publicStoreDomain={publicStoreDomain}
+            openOverlayClick={openOverlayClick}
+            closeOverlayClick={closeOverlayClick}
           />
         </div>
 
-        <div className="col-span-6 flex items-center justify-center">
+        <div className="col-span-2 md:col-span-6 flex items-center justify-center">
           <SearchHeader 
             openOverlayClick={openOverlayClick}
             closeOverlayClick={closeOverlayClick}
           />
         </div>
 
-        <div className="col-span-3 flex items-center ">
+        <div className="col-span-1 md:col-span-3  flex items-center ">
           <HeaderCtas 
             isLoggedIn={isLoggedIn} 
             cart={cart} 
@@ -190,7 +192,7 @@ function HeaderMenuMobileToggle() {
       className="header-menu-mobile-toggle reset"
       onClick={() => open('mobile')}
     >
-      <h3>MENU MOBIE ICON</h3>
+      <img src={iconmenu} alt="" />
     </button>
   );
 }

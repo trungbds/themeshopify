@@ -111,7 +111,7 @@ export default function Collection() {
               <div className='collection-title'>
                 <h1>All Products</h1>
               </div>
-              <CategoryClass />
+              {/* <CategoryClass /> */}
             </div>
           </div>
         </section>
@@ -120,7 +120,7 @@ export default function Collection() {
             <div className="collection">
 
               {/* Filter Sidebar */}
-              <FilterProductSideBar />
+              {/* <FilterProductSideBar /> */}
 
               <div className="collection-result">
                 {/* sortby */}

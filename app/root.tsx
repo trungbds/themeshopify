@@ -21,6 +21,7 @@ import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import RouteError from './components/empty/RouteError';
 
 export type RootLoader = typeof loader;
 
@@ -194,14 +195,9 @@ export function ErrorBoundary() {
   }
 
   return (
-    <div className="route-error">
-      <h1>Oops</h1>
-      <h2>{errorStatus}</h2>
-      {errorMessage && (
-        <fieldset>
-          <pre>{errorMessage}</pre>
-        </fieldset>
-      )}
-    </div>
+    <RouteError 
+      errorStatus = {errorStatus}
+      errorMessage = {errorMessage}
+    />
   );
 }

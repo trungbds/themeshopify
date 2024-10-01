@@ -87,6 +87,7 @@ const PRODUCT_FRAGMENT = `#graphql
           type
           value
         }
+        handle
         title
       }
     }

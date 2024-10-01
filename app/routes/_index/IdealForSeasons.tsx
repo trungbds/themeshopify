@@ -70,8 +70,16 @@ export default function IdealForSeasons({ collections }: { collections: any }) {
                             <div className="carousel-btn-next ideal-seasons__btn-next">
                             <img src={iconchevronright} alt="carousel navigation"  width='24px' height='auto'/>
                         </div>
-
-                        <button className='btn'> shop now </button>
+                        <div className='text-center'>
+                            <Link 
+                                to="/c/all" 
+                                prefetch="intent"
+                                className="btn btn-primary link-primary text-center"
+                            >
+                                <span className='link-hover'>shop now</span>
+                            </Link>
+                        </div>
+                        
 
                     </Swiper>
                 </div>

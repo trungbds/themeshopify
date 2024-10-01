@@ -1,23 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import iconswap from '~/assets/fonts/icons/icon-swap.svg';
 import icondropdown from '~/assets/fonts/icons/icon-dropdown.svg';
+import { Link, useSearchParams } from '@remix-run/react';
 
 interface BoxSortProps {
   selectedSort?: string;
   countProducts?: number;
 }
 
+const sortKeyLabels: { [key: string]: string } = {
+  MANUAL: 'Most Popular',
+  TITLE: 'Featured',
+  BEST_SELLING: 'Best Selling',
+  CREATED_AT: 'Newest',
+  PRICE_ASC: 'Price: Low to High', // Đặt tên cho tùy chọn này
+  PRICE_DESC: 'Price: High to Low', // Đặt tên cho tùy chọn này
+};
+
 export function BoxSort({ selectedSort = "Featured", countProducts }: BoxSortProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentSort, setCurrentSort] = useState(selectedSort); // Quản lý trạng thái selectedSort
+  const [searchParams] = useSearchParams();
+  const [currentSortKey, setCurrentSortKey] = useState<string>(searchParams.get("sortKey") || 'TITLE');
+  const [currentReverse, setCurrentReverse] = useState<boolean>(searchParams.get("reverse") === 'true');
+
+  useEffect(() => {
+    const newSortKey = searchParams.get("sortKey") || 'TITLE';
+    const newReverse = searchParams.get("reverse") === 'true';
+    setCurrentSortKey(newSortKey);
+    setCurrentReverse(newReverse);
+  }, [searchParams]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleSortSelection = (sortOption: string) => {
-    setCurrentSort(sortOption); // Cập nhật giá trị của selectedSort
-    setIsOpen(false); // Đóng menu sau khi chọn
+  const createUrl = (newSortKey: string, newReverse: boolean = false) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("sortKey");
+    params.delete("reverse");
+    if (newSortKey === 'PRICE') {
+      params.set("sortKey", "PRICE");
+      params.set("reverse", newReverse.toString());
+    } else {
+      params.set("sortKey", newSortKey);
+    }
+    return `?${params.toString()}`;
+  };
+
+  const handleLinkClick = () => {
+    setIsOpen(false);
   };
 
   return (
@@ -32,7 +63,7 @@ export function BoxSort({ selectedSort = "Featured", countProducts }: BoxSortPro
           onClick={toggleMenu}
         >
           <img src={iconswap} alt="Sort Icon" />
-          Sort: <span> <strong>{currentSort}</strong> </span> {/* Hiển thị giá trị selectedSort hiện tại */}
+          Sort: <span><strong>{sortKeyLabels[currentSortKey] || sortKeyLabels['PRICE_ASC']}</strong></span>
           <img src={icondropdown} alt="Dropdown Icon" />
         </button>
         {isOpen && (
@@ -44,60 +75,66 @@ export function BoxSort({ selectedSort = "Featured", countProducts }: BoxSortPro
             tabIndex={-1}
           >
             <div className="py-1" role="none">
-              <a
-                href="#"
+              <Link
                 className="block px-4 py-2 text-gray-900"
+                to={createUrl("MANUAL", false)}
+                onClick={handleLinkClick}
                 role="menuitem"
+                prefetch="intent"
                 tabIndex={-1}
-                onClick={() => handleSortSelection("Most Popular")}
               >
                 Most Popular
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
                 className="block px-4 py-2 text-gray-900"
+                to={createUrl("TITLE", false)}
+                onClick={handleLinkClick}
                 role="menuitem"
+                prefetch="intent"
                 tabIndex={-1}
-                onClick={() => handleSortSelection("Featured")}
               >
                 Featured
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-gray-500"
+              </Link>
+              <Link
+                className="block px-4 py-2 text-gray-900"
+                to={createUrl("BEST_SELLING", false)}
+                onClick={handleLinkClick}
                 role="menuitem"
+                prefetch="intent"
                 tabIndex={-1}
-                onClick={() => handleSortSelection("Best Rating")}
               >
-                Best Rating
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-gray-500"
+                Best Selling
+              </Link>
+              <Link
+                className="block px-4 py-2 text-gray-900"
+                to={createUrl("CREATED_AT", false)}
+                onClick={handleLinkClick}
                 role="menuitem"
+                prefetch="intent"
                 tabIndex={-1}
-                onClick={() => handleSortSelection("Newest")}
               >
                 Newest
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-gray-500"
+              </Link>
+              <Link
+                className="block px-4 py-2 text-gray-900"
+                to={createUrl("PRICE", false)}
+                onClick={handleLinkClick}
                 role="menuitem"
+                prefetch="intent"
                 tabIndex={-1}
-                onClick={() => handleSortSelection("Price: Low to High")}
               >
                 Price: Low to High
-              </a>
-              <a
-                href="#"
-                className="block px-4 py-2 text-gray-500"
+              </Link>
+              <Link
+                className="block px-4 py-2 text-gray-900"
+                to={createUrl("PRICE", true)}
+                onClick={handleLinkClick}
                 role="menuitem"
+                prefetch="intent"
                 tabIndex={-1}
-                onClick={() => handleSortSelection("Price: High to Low")}
               >
                 Price: High to Low
-              </a>
+              </Link>
             </div>
           </div>
         )}

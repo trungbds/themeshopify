@@ -40,39 +40,44 @@ export default function SearchPage() {
   if (type === 'predictive') return null;
 
   return (
-    <div className="search">
-      <h1>Search</h1>
-      <SearchForm>
-        {({inputRef}) => (
-          <>
-            <input
-              defaultValue={term}
-              name="q"
-              placeholder="Search…"
-              ref={inputRef}
-              type="search"
-            />
-            &nbsp;
-            <button type="submit">Search</button>
-          </>
-        )}
-      </SearchForm>
-      {error && <p style={{color: 'red'}}>{error}</p>}
-      {!term || !result?.total ? (
-        <SearchResults.Empty />
-      ) : (
-        <SearchResults result={result} term={term}>
-          {({articles, pages, products, term}) => (
-            <div>
-              <SearchResults.Products products={products} term={term} />
-              <SearchResults.Pages pages={pages} term={term} />
-              <SearchResults.Articles articles={articles} term={term} />
-            </div>
+    <section>
+      <div className="container">
+        <div className="search">
+          <h1>Search</h1>
+          <SearchForm>
+            {({inputRef}) => (
+              <>
+                <input
+                  defaultValue={term}
+                  name="q"
+                  placeholder="Search…"
+                  ref={inputRef}
+                  type="search"
+                />
+                &nbsp;
+                <button type="submit">Search</button>
+              </>
+            )}
+          </SearchForm>
+          {error && <p style={{color: 'red'}}>{error}</p>}
+          {!term || !result?.total ? (
+            <SearchResults.Empty />
+          ) : (
+            <SearchResults result={result} term={term}>
+              {({articles, pages, products, term}) => (
+                <div>
+                  <SearchResults.Products products={products} term={term} />
+                  <SearchResults.Pages pages={pages} term={term} />
+                  <SearchResults.Articles articles={articles} term={term} />
+                </div>
+              )}
+            </SearchResults>
           )}
-        </SearchResults>
-      )}
-      <Analytics.SearchView data={{searchTerm: term, searchResults: result}} />
-    </div>
+          <Analytics.SearchView data={{searchTerm: term, searchResults: result}} />
+        </div>
+      </div>
+    </section>
+    
   );
 }
 

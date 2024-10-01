@@ -4,6 +4,8 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {CartLineItem} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
 import { useCartHeader } from './custom-components/CartHeaderExpand';
+import emptycart from '~/assets/images/empty-cart.svg';
+
 
 export type CartLayout = 'page' | 'aside';
 
@@ -31,7 +33,8 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
   return (
     <div className={className}>
       <CartEmpty hidden={linesCount} layout={layout} />
-      <div className="cart-details">
+
+      <div className="cart-details" hidden={!linesCount}>
         <div aria-labelledby="cart-lines" className='cart-lines'>
           <ul>
             {(cart?.lines?.nodes ?? []).map((line) => (
@@ -53,15 +56,20 @@ function CartEmpty({
 }) {
   const {close} = useCartHeader();
   return (
-    <div hidden={hidden}>
-      <br />
-      <p>
-        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you 
+    <div className='cart-empty' hidden={hidden}>
+      <img src={emptycart} alt="Looks like you haven't added anything yet, let's get you 
+        started!" />
+      <p className='text-center description'>
+        Looks like you haven't added anything yet <br/>let's get you 
         started!
       </p>
-      <br />
-      <Link to="/c/all" onClick={close} prefetch="viewport">
-        Continue shopping →
+      <Link 
+        to="/c/all" 
+        onClick={close} prefetch="viewport"
+        className="btn btn-primary link-primary text-center"
+      >
+        <span className='link-hover'>Continue shopping</span>
+        
       </Link>
     </div>
   );

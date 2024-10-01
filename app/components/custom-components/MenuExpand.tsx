@@ -20,10 +20,10 @@ interface MenuExpandProps {
 
 interface MenuExpandComponentProps {
   children?: React.ReactNode;
-  type: ExpandType;
-  heading: React.ReactNode;
+  type?: ExpandType;
+  heading?: React.ReactNode;
   items: MenuItemType[]; 
-  viewport: Viewport;
+  viewport?: Viewport;
   publicStoreDomain: string;
   primaryDomainUrl: string;
 }
@@ -98,6 +98,7 @@ export function MenuExpand({
   return (
     <div className='menu-expand'>
       {renderItems(items)}
+      <div className="menu-expand__bg"></div> 
     </div>
   );
 }

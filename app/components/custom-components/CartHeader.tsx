@@ -50,10 +50,10 @@ export default function CartHeader({cart, openOverlayClick,closeOverlayClick }: 
 
     return (
         <div className='cart-header' ref={cartRef}>
-            <Suspense fallback={<CartHeaderBtn  count={null} />}>
+            <Suspense fallback={<CartHeaderBtn count={null} openOverlayClick={openOverlayClick} closeOverlayClick={closeOverlayClick}/>}>
                 <Await resolve={cart}>
                     {(cart) => {
-                        if (!cart) return <CartHeaderBtn count={0} />;
+                        if (!cart) return <CartHeaderBtn count={0} openOverlayClick={openOverlayClick} closeOverlayClick={closeOverlayClick}/>;
                         return <CartHeaderBtn 
                           openOverlayClick={openOverlayClick}
                           closeOverlayClick={closeOverlayClick}
@@ -62,6 +62,7 @@ export default function CartHeader({cart, openOverlayClick,closeOverlayClick }: 
                     }}
                 </Await>
             </Suspense>
+
             <CartExpand cart = {cart} />
         </div>
         
@@ -86,7 +87,6 @@ function CartHeaderBtn (
     return (
       <a
         className="btn btn-cart"
-        href="/cart"
         onClick={(e) => {
           e.preventDefault();
           openCartHeader();
@@ -96,11 +96,14 @@ function CartHeaderBtn (
             shop,
             url: window.location.href || '',
           } as CartViewPayload);
-
         }}
       >
         <img src={iconcart} width={'24px'} />
-        <span className='cart-badge'>{count === null ? <span>&nbsp;</span> : count}</span>
+        {count !== null && count !== 0 && (
+          <span className='cart-badge'>
+            {count}
+          </span>
+        )}
         
       </a>
     );
@@ -109,20 +112,20 @@ function CartHeaderBtn (
 function CartExpand({cart}: {cart : Promise<CartApiQueryFragment | null>}) {
     return (
         <Suspense fallback={<p>Loading cart ...</p>}>
-        <Await resolve={cart}>
-            {(resolvedCart) => {
-              const totalQuantity = resolvedCart?.totalQuantity || 0; // Lấy giá trị totalQuantity từ cart
-              return (
-                  <CartHeaderExpand 
-                    type="cart" 
-                    heading="CART" 
-                    count={totalQuantity}  // Truyền totalQuantity vào count
-                  >
-                    <CartMain cart={resolvedCart} layout="aside" />
-                  </CartHeaderExpand>
-              );
-            }}
-        </Await>
+          <Await resolve={cart}>
+              {(resolvedCart) => {
+                const totalQuantity = resolvedCart?.totalQuantity || 0; // Lấy giá trị totalQuantity từ cart
+                return (
+                    <CartHeaderExpand 
+                      type="cart" 
+                      heading="CART" 
+                      count={totalQuantity}  // Truyền totalQuantity vào count
+                    >
+                      <CartMain cart={resolvedCart} layout="aside" />
+                    </CartHeaderExpand>
+                );
+              }}
+          </Await>
         </Suspense>
     );
   }

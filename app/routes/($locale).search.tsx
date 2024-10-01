@@ -13,6 +13,7 @@ import {
   getEmptyPredictiveSearchResult,
 } from '~/lib/search';
 
+
 export const meta: MetaFunction = () => {
   return [{title: `Hydrogen | Search`}];
 };
@@ -40,39 +41,29 @@ export default function SearchPage() {
   if (type === 'predictive') return null;
 
   return (
-    <div className="search">
-      <h1>Search</h1>
-      <SearchForm>
-        {({inputRef}) => (
-          <>
-            <input
-              defaultValue={term}
-              name="q"
-              placeholder="Search…"
-              ref={inputRef}
-              type="search"
-            />
-            &nbsp;
-            <button type="submit">Search</button>
-          </>
-        )}
-      </SearchForm>
-      {error && <p style={{color: 'red'}}>{error}</p>}
-      {!term || !result?.total ? (
-        <SearchResults.Empty />
-      ) : (
-        <SearchResults result={result} term={term}>
-          {({articles, pages, products, term}) => (
-            <div>
-              <SearchResults.Products products={products} term={term} />
-              <SearchResults.Pages pages={pages} term={term} />
-              <SearchResults.Articles articles={articles} term={term} />
-            </div>
+    <section>
+      <div className="container">
+        <div className="search">
+          
+          {error && <p style={{color: 'red'}}>{error}</p>}
+          {!term || !result?.total ? (
+            <SearchResults.Empty />
+          ) : (
+            <SearchResults result={result} term={term}>
+              {({articles, pages, products, term}) => (
+                <div>
+                  <h2>Found {result.total} result(s) for "{term}".</h2>
+                  <SearchResults.Products products={products} term={term} />
+                  <SearchResults.Pages pages={pages} term={term} />
+                  <SearchResults.Articles articles={articles} term={term} />
+                </div>
+              )}
+            </SearchResults>
           )}
-        </SearchResults>
-      )}
-      <Analytics.SearchView data={{searchTerm: term, searchResults: result}} />
-    </div>
+          <Analytics.SearchView data={{searchTerm: term, searchResults: result}} />
+        </div>
+      </div>
+    </section>
   );
 }
 

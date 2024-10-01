@@ -4,6 +4,9 @@ import {getPaginationVariables, Image} from '@shopify/hydrogen';
 import type {CollectionFragment} from 'storefrontapi.generated';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 
+export const handle = {
+  breadcrumbType :'collections'
+}
 export async function loader(args: LoaderFunctionArgs) {
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
@@ -46,21 +49,27 @@ export default function Collections() {
   const {collections} = useLoaderData<typeof loader>();
 
   return (
-    <div className="collections">
-      <h1>All Collection</h1>
-      <PaginatedResourceSection
-        connection={collections}
-        resourcesClassName="collections-grid"
-      >
-        {({node: collection, index}) => (
-          <CollectionItem
-            key={collection.id}
-            collection={collection}
-            index={index}
-          />
-        )}
-      </PaginatedResourceSection>
-    </div>
+    <section>
+        <div className="container">
+          <div className="collections">
+            <h1>All Collection</h1>
+            <PaginatedResourceSection
+              connection={collections}
+              resourcesClassName="collections-grid"
+            >
+              {({node: collection, index}) => (
+                <CollectionItem
+                  key={collection.id}
+                  collection={collection}
+                  index={index}
+                />
+              )}
+            </PaginatedResourceSection>
+            
+          </div>
+        </div>
+      </section>
+    
   );
 }
 

@@ -10,6 +10,8 @@ import {
 import {useSearchExpand} from '~/components/custom-components/SearchHeaderExpand';
 
 import noImage from '~/assets/images/no-image-available.png';
+import iconsearch from '~/assets/fonts/icons/icon-search.svg';
+
 
 
 type PredictiveSearchItems = PredictiveSearchReturn['result']['items'];
@@ -253,7 +255,7 @@ function SearchResultsPredictiveQueries({
   if (!queries.length) return null;
 
   return (
-    <div className="predictive-search-result" key="queries">
+    <div className="predictive-search-result queries" key="queries">
       {/* <h5>Queries</h5> */}
       <ul>
         {queries.map((suggestion) => {
@@ -261,6 +263,7 @@ function SearchResultsPredictiveQueries({
 
           return (
             <li className="predictive-search-result-item" key={suggestion.text}>
+              <img src={iconsearch}/>
               <div
                 role="presentation"
                 onClick={() => {

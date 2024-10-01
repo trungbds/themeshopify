@@ -54,7 +54,8 @@ export const COLLECTION_QUERY = `#graphql
     $startCursor: String
     $endCursor: String
     $filters: [ProductFilter!]
-
+    $sortKey: ProductCollectionSortKeys 
+    $reverse: Boolean 
   ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
@@ -66,7 +67,9 @@ export const COLLECTION_QUERY = `#graphql
         last: $last,
         before: $startCursor,
         after: $endCursor,
-        filters: $filters
+        filters: $filters,
+        sortKey: $sortKey, 
+        reverse: $reverse
       ){
         nodes {
           ...ProductItem
@@ -116,4 +119,43 @@ export const COLOR_VARIANTS_COLLECTION_QUERY = `#graphql
       }
     }
   }
+` as const;
+
+
+const MENU_COLLECTION_FRAGMENT = `#graphql
+  fragment MenuItem on MenuItem {
+    id
+    resourceId
+    tags
+    title
+    type
+    url
+  }
+  fragment ChildMenuItem on MenuItem {
+    ...MenuItem
+  }
+  fragment ParentMenuItem on MenuItem {
+    ...MenuItem
+    items {
+      ...ChildMenuItem
+    }
+  }
+  fragment Menu on Menu {
+    id
+    items {
+      ...ParentMenuItem
+    }
+  }
+` as const;
+
+export const MENU_COLLECTION = `#graphql
+  query MenuCollection(
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    menu(handle: "main-menu") {
+      ...Menu
+    }
+  }
+  ${MENU_COLLECTION_FRAGMENT}
 ` as const;

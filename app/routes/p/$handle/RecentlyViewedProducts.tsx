@@ -20,7 +20,7 @@ interface RecentlyViewedProductsProps {
 export default function RecentlyViewedProducts({ viewedProducts }: RecentlyViewedProductsProps) {
 
   if (viewedProducts.length === 0) {
-    return <p>No recently viewed products.</p>;
+    return null
   }
 
   return (
@@ -98,6 +98,7 @@ function RecentlyViewedProductItem ({product}:{product: ProductRecentlyViewedFra
         key={product.id}
         className="recommended-product link-primary"
         to={`/p/${product.handle}`}
+        prefetch="intent"
       >
         {product.image ? (
           <Image

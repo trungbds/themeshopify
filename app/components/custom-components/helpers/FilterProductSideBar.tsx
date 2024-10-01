@@ -9,10 +9,11 @@ import iconcheckboxoutline from '~/assets/fonts/icons/icon-checkbox-outline.svg'
 type FilterProductSideBarProps = {
   isActive?: boolean;
   data?: any;
-  filtersParams?:any
+  filtersParams?:any;
+  collectionId: string;
 };
 
-export function FilterProductSideBar({ isActive, data, filtersParams }: FilterProductSideBarProps) {
+export function FilterProductSideBar({ isActive, data, filtersParams, collectionId }: FilterProductSideBarProps) {
   
   if (!isActive) return null;
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ export function FilterProductSideBar({ isActive, data, filtersParams }: FilterPr
     { value: {price:{min:100 ,max:150}}, label: '$100 - $150' },
     { value: {price:{min:150 ,max:250}}, label: '$150 - $250' },
     { value: {price:{min:250 ,max:500}}, label: '$250 - $500' },
-    { value: {price:{max:50}}, label: 'Over $500' },
+    { value: {price:{min:500}}, label: 'Over $500' },
   ];
 
   const handleOptionChange = (optionValue: any, inputValue?: any, reset?:boolean) => {
@@ -122,17 +123,25 @@ export function FilterProductSideBar({ isActive, data, filtersParams }: FilterPr
       });
     }
 
+    let newInputValues;
     // Xử lý inputValues
     setSelectedInputValues((prevInputValues) => {
 
-      let newInputValues;
+      const isPriceValue = optionValue && priceRanges.some(priceRange => JSON.stringify(priceRange) === JSON.stringify(optionValue));
 
-      // Xử lý logic chọn/bỏ chọn cho các input values
-      newInputValues = prevInputValues.some((val) => JSON.stringify(val) === JSON.stringify(inputValue))
+      if(isPriceValue) {
+        newInputValues = prevInputValues.some((item) => JSON.stringify(item) === JSON.stringify(optionValue))
+        ? prevInputValues.filter((item) => JSON.stringify(item) !== JSON.stringify(optionValue)) // Nếu đã chọn, bỏ chọn
+        : [optionValue]; // Nếu chưa chọn, thay thế bằng giá trị mới
+      } else {
+        newInputValues = prevInputValues.some((val) => JSON.stringify(val) === JSON.stringify(inputValue))
         ? prevInputValues.filter((val) => JSON.stringify(val) !== JSON.stringify(inputValue)) // Bỏ chọn
         : [...prevInputValues, inputValue]; // Thêm giá trị vào mảng nếu chưa tồn tại
-
-      
+      }
+      // Xử lý logic chọn/bỏ chọn cho các input values
+      // newInputValues = prevInputValues.some((val) => JSON.stringify(val) === JSON.stringify(inputValue))
+      //   ? prevInputValues.filter((val) => JSON.stringify(val) !== JSON.stringify(inputValue)) // Bỏ chọn
+      //   : [...prevInputValues, inputValue]; // Thêm giá trị vào mảng nếu chưa tồn tại
   
       // Nhóm các giá trị theo `variantOption`, `productVendor`, và `price`
       const groupedInputValues = newInputValues.reduce((acc, curr) => {
@@ -166,9 +175,7 @@ export function FilterProductSideBar({ isActive, data, filtersParams }: FilterPr
         })
         .join('&');
   
-      // Gán URL với các query parameters
       const urlNewInputValues = `${window.location.pathname}?${queryParams}`;
-      
       navigate(urlNewInputValues);
       return newInputValues;
     });
@@ -176,9 +183,16 @@ export function FilterProductSideBar({ isActive, data, filtersParams }: FilterPr
   };
 
   useEffect(() => {
-    // console.log("Selected Input Values Updated:", selectedInputValues);
+    console.log("Selected Input Values Updated:", selectedInputValues);
     // console.log("selectedFilters Values Updated:", selectedFilters);
+    
   }, [selectedInputValues, selectedFilters]);
+
+  // useEffect(() => {
+  //   setSelectedFilters([]);
+  //   setSelectedInputValues([]);
+    
+  // }, [window.location.pathname]);
   
   const handleReset = () => {
     setSelectedFilters([]);
@@ -195,7 +209,7 @@ export function FilterProductSideBar({ isActive, data, filtersParams }: FilterPr
         <h3 className="title font-medium">Filter</h3>
         <button
           type="button"
-          className="btn link-primary text-sm inline-flex font-semibold gap-1 items-center"
+          className={`btn link-primary btn-reset text-sm inline-flex font-semibold gap-1 items-center ${selectedFilters.length > 0 ? 'isActived' : ''}`}
           onClick={handleReset}
         >
           <img src={iconreset} alt="reset icon" />
@@ -267,59 +281,58 @@ export function FilterProductSideBar({ isActive, data, filtersParams }: FilterPr
                     case "filter.v.price":
                       return (
                         <>
-                        
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('Under $50') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('Under $50',{price:{min: 0, max: 50}})}
+                            onClick={() => handleOptionChange({price:{min: 0, max: 50}},{price:{min: 0, max: 50}})}
                             data-input="{price:{min: 0, max: 50}}"
                           >
-                            <img src={selectedFilters.includes('Under $50') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 0, max: 50}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             Under $50
                           </div>
 
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('$50 - $100') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('$50 - $100',{price:{min: 50, max: 100}})}
+                            onClick={() => handleOptionChange({price:{min: 50, max: 100}},{price:{min: 50, max: 100}})}
                             data-input="{price:{min: 50, max: 100}}"
                           >
-                            <img src={selectedFilters.includes('$50 - $100') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 50, max: 100}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             $50 - $100
                           </div>
 
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('$100 - $150') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('$100 - $150',{price:{min: 100, max: 150}})}
+                            onClick={() => handleOptionChange({price:{min: 100, max: 150}},{price:{min: 100, max: 150}})}
                             data-input="{price:{min: 100, max: 150}}"
                           >
-                            <img src={selectedFilters.includes('$100 - $150') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 100, max: 150}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             $100 - $150
                           </div>
 
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('$150 - $250') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('$150 - $250',{price:{min: 150, max: 250}})}
+                            onClick={() => handleOptionChange({price:{min: 150, max: 250}},{price:{min: 150, max: 250}})}
                             data-input="{price:{min: 150, max: 250}}"
                           >
-                            <img src={selectedFilters.includes('$150 - $250') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 150, max: 250}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             $150 - $250
                            
                           </div>
 
                           <div 
                             className={`items-center option-item cursor-pointer ${selectedFilters.includes('$250 - $500') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('$250 - $500',{price:{min: 250, max: 500}})}
+                            onClick={() => handleOptionChange({price:{min: 250, max: 500}},{price:{min: 250, max: 500}})}
                             data-input="{price:{min: 250, max: 500}}"
                           >
-                            <img src={selectedFilters.includes('$250 - $500') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 250, max: 500}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             $250 - $500
                           </div>
 
                           <div 
-                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('Over $500') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange('Over $500',{price:{min: 500}})}
-                            data-input="{price:{min: 500}"
+                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('{price:{min: 500}}') ? "selected" : ""}`}
+                            onClick={() => handleOptionChange({price:{min: 500}},{price:{min: 500}})}
+                            data-input="{price:{min: 500}}"
                           >
-                            <img src={selectedFilters.includes('Over $500') ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price: {min: 500}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
                             Over $500
                           </div>
                         </>

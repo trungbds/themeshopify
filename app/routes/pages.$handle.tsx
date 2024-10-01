@@ -55,12 +55,19 @@ export default function Page() {
   const {page} = useLoaderData<typeof loader>();
 
   return (
-    <div className="page">
-      <header>
-        <h1>{page.title}</h1>
-      </header>
-      <main dangerouslySetInnerHTML={{__html: page.body}} />
-    </div>
+
+    <section>
+      <div className="container">
+        <div className="page">
+          <header>
+            <h1>{page.title}</h1>
+          </header>
+          <main dangerouslySetInnerHTML={{__html: page.body}} />
+        </div>
+
+      </div>
+    </section>
+    
   );
 }
 

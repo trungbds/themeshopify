@@ -78,7 +78,7 @@ export default function HeaderSignIn() {
                         tabIndex={-1}
                         id="menu-item-2"
                     >
-                        Wish list
+                        Wishlist
                     </a>
                     <div className="border-b border-gray-200"></div>
                     <a

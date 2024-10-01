@@ -6,6 +6,8 @@ import {Link} from '@remix-run/react';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
+import iconadd from '~/assets/fonts/icons/icon-add.svg';
+import iconremove from '~/assets/fonts/icons/icon-remove.svg';
 
 type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
@@ -89,7 +91,6 @@ function CartLineQuantity({line ,children}: {line: CartLine, children: React.Rea
       <div className="cart-line-quantity">
         {children}        
         <div className='quantity-total'>
-          <small>Qty</small>
           <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
             <button
               aria-label="Decrease quantity"
@@ -97,11 +98,11 @@ function CartLineQuantity({line ,children}: {line: CartLine, children: React.Rea
               name="decrease-quantity"
               value={prevQuantity}
             >
-              <span>&#8722; </span>
+              <img src={iconremove} width={20} alt="remove" />
             </button>
           </CartLineUpdateButton>
 
-          <div>{quantity}</div>
+          <div className='quantity-total__result'>{quantity}</div>
 
           <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
             <button
@@ -110,7 +111,7 @@ function CartLineQuantity({line ,children}: {line: CartLine, children: React.Rea
               value={nextQuantity}
               disabled={!!isOptimistic}
             >
-              <span>&#43;</span>
+              <img src={iconadd} width={20} alt="add" />
             </button>
           </CartLineUpdateButton>
         </div>
@@ -147,8 +148,8 @@ function CartLineRemoveButton({
         inputs={{lineIds}}
         
       >
-        <button disabled={disabled} type="submit">
-          Remove
+        <button className='btn link-underline' disabled={disabled} type="submit">
+          <span className='link-hover'>Remove</span>
         </button>
       </CartForm>
     </div>

@@ -103,6 +103,7 @@ function RecommendedProductItem ({product}:{product: RecommendedProductItemQuery
       key={product.id}
       className="recommended-product link-primary"
       to={`/p/${product.handle}`}
+      prefetch="intent"
     >
       {product.images.nodes[0] ? (
         <Image

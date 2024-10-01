@@ -5,22 +5,22 @@ import iconclose from '~/assets/fonts/icons/icon-close.svg';
 
 export default function Quantity({
   quantityAvailable,
+  quantity, // Nhận quantity từ props
+  onQuantityChange, // Nhận hàm thay đổi quantity từ props
 }: {
   quantityAvailable?: number;
+  quantity: number; // Thêm kiểu cho quantity
+  onQuantityChange: (newQuantity: number) => void; // Định nghĩa kiểu cho onQuantityChange
 }) {
-  const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState('');
 
-  // Tổng số lượng có thể mua 
-  const MaxQuantityAvailable = 10;
-
-  // Xác định giới hạn số lượng tối đa mà khách hàng có thể mua
-  const maxAllowedQuantity = quantityAvailable && quantityAvailable > MaxQuantityAvailable ? MaxQuantityAvailable : quantityAvailable ?? 0;
+  const MAX_QUANTITY = 10;
+  const maxAllowedQuantity = Math.min(quantityAvailable ?? 0, MAX_QUANTITY);
 
   // Hàm để tăng số lượng
   const incrementQuantity = () => {
     if (quantity < maxAllowedQuantity) {
-      setQuantity(quantity + 1);
+      onQuantityChange(quantity + 1); // Sử dụng hàm từ props để thay đổi quantity
       setError('');
     } else {
       setError(`${maxAllowedQuantity} items left in stock.`);
@@ -30,18 +30,26 @@ export default function Quantity({
   // Hàm để giảm số lượng
   const decrementQuantity = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
+      onQuantityChange(quantity - 1); // Sử dụng hàm từ props để thay đổi quantity
       setError('');
     } else {
       setError('Quantity must be at least 1.');
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputQuantity = parseInt(e.target.value, 10);
+    if (inputQuantity >= 1 && inputQuantity <= maxAllowedQuantity) {
+      onQuantityChange(inputQuantity); // Sử dụng hàm từ props để thay đổi quantity
+      setError('');
+    } else {
+      setError(`Quantity must be between 1 and ${maxAllowedQuantity}.`);
+    }
+  };
+
   return (
     <div className="quantity">
-      <div
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white quantity-label"
-      >
+      <div className="block mb-2 text-sm font-medium text-gray-900 dark:text-white quantity-label">
         Quantity:
       </div>
       <div className="quantity-total">
@@ -50,7 +58,7 @@ export default function Quantity({
           id="decrement-button"
           disabled={quantityAvailable === 0}
           onClick={decrementQuantity}
-          className={`${quantityAvailable === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={quantityAvailable === 0 ? 'opacity-50 cursor-not-allowed' : ''}
         >
           <img className="dark:text-white" src={iconremove} alt="minus 1" />
         </button>
@@ -58,15 +66,7 @@ export default function Quantity({
           type="text"
           id="quantity-input"
           value={quantity}
-          onChange={(e) => {
-            const inputQuantity = parseInt(e.target.value, 10);
-            if (inputQuantity >= 1 && inputQuantity <= maxAllowedQuantity) {
-              setQuantity(inputQuantity);
-              setError('');
-            } else {
-              setError(`Quantity must be between 1 and ${maxAllowedQuantity}.`);
-            }
-          }}
+          onChange={handleInputChange}
           className="quantity-input"
           required
         />
@@ -75,33 +75,27 @@ export default function Quantity({
           id="increment-button"
           disabled={quantityAvailable === 0}
           onClick={incrementQuantity}
-          className={`${quantityAvailable === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={quantityAvailable === 0 ? 'opacity-50 cursor-not-allowed' : ''}
         >
           <img className="dark:text-white" src={iconadd} alt="add 1" />
         </button>
 
-        {/* Nếu có lỗi, hiển thị thông báo lỗi */}
+        {/* Hiển thị thông báo lỗi nếu có */}
         {error && (
-          <div 
-            id="helper-text-explanation"
-            className=" btn-tooltip"
-          >
+          <div id="helper-text-explanation" className="btn-tooltip">
             <div className='tooltip-header'>
               <h5>Note</h5>
-              <button className='btn-icon'>
-                <img src={iconclose} width={20} />
+              <button className='btn-icon' onClick={() => setError('')}>
+                <img src={iconclose} width={20} alt="Close tooltip" />
               </button>
-              
             </div>
-          
             <div className="tooltip-inner text-red-500 dark:text-red-400">
               {error}
             </div>
-            <div className="tooltip-arrow"/>
+            <div className="tooltip-arrow" />
           </div>
         )}
       </div>
-      
     </div>
   );
 }

@@ -11,8 +11,7 @@ import {CartLineItem} from '~/components/CartLineItem';
 import {useCartHeader} from '~/components/custom-components/CartHeaderExpand';
 import iconchevrondown from '~/assets/fonts/icons/icon-chevron-down.svg';
 import iconpaymentlist from '~/assets/fonts/icons/icon-paymentlist.svg';
-
-
+import emptycart from '~/assets/images/empty-cart.svg';
 
 type CartLayout = 'page' | 'aside';
 
@@ -113,8 +112,8 @@ function CartMain({layout, cart: originalCart}: CartMainProps) {
         <div className="col-span-2"></div>
         <div className="col-span-4">
 
-          <CartDiscounts discountCodes={cart.discountCodes} />
-          <CalculateShippingFees />
+          {cartHasItems && <CartDiscounts discountCodes={cart.discountCodes} />}
+          {cartHasItems && <CalculateShippingFees />}
 
           <div className="cart-details">
             <div aria-labelledby="cart-lines" className='cart-lines'>
@@ -150,7 +149,7 @@ function CartMain({layout, cart: originalCart}: CartMainProps) {
           {cartHasItems && <CartSummary cart={cart} layout={layout} />}
         </div>
         <div className="col-span-2"></div>
-        <div className="col-span-8 w-full mx-auto"><CartEmpty hidden={linesCount} layout={layout} /></div>
+        <div className="col-span-12 w-full mx-auto"><CartEmpty hidden={linesCount} layout={layout} /></div>
 
         
       </div>
@@ -198,16 +197,23 @@ function CartEmpty({
 }) {
   const {close} = useCartHeader();
   return (
-    <div hidden={hidden}>
-      <br />
-      <p>
-        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you 
+    <div className='cart-empty' hidden={hidden}>
+      <img className='m-auto' src={emptycart} alt="Looks like you haven't added anything yet, let's get you 
+        started!" />
+      <p className='text-center description'>
+        Looks like you haven't added anything yet <br/>let's get you 
         started!
       </p>
-      <br />
-      <Link to="/c/all" onClick={close} prefetch="viewport">
-        Continue shopping →
-      </Link>
+      <div className='text-center'>
+        <Link 
+          to="/c/all" 
+          onClick={close} prefetch="viewport"
+          className="btn btn-primary link-primary text-center"
+        >
+          <span className='link-hover'>Continue shopping</span>
+          
+        </Link>
+      </div>
     </div>
   );
 }
@@ -345,17 +351,13 @@ function CalculateShippingFees(){
   return (
     <div className='cart-page__shipping'>
       <div className='cart-page__shipping--header'>
-        <h3 className='title'>Shipping to ( Enter your Address )</h3>
+        <h3 className='title'>Delivery: Ship Economy</h3>
       </div>
       <div className='calculate-content'>
-        <p className='shipping-time'>Estimated delivery: Thu Aug 22 - Mon Aug 26</p>
-        <span className='shipping-cost'> free </span>
+        <p className='shipping-time'>5 to 8 business days, shipping cost calculated at checkout!</p>
+        <span className='shipping-cost'> </span>
       </div>
-
-
     </div>
-
-
   )
 }
 

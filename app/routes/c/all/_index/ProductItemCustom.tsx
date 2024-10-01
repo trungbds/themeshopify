@@ -55,6 +55,7 @@ export function ProductItemCustom({
   return (
     <div className="product-item">
       <Link prefetch="intent" to={variantUrl}>
+      
       {product.featuredImage ? (
         <Image
           alt={product.featuredImage.altText || product.title}

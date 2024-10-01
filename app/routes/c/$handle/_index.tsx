@@ -12,11 +12,12 @@ import type {ProductItemFragment, ProductQuickViewFragment} from 'storefrontapi.
 import {useVariantUrl} from '~/lib/variants';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 
-import {COLLECTION_QUERY,COLOR_VARIANTS_COLLECTION_QUERY } from './server';
+import {COLLECTION_QUERY,COLOR_VARIANTS_COLLECTION_QUERY, MENU_COLLECTION } from './server';
 import { BoxSort, CategoryClass, FilterProductSideBar } from '~/components/custom-components';
 import { ProductItemCustom } from '../all/_index/ProductItemCustom';
 import { ProductModal } from '../all/_index/ProductModal';
 import ProductsEmpty from '~/components/empty/ProductsEmpty';
+import SearchProductsEmpty from '~/components/empty/SearchProductsEmpty';
 
 
 interface FilterParam {
@@ -31,6 +32,11 @@ interface FilterParam {
   };
 }
 
+interface SortByParam {
+  sortKey?: string;
+  reverse? : boolean;
+}
+
 
 // export const meta: MetaFunction<typeof loader> = ({data}) => {
 //   return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
@@ -39,6 +45,10 @@ interface FilterParam {
 export const meta: MetaFunction<typeof loader> = () => {
   return [{title: `Hydrogen | All Products`}];
 };
+
+export const handle = {
+  breadcrumbType :'collection'
+}
 
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -127,15 +137,35 @@ async function loadCriticalData({
     }
   }
 
+  // Xử lý sortby nếu có
+  const sortKeyParam: String | null = searchParams.get('sortKey');
+  const reverseParam: String | null = searchParams.get('reverse');
+
+  // Gán giá trị cho sortKey hoặc null nếu không có
+  const sortKey: String | null = sortKeyParam ? sortKeyParam : null;
+
+  // Chuyển đổi reverseParam thành boolean hoặc null nếu không có
+  const reverse: Boolean | null = reverseParam === 'true' ? true : reverseParam === 'false' ? false : null;
+
+  // Kiểm tra handle trước khi thực hiện truy vấn
   if (!handle) {
     throw redirect('/c');
   }
-  
-  const [{ collection }] = await Promise.all([
+
+  // Thực hiện các truy vấn song song
+  const [{ collection }, MenuCollection] = await Promise.all([
     storefront.query(COLLECTION_QUERY, {
-      variables: { handle, filters: filtersParams, ...paginationVariables },
+      variables: {
+        handle,
+        filters: filtersParams,
+        ...paginationVariables,
+        sortKey, // Gửi sortKey như là null hoặc giá trị
+        reverse: reverse !== null ? reverse : null, // Gửi reverse như là null nếu không có giá trị
+      },
     }),
+    storefront.query(MENU_COLLECTION),
   ]);
+
 
   if (!collection) {
     throw new Response(`Collection ${handle} not found`, {
@@ -146,6 +176,7 @@ async function loadCriticalData({
   return {
     collection,
     filtersParams,
+    MenuCollection
   };
 }
 async function loadDeferredData({ context, productIds }: { context: any; productIds: string[] }) {
@@ -171,8 +202,7 @@ async function loadDeferredData({ context, productIds }: { context: any; product
 }
 
 export default function Collection() {
-  const {collection, colorVariantsByProductId, filtersParams} = useLoaderData<typeof loader>();
-  
+  const {collection, colorVariantsByProductId, filtersParams , MenuCollection} = useLoaderData<typeof loader>();
   const {products} = collection;
 
   const [isModalOpen, setModalOpen] = useState(false); // Quản lý trạng thái modal
@@ -196,13 +226,9 @@ export default function Collection() {
   //fiilterColectionData
   const fiilterColectionData :any[] =collection.products.filters ; 
 
-  if (!products.nodes || products.nodes.length === 0) {
+  if (!products.nodes || products.nodes.length === 0 && fiilterColectionData.length === 0) {
     return <ProductsEmpty title ={collection.title} />
   }
-
-  // useEffect(() =>{
-  //   console.log('change');
-  // },[fiilterColectionData]);
 
   return (
     <>
@@ -212,7 +238,11 @@ export default function Collection() {
             <div className='collection-title'>
               <h1>{collection.title}</h1>
             </div>
-            <CategoryClass />
+
+            <CategoryClass 
+              menuCollection={MenuCollection.menu.items}
+              collectionId={collection.id}
+            />
           </div>
         </div>
       </section>
@@ -220,12 +250,12 @@ export default function Collection() {
       <section className='collection-page__detail'>
         <div className="container">
           <div className="collection">
-            
             {/* Filter Sidebar */}
             <FilterProductSideBar
               isActive={true}
               data = {fiilterColectionData}
               filtersParams = {filtersParams}
+              collectionId={collection.id} 
             />
             
             <div className="collection-result">
@@ -233,30 +263,36 @@ export default function Collection() {
               <BoxSort />
 
               {/* pagination */}
-              <PaginatedResourceSection<ProductItemFragment>
-                connection={products}
-                resourcesClassName="products-grid"
-              >
-                {({node: product, index}) => (
-                  <Suspense fallback={<div>Loading color variants...</div>}>
-                    <Await 
-                      errorElement="There was a problem loading product variants"
-                      resolve={colorVariantsByProductId}
-                    >
-                      {(colorVariantsByProductId) => (
-                        <ProductItemCustom
-                          type ='default'
-                          key={product.id}
-                          loading={index < 8 ? 'eager' : undefined}
-                          product={product}
-                          colorVariants={colorVariantsByProductId[product.id] || []}
-                          onAddToCart={() => handleAddToCart(product.handle)} // Truyền hàm mở modal cho ProductItem
-                        />
-                      )}
-                    </Await>
-                  </Suspense>
-                )}
-              </PaginatedResourceSection> 
+
+              {products.nodes.length === 0 ? ( 
+                <SearchProductsEmpty /> // Thông báo nếu danh sách trống
+              ) : (
+                <PaginatedResourceSection<ProductItemFragment>
+                  connection={products}
+                  resourcesClassName="products-grid"
+                >
+                  {({node: product, index}) => (
+                    <Suspense fallback={<div>Loading color variants...</div>}>
+                      <Await
+                        errorElement="There was a problem loading product variants"
+                        resolve={colorVariantsByProductId}
+                      > 
+                        {(colorVariantsByProductId) => (
+                          <ProductItemCustom
+                            type='default'
+                            key={product.id}
+                            loading={index < 8 ? 'eager' : undefined}
+                            product={product}
+                            colorVariants={colorVariantsByProductId[product.id] || []}
+                            onAddToCart={() => handleAddToCart(product.handle)} 
+                          />
+                        )}
+                      </Await>
+                    </Suspense>
+                  )}
+                </PaginatedResourceSection>
+              )}
+
 
             </div>
             {/* product modal  -- click "Add to cart()"*/}

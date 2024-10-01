@@ -83,7 +83,7 @@ export default function BestSellerSelection({ collectionsList }: { collectionsLi
                                         key={product.id}
                                         loading='eager'
                                         product={product}
-                                        colorVariants={product.options.optionValues || []}
+                                        colorVariants={product.options || []}
                                         // onAddToCart={() => handleAddToCart(product.handle)} // Truyền hàm mở modal cho ProductItem
                                     />
 

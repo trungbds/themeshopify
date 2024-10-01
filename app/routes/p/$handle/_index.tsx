@@ -12,7 +12,7 @@ import {
 import type {SelectedOption} from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/lib/variants';
 import {ProductImage} from '~/components/ProductImage';
-import {ProductFormCustom} from '~/components/ProductFormCustom';
+import {ProductFormCustom} from '~/components/ProductFormCustom'
 
 import { PRODUCT_QUERY, RECOMMENDED_PRODUCTS_QUERY, VARIANTS_QUERY } from './server';
 
@@ -30,16 +30,27 @@ import type {
 } from 'storefrontapi.generated';
 
 
-type ViewedProduct = {
+type ImageNode = {
   id: string;
-  title: string;
-  handle: string;
+  url?: string;
+  altText?: string;
+  width?: string;
+  height?: string;
 };
 
+type VariantImage = {
+  id: string;
+  image: ImageNode | null; // Cập nhật kiểu ở đây
+};
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
 };
+
+export const handle = {
+  breadcrumbType :'product'
+}
+
 
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -50,7 +61,6 @@ export async function loader(args: LoaderFunctionArgs) {
   const criticalData = await loadCriticalData(args);
 
   return defer({...deferredData, ...criticalData})
-  
 }
 
 /**
@@ -204,38 +214,47 @@ export default function Product() {
   useEffect(() => {
     // Lấy danh sách sản phẩm đã xem từ localStorage
     const storedProducts: ProductRecentlyViewedFragment[] = JSON.parse(localStorage.getItem('viewedProducts') || '[]') as ProductRecentlyViewedFragment[];
-
-    // Tạo một danh sách mới bằng cách lọc các sản phẩm đã xem để xóa sản phẩm hiện tại (nếu có)
-    const updatedViewedProducts = storedProducts.filter(item => item.id !== product.id);
-
-    // Thêm sản phẩm mới vào đầu danh sách
-    updatedViewedProducts.unshift({
-      id: product.id,
-      title: product.title,
-      handle: product.handle,
-      image: product.images?.edges[0]?.node || null,
-      price: product.priceRange?.minVariantPrice
-        ? {
-            amount: product.priceRange.minVariantPrice.amount,
-            currencyCode: product.priceRange.minVariantPrice.currencyCode,
-          }
-        : { amount: "0", currencyCode: "USD" },
-      collections: product.collections || [],
-    });
-
-    // Giới hạn số lượng sản phẩm đã xem
-    const limitedViewedProducts = updatedViewedProducts.slice(0, 20); // Giữ lại tối đa 20 sản phẩm
-
-    // Lưu danh sách đã cập nhật vào localStorage
-    localStorage.setItem('viewedProducts', JSON.stringify(limitedViewedProducts));
-    setViewedProducts(limitedViewedProducts); // Cập nhật state
+  
+    // Kiểm tra nếu sản phẩm hiện tại đã tồn tại trong danh sách thì không thêm nữa
+    const productExists = storedProducts.some(item => item.id === product.id);
+  
+    if (!productExists) {
+      // Tạo một danh sách mới bằng cách thêm sản phẩm mới vào đầu danh sách
+      const updatedViewedProducts = [
+        {
+          id: product.id,
+          title: product.title,
+          handle: product.handle,
+          image: product.images?.edges[0]?.node || null,
+          price: product.priceRange?.minVariantPrice
+            ? {
+                amount: product.priceRange.minVariantPrice.amount,
+                currencyCode: product.priceRange.minVariantPrice.currencyCode,
+              }
+            : { amount: "0", currencyCode: "USD" },
+          collections: product.collections || [],
+        },
+        ...storedProducts.filter(item => item.id !== product.id) // Xóa sản phẩm hiện tại nếu đã có trong danh sách
+      ];
+  
+      // Giới hạn số lượng sản phẩm đã xem
+      const limitedViewedProducts = updatedViewedProducts.slice(0, 20); // Giữ lại tối đa 20 sản phẩm
+  
+      // Lưu danh sách đã cập nhật vào localStorage
+      localStorage.setItem('viewedProducts', JSON.stringify(limitedViewedProducts));
+  
+      // Cập nhật state
+      setViewedProducts(limitedViewedProducts);
+    } else {
+      // Nếu sản phẩm đã tồn tại, chỉ cần cập nhật state từ localStorage
+      setViewedProducts(storedProducts);
+    }
   }, [product]);
 
-  // Lấy lại danh sách sản phẩm đã xem từ localStorage khi component mount
-  useEffect(() => {
-    const storedProducts: ProductRecentlyViewedFragment[] = JSON.parse(localStorage.getItem('viewedProducts') || '[]') as ProductRecentlyViewedFragment[];
-    setViewedProducts(storedProducts);
-  }, []);
+  
+
+  // Thêm ảnh từ variant 
+
 
   return (
     <div className="product">
@@ -247,8 +266,9 @@ export default function Product() {
             <div className="product-content">
               {selectedVariant?.image && (
                 <ProductImage
-                  currentImage={selectedVariant?.image}
+                  currentImage={selectedVariant}
                   images={images} 
+                  key = {product.handle}
                 />
               )}
               <div className='product-description'>
@@ -261,10 +281,7 @@ export default function Product() {
                 <div className='product-description__content'
                   dangerouslySetInnerHTML={{__html: descriptionHtml}} 
                 />
-
               </div>
-
-
             </div>
             <div className="product-main">
               <div className="product-header">
@@ -331,7 +348,7 @@ export default function Product() {
         </div>
       </section>
 
-      <section>
+      <section className='recently-viewed__section'>
         <div className="container">
           <RecentlyViewedProducts viewedProducts={viewedProducts.filter(item => item.id !== product.id)} />
         </div>
