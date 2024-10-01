@@ -12,7 +12,7 @@ const sortKeyLabels: { [key: string]: string } = {
   MANUAL: 'Most Popular',
   TITLE: 'Featured',
   BEST_SELLING: 'Best Selling',
-  CREATED_AT: 'Newest',
+  CREATED: 'Newest',
   PRICE_ASC: 'Price: Low to High', // Đặt tên cho tùy chọn này
   PRICE_DESC: 'Price: High to Low', // Đặt tên cho tùy chọn này
 };
@@ -107,7 +107,7 @@ export function BoxSort({ selectedSort = "Featured", countProducts }: BoxSortPro
               </Link>
               <Link
                 className="block px-4 py-2 text-gray-900"
-                to={createUrl("CREATED_AT", false)}
+                to={createUrl("CREATED", false)}
                 onClick={handleLinkClick}
                 role="menuitem"
                 prefetch="intent"

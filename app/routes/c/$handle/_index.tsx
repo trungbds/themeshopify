@@ -54,7 +54,7 @@ export const handle = {
 export async function loader(args: LoaderFunctionArgs) {
   const { context, params, request } = args;
 
-  const paginationVariables = getPaginationVariables(request, { pageBy: 8 });
+  const paginationVariables = getPaginationVariables(request, { pageBy: 4 });
   const criticalData = await loadCriticalData({ context,params,request, paginationVariables });
 
   if (!criticalData.collection.products || !criticalData.collection.products.nodes) {

@@ -77,9 +77,9 @@ function FooterMenu({
           <ShopFeature />
           <section className="footer-mainmenu">
             <div className="container">
-              <div className='grid grid-cols-12 gap-4'>
+              <div className='grid grid-cols-4 md:grid-cols-12 gap-4'>
 
-                <div className="col-span-2">
+                <div className="col-span-4 md:col-span-2">
                   <NavLink 
                     className='shop-brand'
                     prefetch="intent" 
@@ -108,7 +108,7 @@ function FooterMenu({
                   />
                 ))}
 
-                <div className="sm:col-span-4 md:col-span-4">
+                <div className="col-span-4 sm:col-span-4 md:col-span-4">
                   <div className='footer-right__area'>
 
                     <Link
@@ -129,7 +129,7 @@ function FooterMenu({
 
                 </div>
 
-                <div className='sm:col-span-12 md:col-span-12 '>
+                <div className='sm:col-span-12 md:col-span-12'>
                   <div className='footer-block__ulti flex gap-16'>
                     <ButtonOptionSelect 
                       label="Language"
@@ -307,9 +307,9 @@ function ShopFeature(){
   return (
     <section className='shop-feature'>
       <div className='container'>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-4 md:grid-cols-12 gap-4">
 
-        <div className="col-span-1">
+        <div className="md:col-span-3 col-span-4">
             <div className='shop-feature__detail'>
               <img src={iconship} alt="ship and return" />
               <div className='content'>
@@ -321,7 +321,7 @@ function ShopFeature(){
             </div>
           </div>
 
-          <div className="col-span-1">
+          <div className="md:col-span-3 col-span-4">
 
             <div className='shop-feature__detail'>
               <img src={iconmoneyback} alt="money back" />
@@ -335,7 +335,7 @@ function ShopFeature(){
 
           </div>
 
-          <div className="col-span-1">
+          <div className="md:col-span-3 col-span-4">
             <div className='shop-feature__detail'>
               <img src={iconsupport247} alt="online support 24/7" />
               <div className='content'>
@@ -347,7 +347,7 @@ function ShopFeature(){
             </div>
           </div>
 
-          <div className="col-span-1">
+          <div className="md:col-span-3 col-span-4">
             <div className='shop-feature__detail'>
                 <img src={iconregularsale} alt="Regular Sales" />
                 <div className='content'>

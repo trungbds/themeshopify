@@ -1,39 +1,81 @@
-import * as React from 'react';
-import {Pagination} from '@shopify/hydrogen';
+import React, { useState, useEffect } from 'react'; 
+import { Pagination } from '@shopify/hydrogen';
+import { Link } from '@remix-run/react';
+import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
+import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
 
 /**
- * <PaginatedResourceSection > is a component that encapsulate how the previous and next behaviors throughout your application.
+ * <PaginatedResourceSection> is a component that encapsulates pagination behavior.
  */
-
 export function PaginatedResourceSection<NodesType>({
   connection,
   children,
   resourcesClassName,
 }: {
   connection: React.ComponentProps<typeof Pagination<NodesType>>['connection'];
-  children: React.FunctionComponent<{node: NodesType; index: number}>;
+  children: React.FunctionComponent<{ node: NodesType; index: number }>;
   resourcesClassName?: string;
 }) {
+  const [currentNodes, setCurrentNodes] = useState<NodesType[]>([]);
+
+  // UseEffect to update nodes when the pagination changes (e.g., next/previous page)
+  useEffect(() => {
+    if (connection && connection.nodes) {
+      setCurrentNodes(connection.nodes);
+    }
+  }, [connection]);
+
   return (
     <Pagination connection={connection}>
-      {({nodes, isLoading, PreviousLink, NextLink}) => {
-        const resoucesMarkup = nodes.map((node, index) =>
-          children({node, index}),
+      {({ nodes, isLoading, PreviousLink, NextLink }) => {
+        const resourcesMarkup = currentNodes.map((node, index) => 
+          children({ node, index })
         );
+
+        // Lấy thông tin từ pageInfo
+        const { pageInfo } = connection;
 
         return (
           <div>
-            <PreviousLink>
-              {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
-            </PreviousLink>
             {resourcesClassName ? (
-              <div className={resourcesClassName}>{resoucesMarkup}</div>
+              <div className={resourcesClassName}>{resourcesMarkup}</div>
             ) : (
-              resoucesMarkup
+              resourcesMarkup
             )}
-            <NextLink>
-              {isLoading ? 'Loading...' : <span>Load more ↓</span>}
-            </NextLink>
+
+            <div className='pagination'>
+              {/* Kiểm tra hasPreviousPage */}
+              {pageInfo.hasPreviousPage && (
+                <Link
+                  to={`?direction=previous&cursor=${encodeURIComponent(pageInfo.startCursor)}`}
+                  prefetch="intent"
+                  className='btn btn-primary link-primary btn-Prev btn-pagination'
+                >
+                  {isLoading ? <span>Loading...</span> : 
+                    <>
+                      <img src={iconchevronleft} alt='previous' />
+                      <span className='link-hover'>Previous</span>
+                    </>
+                  }
+                </Link>
+              )}
+              {/* Kiểm tra hasNextPage */}
+              {pageInfo.hasNextPage && (
+                <Link 
+                  to={`?direction=next&cursor=${encodeURIComponent(pageInfo.endCursor)}`}
+                  prefetch="intent" 
+                  className='btn btn-primary link-primary btn-next btn-pagination'
+                >
+                  {isLoading ? <span>Loading...</span>: 
+                    <>
+                      <span className='link-hover'>Next</span>
+                      <img src={iconchevronright} alt='next' />
+                    </>
+                  }
+                </Link>
+              )}
+            </div>
+
           </div>
         );
       }}

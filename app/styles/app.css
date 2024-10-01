@@ -1528,6 +1528,24 @@ button.reset:hover:before {
   flex: 1 1 auto;
 } 
 
+.collection-result .pagination {
+  display: flex;
+  align-items: center;
+}
+
+.collection-result .pagination .btn-pagination {
+  padding: 0;
+  border: none;
+}
+.collection-result .pagination .btn-pagination.btn-next {
+  margin-left: auto ;
+}
+
+.collection-result .pagination .btn-pagination img {
+  width: 22px;
+  opacity: .5;
+}
+
 .collection-title {
   margin: 0;
   flex: 0 0 25%
@@ -2982,5 +3000,15 @@ button.reset:hover:before {
   .search-expand {
     width: calc(100vw - 28px);
   }
-  
+
+  /* FOOTER */
+  .shop-feature .shop-feature__detail .content{
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .footer-right__area {
+    float: none;
+    text-align: center;
+  }
 }
