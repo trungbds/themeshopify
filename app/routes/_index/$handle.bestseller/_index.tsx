@@ -37,6 +37,8 @@ const GET_PRODUCTS_BESTSELLER = `#graphql
   ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
+      title
+      handle
       products(first: 10,sortKey:BEST_SELLING) {
         nodes {
           options {

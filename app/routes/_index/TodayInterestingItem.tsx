@@ -8,7 +8,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
 import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
 
-export default function TodayInterestingItem({ collections }: { collections: any }) {
+type TodayInterestingItemProps = {
+    collections: any;
+    onSelectProduct: (handle: string)=> void;
+}
+
+
+export default function TodayInterestingItem({ collections, onSelectProduct }: TodayInterestingItemProps) {
     const products = collections.collection?.products.nodes || [];
     // const { products } = collections;
 
@@ -29,7 +35,7 @@ export default function TodayInterestingItem({ collections }: { collections: any
                                     <Swiper
                                         modules={[Navigation, PaginationSwiper]}
                                         spaceBetween={8}
-                                        slidesPerView={4}
+                                        slidesPerView='auto'
                                         navigation= {{
                                         prevEl: '.carousel-btn-prev',
                                         nextEl: '.carousel-btn-next',
@@ -43,14 +49,13 @@ export default function TodayInterestingItem({ collections }: { collections: any
                                         {products.map((product: any) => (
                                             <SwiperSlide>
                                                 <ProductItemDefault
-                                                    type ='dafault'
+                                                    type ='default'
                                                     key={product.id}
                                                     loading='eager'
                                                     product={product}
-                                                    colorVariants={product.options.optionValues || []}
-                                                    // onAddToCart={() => handleAddToCart(product.handle)} // Truyền hàm mở modal cho ProductItem
+                                                    colorVariants={product.options}
+                                                    onSelectProduct={() => onSelectProduct(product.handle)} 
                                                 />
-
                                             </SwiperSlide>
                                             
                                         ))}

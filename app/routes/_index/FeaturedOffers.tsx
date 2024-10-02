@@ -1,11 +1,6 @@
 import { Link } from "@remix-run/react";
 import { Image } from "@shopify/hydrogen";
-
-// Swiper
-import { Navigation,  Pagination as PaginationSwiper  } from 'swiper/modules';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
-import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
 
 
 export default function FeaturedOffers(
@@ -19,6 +14,7 @@ export default function FeaturedOffers(
 
                     {collections.map((collection:any) => (
                         <div className="col-span-1 sm:col-span-1 md:col-span-1 ">
+                        
                             <Link 
                                 key={collection.id}
                                 className="featured-offers__item link-primary"
@@ -31,9 +27,16 @@ export default function FeaturedOffers(
                                     loading="lazy"
                                     className=""
                                     aspectRatio="400/320"
+                                    width={600}
                                 />
                                 <h3 className="link-hover">{collection.title}</h3>
                                 <p>{collection.description}</p>
+
+                                <span className="btn btn-discover">
+                                    Discover
+                                    <img src={iconchevronright} alt="discover" />
+                                    
+                                </span>
                             </Link>
 
                         </div>

@@ -152,11 +152,11 @@ function BreadcrumbsComponent({ pages }: { pages: Pages[] }) {
                 ) : index < pages.length - 1 ? (
                   <>
                     <Link
-                      className="flex items-center text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
+                      className="link-primary flex items-center text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
                       to={page.href}
                       prefetch="intent"
                     >
-                      {page.name}
+                      <span className='link-hover'>{page.name}</span>
                     </Link>
                     {lashMark}
                   </>

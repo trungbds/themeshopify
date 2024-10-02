@@ -129,7 +129,7 @@ function FooterMenu({
 
                 </div>
 
-                <div className='sm:col-span-12 md:col-span-12'>
+                <div className='sm:col-span-12 md:col-span-12 col-span-4'>
                   <div className='footer-block__ulti flex gap-16'>
                     <ButtonOptionSelect 
                       label="Language"

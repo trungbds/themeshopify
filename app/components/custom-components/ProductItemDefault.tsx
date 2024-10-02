@@ -2,7 +2,7 @@ import {Link} from '@remix-run/react';
 import {Image} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import type {ProductItemFragment} from 'storefrontapi.generated';
-import noVariantColor from '~/assets/images/no-image-available.png';
+import noVariantColor from '~/assets/images/no-variant-color.png';
 import { ProductPriceV3 } from '~/routes/c/all/_index/ProductPriceV3';
 import iconcart from '~/assets/fonts/icons/icon-cart.svg';
 
@@ -19,8 +19,8 @@ interface ProductItemProps {
   // }>;
   colorVariants: any[]; 
   loading?: 'eager' | 'lazy';
-  onAddToCart?: () => void;
-  type?: 'dafault' | 'minus';
+  type?: 'default' | 'minus';
+  onSelectProduct: (handle: string)=> void;
 }
 
 export function ProductItemDefault({
@@ -28,10 +28,8 @@ export function ProductItemDefault({
   colorVariants,
   loading,
   type, 
-  onAddToCart, // Thêm prop để điều khiển mở modal
+  onSelectProduct, 
 }: ProductItemProps ) {
-
-  console.log('product',product )
 
   const variant = product.variants.nodes[0];
   const variantUrl = useVariantUrl(product.handle, variant.selectedOptions);
@@ -87,7 +85,8 @@ export function ProductItemDefault({
       {/* Thêm nút Add to Cart */}
       <button
         className = "btn btn-quickadd" 
-        onClick={onAddToCart}>
+        onClick={() => onSelectProduct && onSelectProduct(product.handle)}
+      >
           <img src={iconcart}/>
           Add to Cart
       </button>
@@ -95,25 +94,27 @@ export function ProductItemDefault({
   );
 }
 
-function RenderColorVariants({ colorVariants }: any[]) {
-  // Flattening the array of option values and ignoring those with swatch: null
-  const flattenedVariants = colorVariants.flatMap(variant =>
-    variant.optionValues.filter(option => option.swatch !== null)
+function RenderColorVariants({ colorVariants }: { colorVariants: any[] }) {
+  // Lọc những tập con có ít nhất một optionValues.swatch khác null
+  const validVariants = colorVariants.filter(variant =>
+    variant.optionValues.some(option => option.swatch !== null)
   );
 
-  // Get the number of variant colors
+  // Flatten tất cả các optionValues từ các tập con hợp lệ (bao gồm cả những cái có swatch === null)
+  const flattenedVariants = validVariants.flatMap(variant => variant.optionValues);
+
+  // Get the number of valid variant colors
   const numberOfVariantColors = flattenedVariants.length;
 
-  // Nếu chỉ có một biến thể và cả `transformedSrc` lẫn `color` đều không có giá trị thì không hiển thị gì
-  if (numberOfVariantColors === 1 && 
-      !flattenedVariants[0].swatch?.image?.previewImage?.transformedSrc && 
-      !flattenedVariants[0].swatch?.color) {
+  // Nếu không có biến thể hợp lệ, không hiển thị gì
+  if (numberOfVariantColors === 0) {
     return <div className="color-variants" />;
   }
 
   return (
     <div className="color-variants">
       {flattenedVariants.slice(0, 5).map((variant, index) => {
+        // Check if the variant has an image or color, otherwise handle swatch null cases
         if (variant.swatch?.image?.previewImage?.transformedSrc) {
           return (
             <img
@@ -132,15 +133,20 @@ function RenderColorVariants({ colorVariants }: any[]) {
           );
         } else {
           return (
-            <img
-              key={index}
-              src={noVariantColor} // Ensure noVariantColor is defined
-              alt="No color variant"
-            />
+            <div key={index} className="no-color-swatch">
+              <img
+                key={index}
+                src={noVariantColor}
+                alt={`Color variant ${index + 1}`}
+              />
+            </div>
           );
         }
       })}
-      {numberOfVariantColors > 5 && <span>{numberOfVariantColors - 5}+</span>}
+      {/* Render the number of remaining variants if more than 5 */}
+      {numberOfVariantColors > 5 && (
+        <span>{numberOfVariantColors - 5}+</span>
+      )}
     </div>
   );
 }

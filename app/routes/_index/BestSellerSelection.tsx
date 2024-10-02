@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useFetcher } from '@remix-run/react';
+import { Link, useFetcher } from '@remix-run/react';
 import { ProductItemDefault } from '~/components/custom-components/ProductItemDefault';
 
 // Swiper
@@ -8,7 +8,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
 import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
 
-export default function BestSellerSelection({ collectionsList }: { collectionsList: any }) {
+type BestSellerSelectionProps = {
+    collectionsList: any;
+    onSelectProduct: (handle: string)=> void;
+}
+
+export default function BestSellerSelection({ collectionsList, onSelectProduct }: BestSellerSelectionProps) {
     const { items } = collectionsList;
     const [activeIndex, setActiveIndex] = useState(0);
     const fetcher = useFetcher(); // Đặt fetcher ở đây
@@ -26,6 +31,8 @@ export default function BestSellerSelection({ collectionsList }: { collectionsLi
 
     // Lấy tất cả các sản phẩm từ fetcher.data khi thành công
     const products = fetcher.data?.collection?.products.nodes || [];
+    const collectionhandle = fetcher.data?.collection?.handle || '';
+    const collectiontitle = fetcher.data?.collection?.title || '';
 
     // useEffect để gọi handleSelect với item đầu tiên khi component mount
     useEffect(() => {
@@ -37,9 +44,9 @@ export default function BestSellerSelection({ collectionsList }: { collectionsLi
     return (
         <section className="bestseller">
             <div className="container">
-                <div className="text-center border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                <div className="bestseller-detail text-center border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+                    <h2 className="title-selection"> Best Seller</h2>
                     <ul className="flex flex-wrap -mb-px items-baseline bestseller-list">
-                        <h2 className="title-selection"> Best Seller</h2>
                         {items.map((item: any, index: number) => (
                             <li key={index}>
                                 <a  
@@ -65,7 +72,7 @@ export default function BestSellerSelection({ collectionsList }: { collectionsLi
                             key = 'bestseller-swiper'
                             modules={[Navigation, PaginationSwiper]}
                             spaceBetween={8}
-                            slidesPerView={5}
+                            slidesPerView='auto'
                             navigation= {{
                             prevEl: '.carousel-btn-prev.bestseller-swiper__btn-prev',
                             nextEl: '.carousel-btn-next.bestseller-swiper__btn-next',
@@ -79,17 +86,29 @@ export default function BestSellerSelection({ collectionsList }: { collectionsLi
                             {products.map((product: any) => (
                                 <SwiperSlide>
                                     <ProductItemDefault
-                                        type ='dafault'
+                                        type ='default'
                                         key={product.id}
                                         loading='eager'
                                         product={product}
-                                        colorVariants={product.options || []}
-                                        // onAddToCart={() => handleAddToCart(product.handle)} // Truyền hàm mở modal cho ProductItem
+                                        colorVariants={product.options}
+                                        onSelectProduct={() => onSelectProduct(product.handle)} // Truyền hàm mở modal cho ProductItem
                                     />
+                                </SwiperSlide>
+                            ))}
+
+                                <SwiperSlide>
+                                    <div className='product-item nav-collection'>
+                                        <Link prefetch="intent" 
+                                            to={`/c/${collectionhandle}`}>
+                                                <span>
+                                                    Show more products of 
+                                                    <br />
+                                                    <strong>{collectiontitle}</strong>
+                                                </span>
+                                        </Link>
+                                    </div>
 
                                 </SwiperSlide>
-                                
-                            ))}
 
                             <div className="carousel-btn-prev bestseller-swiper__btn-prev">
                                 <img src={iconchevronleft} alt="" width='24px' height='auto' />
@@ -102,7 +121,7 @@ export default function BestSellerSelection({ collectionsList }: { collectionsLi
                             
                         </>
                     ) : (
-                        <p className='not-found'>No products available.</p>
+                        <p className='not-found'>Currently this collection does not have any products</p>
                     )}
                 </div>
             </div>

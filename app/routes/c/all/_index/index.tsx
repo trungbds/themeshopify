@@ -101,6 +101,7 @@ export default function Collection() {
   const closeModal = () => {
     setModalOpen(false); 
   };
+  
 
   return (
     <>

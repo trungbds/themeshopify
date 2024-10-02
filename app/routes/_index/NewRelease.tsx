@@ -1,14 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useFetcher } from '@remix-run/react';
 import { ProductItemDefault } from '~/components/custom-components/ProductItemDefault';
 
-// Swiper
-import { Navigation,  Pagination as PaginationSwiper  } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
-import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
+type NewReleaseProps  = {
+    products: any;
+    onSelectProduct: (handle: string)=> void;
+}
 
-export default function NewRelease({ products }: { products: any }) {
+export default function NewRelease({ products,onSelectProduct }: NewReleaseProps) {
 
     const productsList = products.products?.nodes || [];
 
@@ -31,12 +28,12 @@ export default function NewRelease({ products }: { products: any }) {
                 <div className="products-grid">
                     {selectedProducts.map((product: any) => (
                         <ProductItemDefault
-                            type ='dafault'
+                            type ='default'
                             key={product.id}
                             loading='eager'
                             product={product}
-                            colorVariants={product.options.optionValues || []}
-                            // onAddToCart={() => handleAddToCart(product.handle)} // Truyền hàm mở modal cho ProductItem
+                            colorVariants={product.options || []}
+                            onSelectProduct={() => onSelectProduct(product.handle)} 
                         />
                     ))}
                 </div>

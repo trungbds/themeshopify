@@ -92,6 +92,8 @@ export function ProductItemCustom({
 }
 
 function RenderColorVariants({ colorVariants }: { colorVariants: ProductItemProps['colorVariants'] }) {
+
+  console.log('colorVariants', colorVariants); 
   
   //Error '.leight'
   const numberOfVariantColors = colorVariants.length;

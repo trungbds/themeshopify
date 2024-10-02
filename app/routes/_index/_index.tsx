@@ -1,13 +1,9 @@
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, Link, type MetaFunction} from '@remix-run/react';
-import {Image} from '@shopify/hydrogen';
-
+import {Await, useFetcher, useLoaderData, type MetaFunction} from '@remix-run/react';
+import {useState, useEffect, Suspense } from 'react'; 
 import type {
-  FeaturedCollectionFragment,
+  ProductQuickViewFragment,
 } from 'storefrontapi.generated';
-
-import RecommendedProducts from '~/components/custom-components/RecommendedProducts';
-
 import {
   FEATURED_COLLECTION_QUERY,
   RECOMMENDED_PRODUCTS_HOMEPAGE_QUERY,
@@ -23,6 +19,7 @@ import TodayInterestingItem from './TodayInterestingItem';
 import AllCategories from './AllCategories';
 import IdealForSeasons from './IdealForSeasons';
 import NewRelease from './NewRelease';
+import { ProductModal } from '../c/all/_index/ProductModal';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -121,6 +118,36 @@ export default function Homepage() {
   //   fetcher.load(`/${id}/bestseller`);
   // };
 
+  // Modal
+  const [isModalOpen, setModalOpen] = useState(false); // Quản lý trạng thái modal
+  const fetcher = useFetcher(); // Đặt fetcher ở đây
+  const [selectedProduct, setSelectedProduct] = useState<ProductQuickViewFragment>() ;
+  const [selectedProductHandle, setSelectedProductHandle] = useState<string | null>(null);
+
+  // Hàm để nhận handle từ component con
+  const handleProductSelect = (handle: string) => {
+    
+    setSelectedProductHandle(handle);
+    console.log(`Selected product handle: ${handle}`);
+    handleAddToCart(handle);
+  };
+  
+
+  const handleAddToCart = (handle : string) => {
+    fetcher.load(`/c/all/${handle}/quickview`);
+  };
+
+  useEffect(() => {
+    if (fetcher.state === 'idle' && fetcher.data) {
+      setSelectedProduct(fetcher.data as ProductQuickViewFragment);
+      setModalOpen(true);
+    }
+  }, [fetcher.state, fetcher.data]);
+
+  const closeModal = () => {
+    setModalOpen(false); 
+  };
+
   return (
     <div className="homepage">
       <HeroHomepage 
@@ -133,11 +160,12 @@ export default function Homepage() {
 
       <BestSellerSelection 
         collectionsList = {menu}
-        // getProductsBestSeller = {getProductsBestSeller}
+        onSelectProduct={handleProductSelect}
       />
       
       <TodayInterestingItem 
         collections = {TodayInteresting}
+        onSelectProduct={handleProductSelect}
       />
 
       <AllCategories 
@@ -150,7 +178,25 @@ export default function Homepage() {
       
       <NewRelease 
         products={NewReleaseData}
+        onSelectProduct={handleProductSelect}
       />
+
+      {isModalOpen && (
+        <Suspense fallback={<div>Loading product...</div>}>
+          <Await
+            resolve={fetcher.data}
+            errorElement="There was a problem loading product"  
+          >
+            {(product) => (
+              <ProductModal
+                onClose={closeModal}
+                product={product}
+                loading={fetcher.state === 'loading'}
+              />
+            )}
+          </Await>
+        </Suspense>
+      )}
     </div>
   );
 }

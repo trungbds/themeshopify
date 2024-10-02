@@ -17,7 +17,7 @@ export default function HeroHomepage(
     return (
         <section className="hero-homepage">
             <div className="container">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 h-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 md:gap-4 gap-0 h-full">
                     <div className="hightlight col-span-2 sm:col-span-1 md:col-span-2 h-auto md:h-full flex flex-col">
                         <Link 
                             className="collection-item group relative flex flex-col overflow-hidden rounded-lg px-4 pb-4 pt-40 flex-grow"
@@ -102,6 +102,30 @@ export default function HeroHomepage(
                             pagination={{ 
                                 el: '.images-pagination',
                                 type: 'fraction' 
+                            }}
+
+                            breakpoints={{
+                                // Kích thước màn hình nhỏ hơn hoặc bằng 1200px
+                                1200: {
+                                    slidesPerView: 6, // Hiển thị 5 slides
+                                },
+                                // Kích thước màn hình nhỏ hơn hoặc bằng 992px
+                                992: {
+                                    slidesPerView: 4, // Hiển thị 4 slides
+                                },
+                                // Kích thước màn hình nhỏ hơn hoặc bằng 768px
+                                768: {
+                                    slidesPerView: 'auto', // Hiển thị 3 slides
+                                },
+                                // Kích thước màn hình nhỏ hơn hoặc bằng 576px
+                                576: {
+                                    slidesPerView: 'auto', // Hiển thị 2 slides
+                                },
+                                
+                                // Mặc định: 1 slide
+                                0: {
+                                    slidesPerView: 'auto', // Hiển thị 1 slide
+                                },
                             }}
                         >
                             {heroList.map((item:any) => (
