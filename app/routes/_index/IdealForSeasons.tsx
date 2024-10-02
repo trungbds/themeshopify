@@ -38,7 +38,6 @@ export default function IdealForSeasons({ collections }: { collections: any }) {
                         loading="lazy"
                     />
                     <Swiper
-                        key = 'ideal-seasons-swiper'
                         className = 'ideal-seasons-swiper'
                         modules={[Navigation, PaginationSwiper]}
                         spaceBetween={32}

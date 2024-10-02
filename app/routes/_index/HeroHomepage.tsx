@@ -90,7 +90,6 @@ export default function HeroHomepage(
 
                     <div className="hero-list col-span-3 sm:col-span-1 md:col-span-3 h-auto md:h-full flex">
                         <Swiper
-                            key='hero-list__swiper'
                             modules={[Navigation, PaginationSwiper]}
                             spaceBetween={16}
                             slidesPerView={6}

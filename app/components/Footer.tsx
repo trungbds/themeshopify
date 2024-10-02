@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense,useState  } from 'react';
 import { Await, Link, NavLink } from '@remix-run/react';
 import type { FooterQuery, HeaderQuery } from 'storefrontapi.generated';
 
@@ -15,6 +15,7 @@ import iconregularsale from '~/assets/fonts/icons/icon-regularsale.svg';
 import iconpackagewhite from '~/assets/fonts/icons/icon-package-white.svg';
 import iconpaymentlist from '~/assets/fonts/icons/icon-paymentlist.svg';
 import iconsociallist from '~/assets/fonts/icons/icon-sociallist.svg';
+import icondropdown from '~/assets/fonts/icons/icon-dropdown.svg';
 
 
 import { ButtonOptionSelect } from './custom-components/ButtonOptionSelect';
@@ -100,15 +101,16 @@ function FooterMenu({
                 </div>
 
                 {items.slice(0, 3).map((item) => (
-                  <MenuItem
+                  <MenuGroupItem
                     key={item.id}
                     item={item}
                     primaryDomainUrl={primaryDomainUrl}
                     publicStoreDomain={publicStoreDomain}
+                    isIcon = {true}
                   />
                 ))}
 
-                <div className="col-span-4 sm:col-span-4 md:col-span-4 md:order-2 sm:order-2">
+                <div className="col-span-4 sm:col-span-4 md:col-span-4 md:order-1 -order-1">
                   <div className='footer-right__area'>
 
                     <Link
@@ -186,7 +188,7 @@ function FooterMenu({
         <section className="footer-submenu">
           <div className="container">
             {items.slice(3).map((item) => (
-              <MenuItem
+              <MenuGroupItem
                 key={item.id}
                 item={item}
                 primaryDomainUrl={primaryDomainUrl}
@@ -201,7 +203,7 @@ function FooterMenu({
         <section className="footer-mainmenu">
           <div className="container">
             {items.map((item) => (
-              <MenuItem
+              <MenuGroupItem
                 key={item.id}
                 item={item}
                 primaryDomainUrl={primaryDomainUrl}
@@ -217,58 +219,80 @@ function FooterMenu({
   );
 }
 
-function MenuItem({
+function MenuGroupItem({
   item,
   primaryDomainUrl,
   publicStoreDomain,
+  isIcon
 }: {
   item: any;
   primaryDomainUrl: string;
   publicStoreDomain: string;
+  isIcon? :boolean
 }) {
+  const [isOpen, setIsOpen] = useState(false); // Trạng thái mở/đóng
+
   if (!item.url) return null;
 
-  // If the URL is internal, strip the domain
-  const url = item.url.includes('myshopify.com') ||
-              item.url.includes(publicStoreDomain) ||
-              item.url.includes(primaryDomainUrl)
-    ? new URL(item.url).pathname
-    : item.url;
+  // Hàm chuẩn hóa URL
+  const getNormalizedUrl = (url: string) => {
+    if (
+      url.includes('myshopify.com') ||
+      url.includes(publicStoreDomain) ||
+      url.includes(primaryDomainUrl)
+    ) {
+      return new URL(url).pathname;
+    }
+    return url;
+  };
 
+  const url = getNormalizedUrl(item.url);
   const isExternal = !url.startsWith('/');
+
+  const handleToggleSubmenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   const renderedItem = isExternal ? (
     <a href={url} key={item.id} rel="noopener noreferrer" target="_blank">
       {item.title}
     </a>
   ) : (
-    <NavLink
-      end
-      key={item.id}
-      prefetch="intent"
-      to={url}
-      className='menu-item menu-item__title'
-    >
-      {item.title}
-    </NavLink>
+    isIcon ? (
+      <div
+        key={item.id}
+        className="menu-item menu-item__title"
+        onClick={handleToggleSubmenu}
+      >
+        <span>{item.title}</span>
+        <img src={icondropdown} alt="Dropdown Icon" />
+      </div>
+    ) : (
+      <NavLink
+        key={item.id} // Thay key thành item.id
+        to={url} // Thêm to cho NavLink
+        className="menu-item menu-item__title"
+      >
+        <span>{item.title}</span>
+      </NavLink>
+    )
+    
   );
 
-  // Check if item.items exists and is an array with elements
+  // Kiểm tra nếu có submenu
   if (Array.isArray(item.items) && item.items.length > 0) {
     return (
       <div className="col-span-4 md:col-span-2">
-        <div key={item.id} className='menu-item__group'>
+        <div
+          className={`menu-item__group ${isOpen ? 'open' : ''}`} // Thêm class 'open' khi submenu được mở
+        >
           {renderedItem}
-          <div className="submenu">
+
+          <div className='submenu'>
             {item.items.map((subItem: any) => {
               if (!subItem.url) return null;
 
-              const subUrl = subItem.url.includes('myshopify.com') ||
-                            subItem.url.includes(publicStoreDomain) ||
-                            subItem.url.includes(primaryDomainUrl)
-                ? new URL(subItem.url).pathname
-                : subItem.url;
-
+              const subUrl = getNormalizedUrl(subItem.url);
               const isSubExternal = !subUrl.startsWith('/');
 
               return isSubExternal ? (
@@ -281,12 +305,11 @@ function MenuItem({
                   {subItem.title}
                 </a>
               ) : (
-                <NavLink
-                  end
-                  key={subItem.id}
-                  prefetch="intent"
+                <NavLink 
+                  className="menu-item"
+                  prefetch="intent" 
                   to={subUrl}
-                  className='menu-item'
+                  end
                 >
                   {subItem.title}
                 </NavLink>
@@ -294,14 +317,13 @@ function MenuItem({
             })}
           </div>
         </div>
-
       </div>
-      
     );
   }
 
   return renderedItem;
 }
+
 
 function ShopFeature(){
   return (
