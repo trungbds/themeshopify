@@ -713,6 +713,11 @@ button.reset:hover:before {
   margin-bottom: 16px ;
 }
 
+.shop-feature .shop-feature__detail .content p{
+  opacity: .8;
+}
+
+
 .footer-mainmenu {
   padding: 32px 0;
 }
@@ -1145,6 +1150,10 @@ button.reset:hover:before {
   padding: 0 0 32px
 }
 
+.product-item {
+  min-width: unset;
+}
+
 .hero-homepage .collection-item {
   width: initial;
   height: inherit;
@@ -1276,7 +1285,8 @@ button.reset:hover:before {
   align-items: center;
 }
 .featured-offers .featured-offers__item>img {
-  padding: 16px
+  padding: 16px;
+  object-fit: cover;
 }
 
 .featured-offers .featured-offers__item h3{
@@ -1317,6 +1327,7 @@ button.reset:hover:before {
   background-color: #F1F4F4;
   border-radius: 8px;
   padding: 32px 0;
+  overflow: hidden;
 }
 
 .bestseller .bestseller-detail {
@@ -1383,6 +1394,7 @@ button.reset:hover:before {
   height: inherit;
   padding: 0 0 0 48px;
   max-width: 260px;
+  text-align: center;
 }
 
 
@@ -3061,10 +3073,15 @@ button.reset:hover:before {
   h1 {
 
   }
+
+  .title-selection {
+    font-size: 18px;
+  }
   
   .container {
     width: calc(100% - 16px);
   }
+  
 
   .main {
     padding-top: 8px;
@@ -3099,6 +3116,52 @@ button.reset:hover:before {
     right: 8px;
   }
 
+  .collections-result .swiper .swiper-slide {
+    
+  }
+
+.homepage .product-item,
+.homepage .collections-result .swiper .swiper-slide{
+  width: 220px;
+  max-width: 220px;
+  min-width: unset;
+}
+
+
+  .product-item .product-item__header{
+
+  }
+  .color-variants {
+    height: 18px;
+    margin: 2px 0 8px;
+  }
+
+  .product-item .product-item__header h4 {
+    font-size: 14px;
+  }
+
+  .product-item .product-price {
+    margin: 8px 0;
+  }
+
+  .product-item .price-detail .before-discount {
+    font-size: 12px;
+  }
+  .product-price .discount-label {
+    font-size: 10px;
+  }
+  .product-item .discount-label img {
+    width: 14px;
+  }
+
+
+
+
+
+
+
+
+
   .hero-homepage .collection-item img {
     object-fit: cover;
     height: 100%;
@@ -3109,6 +3172,10 @@ button.reset:hover:before {
 
   .hero-homepage .hightlight .collection-item__content h2 {
     font-size: initial;
+  }
+
+  .hero-homepage .hero-list {
+    margin: 16px 0;
   }
   
 
@@ -3129,11 +3196,21 @@ button.reset:hover:before {
   }
 
   .featured-offers .featured-offers__item>img {
-    padding: 32px;
+    padding: 24px;
+  }
+
+  .featured-offers .featured-offers__item h3{
+    margin: 8px auto 8px;
+    font-size: 1rem;
+  }
+
+  .featured-offers .featured-offers__item p {
+    font-size: 12px;
   }
 
   .bestseller .bestseller-detail {
     display: block;
+    box-shadow: 0px 4px 4px 0px #edededb5;
   }
 
   .bestseller .title-selection {
@@ -3141,18 +3218,94 @@ button.reset:hover:before {
   }
 
   .bestseller .bestseller-list {
-    
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: scroll;
+    /* Ẩn thanh cuộn trên Firefox */
+    scrollbar-width: none;
+
+    /* Ẩn thanh cuộn trên Webkit (Chrome, Safari, Edge) */
+    -ms-overflow-style: none;  /* IE and Edge */
+  }
+  /* Ẩn thanh cuộn trên Webkit */
+  .bestseller .bestseller-list::-webkit-scrollbar {
+    display: none;  /* Ẩn thanh cuộn */
+  }
+
+  .bestseller .bestseller-list li {
+    margin-bottom: 0;
+    flex: 0 0 auto;
   }
 
   .bestseller .bestseller-list li a{
     padding: 12px 16px;
+    font-size: 12px;
   }
 
   .bestseller .collections-result .swiper {
     padding: 16px 8px 24px;
   }
 
+  .today-interesting__intro {
+    width: 100%;
+    display: block;
+    max-width: none;
+    padding: 16px;
+  }
+
+  .today-interesting .grid {
+    border: none;
+    margin: 0;
+  }
+
+  .today-interesting .swiper {
+    padding: 32px 8px;
+  }
+
+  .new-release .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+    gap: 12px 4px;
+  }
+
+  .new-release .products-grid .product-item{
+    width: auto;
+    max-width: unset;
+    min-width: unset;
+  }
+
   /* FOOTER */
+  .shop-feature {
+    padding: 32px 0px 0px
+  }
+
+  .shop-feature .container {
+    padding-bottom: 24px;
+  }
+
+  .shop-feature .shop-feature__detail {
+    max-width: 86%;
+    margin: 16px auto;
+    gap: 16px;
+  }
+  .shop-feature .shop-feature__detail img {
+    flex: 0 0 24px;
+    width: 24px;
+    height: auto;
+  }
+
+  .shop-feature .shop-feature__detail .content h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .shop-feature .shop-feature__detail .content p{
+    font-size: 12px;
+    opacity: .8;
+  }
+
+  
+
   .shop-feature .shop-feature__detail .content{
     max-width: 100%;
     width: 100%;

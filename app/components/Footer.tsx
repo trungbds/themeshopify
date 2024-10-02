@@ -108,7 +108,7 @@ function FooterMenu({
                   />
                 ))}
 
-                <div className="col-span-4 sm:col-span-4 md:col-span-4">
+                <div className="col-span-4 sm:col-span-4 md:col-span-4 md:order-2 sm:order-2">
                   <div className='footer-right__area'>
 
                     <Link
@@ -256,7 +256,7 @@ function MenuItem({
   // Check if item.items exists and is an array with elements
   if (Array.isArray(item.items) && item.items.length > 0) {
     return (
-      <div className="col-span-2">
+      <div className="col-span-4 md:col-span-2">
         <div key={item.id} className='menu-item__group'>
           {renderedItem}
           <div className="submenu">
