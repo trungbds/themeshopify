@@ -29,6 +29,7 @@ export default function RecommendedProducts({
       <div className="recommended-products">
         <h2 className="recommended-products__title">Recommended</h2>
           <Swiper
+            key='4413226484123854126581'
             className = 'recommended-swiper'
             modules={[Navigation, PaginationSwiper,Mousewheel, Keyboard]}
             spaceBetween={8}

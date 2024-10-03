@@ -28,7 +28,7 @@ export default function RecentlyViewedProducts({ viewedProducts }: RecentlyViewe
         <h2 className="recently-viewed__title">Recently viewed</h2>
             <Swiper
                   className='recently-viewed__carousel'
-                  key = 'recently-viewed-swiper'
+                  key = '23124115443456514166345213451'
                   modules={[Navigation, PaginationSwiper,Mousewheel, Keyboard]}
                   spaceBetween={8}
                   slidesPerView='auto'
