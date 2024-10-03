@@ -13,6 +13,10 @@ import HeaderSignIn  from './custom-components/HeaderSignIn';
 import HeaderAccount  from './custom-components/HeaderAccount';
 import HeaderSupportBtn from './custom-components/HeaderSupportBtn';
 import CartHeader from './custom-components/CartHeader';
+import icondropdown from '~/assets/fonts/icons/icon-dropdown.svg';
+import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
+import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
+
 
 
 
@@ -113,8 +117,16 @@ export function HeaderMenu({
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
 
+  const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
 
-  const items = menu?.items || []
+  const toggleOpen = (id: string) => {
+    setOpenItems((prevOpenItems) => ({
+      ...prevOpenItems,
+      [id]: !prevOpenItems[id], // Toggle trạng thái open của từng item
+    }));
+  };
+
+  const items = menu?.items || [];
 
   const renderItems = (items: MenuItemType[]) => {
     return items.map((item) => {
@@ -128,59 +140,65 @@ export function HeaderMenu({
           : item.url.includes('myshopify.com') ||
             item.url.includes(publicStoreDomain) ||
             item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
+          ? new URL(item.url).pathname
+          : item.url;
+
+      const isSubMenu = item.items && item.items.length > 0;
+      const isOpen = openItems[item.id]; // Kiểm tra trạng thái mở của item
 
       return (
-
-        <div className={`menu-item ${item.items && item.items.length > 0 ? 'menu-item__group' : ''}`}> {/* Đổi tên class cho item cha */}
-          <NavLink
-            end
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-          
-          {item.items && item.items.length > 0 && (
-            <div className="sub-menu nested-sub-menu"> {/* Đổi tên class cho sub-menu */}
-              {renderItems(item.items)} {/* Gọi lại hàm renderItems cho các item con */}
-            </div>
+        <div
+          className={`${isSubMenu ? 'menu-item__group' : 'menu-item'} ${
+            isOpen ? 'open' : ''
+          }`} // Thêm class "open" khi item được mở
+          key={item.id}
+        >
+          {!isSubMenu ? (
+            <NavLink
+              end
+              prefetch="intent"
+              style={activeLinkStyle}
+              to={url}
+              className={`${isSubMenu ? 'menu-item__title' : ''}`}
+            >
+              <span>{item.title}</span>
+              <img src={iconchevronright} alt="icon chevronright" />
+            </NavLink>
+          ) : (
+            <>
+              <div
+                className="menu-item menu-item__title"
+                onClick={() => toggleOpen(item.id)} // Gọi toggleOpen khi nhấp vào
+              >
+                <span>{item.title}</span>
+                <img src={icondropdown} alt="icon dropdown" />
+              </div>
+              <div className="sub-menu nested-sub-menu">
+                <div className="menu-item">
+                  <NavLink end prefetch="intent" style={activeLinkStyle} to={url}>
+                    {`All ${item.title}`}
+                    <img src={iconchevronright} alt="icon chevronright" />
+                  </NavLink>
+                </div>
+                {renderItems(item.items)} {/* Gọi lại hàm renderItems cho các item con */}
+              </div>
+            </>
           )}
-
         </div>
       );
-
     });
   };
-  
-  const className = `header-menu-${viewport}`;
-
-  function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
-    if (viewport === 'mobile') {
-      event.preventDefault();
-      window.location.href = event.currentTarget.href;
-    }
-  }
 
   return (
-    <nav className={className} role="navigation">
+    <nav className={`header-menu-${viewport}`} role="navigation">
       {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={closeAside}
-          prefetch="intent"
-          style={activeLinkStyle}
-          className="menu-item"
-          to="/"
-        >
-          Home
-        </NavLink>
+        <div className="menu-item">
+          <NavLink end prefetch="intent" style={activeLinkStyle} to="/">
+            Home
+          </NavLink>
+        </div>
       )}
-
       {renderItems(items)}
-
     </nav>
   );
 }

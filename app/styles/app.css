@@ -325,7 +325,7 @@ aside header h2 {
 }
 
 aside main {
-  margin: 1rem;
+  
 }
 
 aside p {
@@ -458,7 +458,6 @@ button.reset:hover:before {
 }
 
 .header-menu-mobile {
-
 }
 
 .header-menu-desktop {
@@ -2447,20 +2446,53 @@ button.reset:hover:before {
   font-weight: 500;
   color: rgb(0, 0, 0);
   background-color: transparent;
-  padding: 12px 0;
+  padding: 12px 16px;
 }
 
 .header-menu-mobile .menu-item a{
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-menu-mobile .menu-item a img{
+  width: 16px;
+  opacity: .5;
 }
 
 .header-menu-mobile .menu-item__group{
   display: block;
   border-bottom: none;
-} 
+  background-color: transparent;
+  overflow: hidden;
+  margin: 2px 0;
+}
+
+.header-menu-mobile .menu-item__group.open {
+  background-color: #f5f5f5;
+}
+
+
+.header-menu-mobile .menu-item__group .menu-item__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-menu-mobile .menu-item__group .menu-item__title img{
+  opacity: .5;
+}
+
+
 
 .header-menu-mobile .menu-item__group .sub-menu {
-  display: none;
+  padding: 0 0 0 12px;
+  transition: max-height .3s ease-in-out;
+  max-height: 0px;
+}
+
+.header-menu-mobile .menu-item__group.open .sub-menu{
+  max-height: 500px;
 }
 
 
@@ -3601,10 +3633,7 @@ button.reset:hover:before {
   }
 
   .menu-item__group {
-    padding: 8px 0 16px;
-    border-bottom: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
+
   }
 
   .footer-mainmenu .menu-item__group .submenu{
