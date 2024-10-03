@@ -163,6 +163,7 @@ export function HeaderMenu({
         >
           {!isSubMenu ? (
             <NavLink
+              end
               prefetch="intent"
               style={activeLinkStyle}
               to={url}
@@ -183,7 +184,7 @@ export function HeaderMenu({
               </div>
               <div className="sub-menu nested-sub-menu">
                 <div className="menu-item">
-                  <NavLink prefetch="intent" style={activeLinkStyle} to={url} onClick={closeAside}>
+                  <NavLink end prefetch="intent" style={activeLinkStyle} to={url} onClick={closeAside}>
                     {`All ${item.title}`}
                     <img src={iconchevronright} alt="icon chevronright" />
                   </NavLink>

@@ -5,7 +5,7 @@ import type { ProductRecentlyViewedFragment } from 'storefrontapi.generated';
 import {Image, Money} from '@shopify/hydrogen';
 
 // Swiper
-import { Navigation,  Pagination as PaginationSwiper  } from 'swiper/modules';
+import { Navigation, Pagination as PaginationSwiper, Mousewheel, Keyboard } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
 import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
@@ -27,19 +27,30 @@ export default function RecentlyViewedProducts({ viewedProducts }: RecentlyViewe
     <div className="recently-viewed">
         <h2 className="recently-viewed__title">Recently viewed</h2>
             <Swiper
-                className='recently-viewed__carousel'
-                key = 'recently-viewed-swiper'
-                modules={[Navigation, PaginationSwiper]}
-                spaceBetween={8}
-                slidesPerView={7}
-                navigation= {{
-                prevEl: '.carousel-btn-prev.recently-viewed-swiper__btn-prev',
-                nextEl: '.carousel-btn-next.recently-viewed-swiper__btn-next',
-            }}
-            pagination={{ 
-                el: '.images-pagination',
-                type: 'fraction' 
-            }}
+                  className='recently-viewed__carousel'
+                  key = 'recently-viewed-swiper'
+                  modules={[Navigation, PaginationSwiper,Mousewheel, Keyboard]}
+                  spaceBetween={8}
+                  slidesPerView='auto'
+                  navigation= {{
+                  prevEl: '.carousel-btn-prev.recently-viewed-swiper__btn-prev',
+                  nextEl: '.carousel-btn-next.recently-viewed-swiper__btn-next',
+              }}
+              pagination={{ 
+                  el: '.images-pagination',
+                  type: 'fraction' 
+              }}
+
+              breakpoints={{
+                768: { // Trên 768px, không sử dụng cssMode
+                  cssMode: false,
+                },
+                0: { // Dưới 768px, bật cssMode
+                    cssMode: true,
+                    mousewheel: false, // Tắt cuộn bằng bánh xe chuột trên mobile
+                    
+                }
+              }}
             >
                 {viewedProducts.map(product => (
                     <SwiperSlide>

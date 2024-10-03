@@ -29,10 +29,10 @@ export default function RecommendedProducts({
       <div className="recommended-products">
         <h2 className="recommended-products__title">Recommended</h2>
           <Swiper
-            key = 'recommended-swiper'
-            modules={[Navigation, PaginationSwiper]}
+            className = 'recommended-swiper'
+            modules={[Navigation, PaginationSwiper,Mousewheel, Keyboard]}
             spaceBetween={8}
-            slidesPerView={7}
+            slidesPerView='auto'
             navigation= {{
             prevEl: '.carousel-btn-prev.recommended-swiper__btn-prev',
             nextEl: '.carousel-btn-next.recommended-swiper__btn-next',
@@ -50,6 +50,7 @@ export default function RecommendedProducts({
               0: { // Dưới 768px, bật cssMode
                   cssMode: true,
                   mousewheel: false, // Tắt cuộn bằng bánh xe chuột trên mobile
+                  
               }
             }}
           >

@@ -1643,6 +1643,11 @@ button.reset:hover:before {
   }
 }
 
+.recommended-swiper .swiper-slide,
+.recently-viewed__carousel .swiper-slide {
+  max-width: 220px;
+}
+
 .recommended-product img {
   height: auto;
 }
@@ -1991,7 +1996,7 @@ button.reset:hover:before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 4px 0 16px;
+  margin: 8px 0;
 }
 
 .carousel-helpers .swiper-pagination-fraction{
@@ -3670,6 +3675,23 @@ button.reset:hover:before {
 
 
   /* collection */
+  .breadcrumbs-section{
+    padding: 8px 0 16px;
+  }
+
+  .product-page__section{
+    margin-top: 0;
+  }
+  .breadcrumbs ol{
+    flex-wrap: wrap;
+  }
+
+  .breadcrumbs .breadcrumbs-list li:last-child span{
+    max-width: 100%;
+  }
+  .helpers-product{
+    display: none;
+  }
   .collection {
     flex-direction: column;
   }
@@ -3678,6 +3700,100 @@ button.reset:hover:before {
     width: 100%;
     flex: 0 0 100%;
   }
+
+  .collection-page__header {
+    padding: 8px 0 16px;
+   
+  }
+  .collection-header{
+    flex-wrap: wrap;
+  }
+
+  .collection-header .dependent-categories {
+    width: 100%;
+    overflow: hidden;
+    gap: 4px;
+    overflow-x: visible;
+    padding-bottom: 8px;
+  }
+
+  .collection-header .dependent-categories::-webkit-scrollbar {
+    height: 4px; /* Chiều cao của thanh cuộn */
+  }
+
+  .collection-header .dependent-categories::-webkit-scrollbar-thumb {
+    background-color: #c7c7c7; /* Màu của thanh cuộn */
+    border-radius: 10px;
+  }
+
+  .collection-header .dependent-categories::-webkit-scrollbar-track {
+    background-color: #ffffff; /* Màu nền của thanh cuộn */
+  }
+
+
+  .collection-title h1 {
+    height: auto;
+    font-size: 20px;
+  }
+
+  .dependent-categories .categories-nav-item {
+    flex: 0 0 auto;
+  }
+  .collection-header .dependent-categories .categories-nav-item a{
+        padding: 0px 16px;
+        height: 40px;
+        font-size: 14px;
+        font-weight: 500;
+  }
+
+
+  /* /product */
+ 
+  .product-main {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .product-form{
+    gap: 16px;
+  }
+
+  .product-options-grid {
+    margin-top: 8px;
+  }
+
+  .product-description{
+    margin-top: 32px;
+  }
+
+  .carousel-helpers {
+    display: none;
+  }
+
+  .product-main .price-detail{
+    font-size: 16px;
+    order: -1;
+  }
+  .product-main .product-price{
+    display: flex;
+    gap: 16px;
+    font-size: 16px;
+  }
+
+  .product-main .purchase-method{
+    margin: 8px 0 -4px;
+  }
+
+  .product-options-item{
+    min-width: 58px;
+  }
+
+  .recommended-swiper .swiper-slide,
+  .recently-viewed__carousel .swiper-slide {
+    max-width: 182px;
+  }
+
+
 
 
 

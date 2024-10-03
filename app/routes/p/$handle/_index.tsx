@@ -250,20 +250,59 @@ export default function Product() {
       setViewedProducts(storedProducts);
     }
   }, [product]);
-
   
 
-  // Thêm ảnh từ variant 
+
+  // RESPONTSIVE
+  const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // UseEffect to detect screen width
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+
+      // Define breakpoints
+      if (width <= 767) {
+        setIsMobile(true);
+        setIsTablet(false);
+        setIsDesktop(false);
+      } else if (width >= 768 && width <= 1024) {
+        setIsMobile(false);
+        setIsTablet(true);
+        setIsDesktop(false);
+      } else {
+        setIsMobile(false);
+        setIsTablet(false);
+        setIsDesktop(true);
+      }
+    };
+
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
 
   return (
+
     <div className="product">
+
+
+
       <section className='product-page__section'>
         <div className="container">
           <div className="product-sku">SKU: <span>{sku}</span></div>
           <div className="product-detail">
             
             <div className="product-content">
+
               {selectedVariant?.image && (
                 <ProductImage
                   currentImage={selectedVariant}
@@ -271,19 +310,28 @@ export default function Product() {
                   key = {product.handle}
                 />
               )}
-              <div className='product-description'>
-                <div className='product-description__header'>
-                  <h3 className='title btn btn-title'> Description</h3>
-                  <button className='btn icon btn-icon'>
-                    <img src={icondropdown} alt="Description"/>
-                  </button>
+
+
+              {!isMobile && (
+                <div className='product-description'>
+                    <div className='product-description__header'>
+                      <h3 className='title btn btn-title'> Description</h3>
+                      <button className='btn icon btn-icon'>
+                        <img src={icondropdown} alt="Description"/>
+                      </button>
+                    </div>
+                    <div className='product-description__content'
+                      dangerouslySetInnerHTML={{__html: descriptionHtml}} 
+                    />
                 </div>
-                <div className='product-description__content'
-                  dangerouslySetInnerHTML={{__html: descriptionHtml}} 
-                />
-              </div>
+              )}
+              
             </div>
+
+
+
             <div className="product-main">
+
               <div className="product-header">
                 <div className='product-title'>
                   <div className='brand'> Brand: <strong>{vendor}</strong>  </div>
@@ -326,11 +374,27 @@ export default function Product() {
                   }}
                 </Await>
               </Suspense>
-              
+
+              {isMobile && (
+                <div className='product-description'>
+                    <div className='product-description__header'>
+                      <h3 className='title btn btn-title'> Description</h3>
+                      <button className='btn icon btn-icon'>
+                        <img src={icondropdown} alt="Description"/>
+                      </button>
+                    </div>
+                    <div className='product-description__content'
+                      dangerouslySetInnerHTML={{__html: descriptionHtml}} 
+                    />
+                </div>
+              )}
+
             </div>
           </div>
         </div>
       </section>
+
+
 
       <section className='recommended-products'>
         <div className="container">
