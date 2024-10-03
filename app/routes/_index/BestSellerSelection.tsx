@@ -48,14 +48,16 @@ export default function BestSellerSelection({ collectionsList, onSelectProduct }
                     <h2 className="title-selection"> Best Seller</h2>
                     <ul className="flex flex-wrap -mb-px items-baseline bestseller-list">
                         {items.map((item: any, index: number) => (
-                            <li key={index}>
+                            <li key={index} 
+                                className={`${
+                                    activeIndex === index
+                                        ? "isCurrent"
+                                        : ""
+                                }`}
+                            >
                                 <a  
                                     onClick={() => handleSelect(item, index)} // Gọi handleSelect với cả item và index
-                                    className={`inline-block rounded-t-lg ${
-                                        activeIndex === index
-                                            ? "text-blue-600 border-b-2 border-blue-600 dark:text-blue-500 dark:border-blue-500"
-                                            : "border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                                    }`}
+                                    className={`inline-flex rounded-t-lg`}
                                     aria-current={activeIndex === index ? "page" : undefined}
                                 >
                                     {item.title}

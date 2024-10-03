@@ -1420,17 +1420,32 @@ button.reset:hover:before {
   align-items: baseline;
 }
 
+
+
 .bestseller .title-selection {
   margin-right: auto;
   margin-left:48px ;
 }
 
 .bestseller .bestseller-list li {
+  opacity: .75;
   margin-bottom: 0;
+  border-bottom: 2px solid transparent;
+  font-weight: 500;
+}
+
+.bestseller .bestseller-list li:hover {
+  opacity: 1;
+  border-bottom: 2px solid #000;
+}
+
+.bestseller .bestseller-list li.isCurrent {
+  opacity: 1;
+  border-bottom: 2px solid #000;
 }
 .bestseller .bestseller-list li a {
   padding: 16px 24px;
-  font-weight: 600;
+  
 }
 .bestseller .collections-result {
   min-height: 248px;
@@ -3330,6 +3345,10 @@ button.reset:hover:before {
 
   .featured-offers .featured-offers__item p {
     font-size: 14px;
+  }
+
+  .featured-offers .grid .col-span-1::after{
+    content: none;
   }
 
   .bestseller .container{
