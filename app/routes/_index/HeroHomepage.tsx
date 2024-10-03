@@ -88,7 +88,32 @@ export default function HeroHomepage(
                     </div>
 
 
-                    <div className="hero-list col-span-3 sm:col-span-1 md:col-span-3 h-auto md:h-full flex">
+                    <div className="col-span-3 sm:col-span-1 md:col-span-3 h-auto md:h-full flex">
+
+
+                        <div className="hero-list">
+                            {heroList.map((item:any) => (
+                                <Link 
+                                    key={item.id}
+                                    className="hero-list__item link-primary"
+                                    to={`/c/${item.handle}`}
+                                    prefetch="intent"
+                                >
+                                    <Image
+                                        alt={item.image.altText || "No description"}
+                                        data={item.image}
+                                        loading="lazy"
+                                        className=""
+                                        width='100'
+                                    />
+                                    <h3 className="link-hover">{item.title}</h3>
+                                </Link>
+                            ))}
+                        </div>
+
+
+
+                        {/* <div className="hero-list">
                         <Swiper
                             modules={[Navigation, PaginationSwiper]}
                             spaceBetween={16}
@@ -157,6 +182,8 @@ export default function HeroHomepage(
                             </div>
 
                         </Swiper>
+                        </div>
+                         */}
                     </div>
                 
                 </div>

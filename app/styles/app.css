@@ -1217,8 +1217,71 @@ button.reset:hover:before {
   font-weight: 300;
   margin-bottom: 4px;
  }
+ .hero-list {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+ }
 
-.hero-homepage .hero-list .swiper {
+
+ .hero-list .hero-list__item{
+  max-width: 258px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0;
+  width: 100%;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 0;
+  position: relative;
+  border-radius: 8px;
+  border: 1px solid transparent;
+ }
+
+ .hero-list .hero-list__item img{
+  width: 68px;
+  height: auto;
+  flex: 0 0 68px
+ }
+
+ .hero-list .hero-list__item h3 {
+  max-width: 84px;
+  flex: 1 1 100%;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  padding: 24px 0px 0px 8px;
+  margin: 0;
+  line-height: 1.2;
+}
+.hero-list .hero-list__item:before{
+  position: absolute;
+  top: 16px;
+  left: -10px;
+  width: 1px;
+  height: calc(100% - 32px);
+  background-color: #ddd;
+  content: "";
+}
+
+.hero-list .hero-list__item:hover {
+  border: 1px solid #000;
+}
+
+.hero-list .hero-list__item:hover:before,
+.hero-list .hero-list__item:hover + .hero-list__item:before {
+  background-color: transparent;
+}
+
+
+ 
+
+/* .hero-homepage .hero-list .swiper {
   border: none;
 }
 
@@ -1275,7 +1338,7 @@ button.reset:hover:before {
   padding:24px 0px 0px 8px;
   margin: 0;
   line-height: 1.2;
-}
+} */
 
 .featured-offers .grid {
   border-radius: 8px;
@@ -3206,8 +3269,38 @@ button.reset:hover:before {
     margin:  0;
   }
 
-  .hero-homepage .hero-list {
+  .hero-list {
     margin: 16px 0;
+    scrollbar-width: initial;
+    padding-bottom: 8px;
+  }
+
+
+  /* Style thanh cuộn trên mobile */
+  .hero-list::-webkit-scrollbar {
+    height: 4px; /* Chiều cao của thanh cuộn */
+  }
+
+  .hero-list::-webkit-scrollbar-thumb {
+    background-color: #c7c7c7; /* Màu của thanh cuộn */
+    border-radius: 10px;
+  }
+
+  .hero-list::-webkit-scrollbar-track {
+    background-color: #f1f1f1; /* Màu nền của thanh cuộn */
+  }
+
+
+  .hero-list .hero-list__item {
+    flex: 0 0 auto;
+    max-width: 200px;
+    width: 200px;
+  }
+
+  .hero-list .hero-list__item img {
+    width: 56px;
+    height: auto;
+    flex: 0 0 56px;
   }
   
 
