@@ -126,6 +126,14 @@ export function HeaderMenu({
     }));
   };
 
+  const closeAside = (event: React.MouseEvent<HTMLAnchorElement>) =>{
+    if (viewport === 'mobile') {
+      event.preventDefault();
+      window.location.href = event.currentTarget.href;
+    }
+  }
+
+
   const items = menu?.items || [];
 
   const renderItems = (items: MenuItemType[]) => {
@@ -155,11 +163,11 @@ export function HeaderMenu({
         >
           {!isSubMenu ? (
             <NavLink
-              end
               prefetch="intent"
               style={activeLinkStyle}
               to={url}
               className={`${isSubMenu ? 'menu-item__title' : ''}`}
+              onClick={closeAside}
             >
               <span>{item.title}</span>
               <img src={iconchevronright} alt="icon chevronright" />
@@ -175,7 +183,7 @@ export function HeaderMenu({
               </div>
               <div className="sub-menu nested-sub-menu">
                 <div className="menu-item">
-                  <NavLink end prefetch="intent" style={activeLinkStyle} to={url}>
+                  <NavLink prefetch="intent" style={activeLinkStyle} to={url} onClick={closeAside}>
                     {`All ${item.title}`}
                     <img src={iconchevronright} alt="icon chevronright" />
                   </NavLink>
@@ -189,11 +197,17 @@ export function HeaderMenu({
     });
   };
 
+  
   return (
     <nav className={`header-menu-${viewport}`} role="navigation">
       {viewport === 'mobile' && (
         <div className="menu-item">
-          <NavLink end prefetch="intent" style={activeLinkStyle} to="/">
+          <NavLink 
+            prefetch="intent" 
+            style={activeLinkStyle} 
+            to="/"
+            onClick={closeAside}
+          >
             Home
           </NavLink>
         </div>

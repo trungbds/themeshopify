@@ -325,7 +325,7 @@ aside header h2 {
 }
 
 aside main {
-  
+  overflow-y: auto;
 }
 
 aside p {
@@ -458,6 +458,9 @@ button.reset:hover:before {
 }
 
 .header-menu-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .header-menu-desktop {
@@ -2441,7 +2444,6 @@ button.reset:hover:before {
 }
 
 .header-menu-mobile .menu-item{
-  margin: 2px 0;
   line-height: 1;
   font-weight: 500;
   color: rgb(0, 0, 0);
@@ -2465,7 +2467,6 @@ button.reset:hover:before {
   border-bottom: none;
   background-color: transparent;
   overflow: hidden;
-  margin: 2px 0;
 }
 
 .header-menu-mobile .menu-item__group.open {
@@ -2480,7 +2481,7 @@ button.reset:hover:before {
 }
 
 .header-menu-mobile .menu-item__group .menu-item__title img{
-  opacity: .5;
+  opacity: .3;
 }
 
 
@@ -2493,6 +2494,10 @@ button.reset:hover:before {
 
 .header-menu-mobile .menu-item__group.open .sub-menu{
   max-height: 500px;
+}
+
+.header-menu-mobile .menu-item__group.open>.menu-item__title img {
+  opacity: 1;
 }
 
 
@@ -3632,8 +3637,11 @@ button.reset:hover:before {
     text-align: center;
   }
 
-  .menu-item__group {
-
+  .footer-mainmenu .menu-item__group {
+    padding: 8px 0 16px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
   }
 
   .footer-mainmenu .menu-item__group .submenu{
