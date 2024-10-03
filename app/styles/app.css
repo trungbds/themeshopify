@@ -97,9 +97,10 @@ form {
 
 .title-selection {
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
   margin: 0;
+  margin: 24px 0 16px;
 }
 
 .link-primary:hover .link-hover {
@@ -728,7 +729,7 @@ button.reset:hover:before {
   display: block
 }
 .footer-mainmenu .menu-item__group .menu-item__title{
-  font-weight: 700;
+  font-weight: 600;
   display: block;
   font-size: 1rem;
   margin-bottom: 16px;
@@ -736,6 +737,7 @@ button.reset:hover:before {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 16px;
 }
 
 .footer-mainmenu .menu-item__group .menu-item__title img {
@@ -806,7 +808,6 @@ button.reset:hover:before {
 .footer-block__payment h3, .footer-block__socical h3 {
   text-align: left;
   display: block;
-  font-size: 12px;
   line-height: 1;
   color: #979797;
   margin: 4px 0;
@@ -895,14 +896,17 @@ button.reset:hover:before {
 .footer-submenu .container {
   align-items: center;
   display: flex;
-  grid-gap: 1rem;
-  padding: 1rem;
+  padding: 16px 36px;
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
 }
+
 
 .footer-submenu .container .menu-item {
   color: #c1c1c1;
   font-size: 12px;
+  flex: 0 0 auto
 }
 
 /*
@@ -1756,7 +1760,7 @@ button.reset:hover:before {
 }
 .product-item .product-item__header h4{
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   width: 100%;
   max-height: 46px;
   overflow: hidden;
@@ -1765,6 +1769,7 @@ button.reset:hover:before {
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   margin: 0;
+  line-height: 1.375;
 }
 .product-item a:hover {
   text-decoration: none;
@@ -3088,7 +3093,7 @@ button.reset:hover:before {
   }
 
   .title-selection {
-    font-size: 18px;
+    font-size: 20px;
   }
   
   .container {
@@ -3110,7 +3115,7 @@ button.reset:hover:before {
   .search-header__btn input[type="search"] {
     height: 40px;
     position: relative;
-    z-index: 10;
+    z-index: 5;
   }
   .btn-cart {
     height: 40px;
@@ -3132,6 +3137,9 @@ button.reset:hover:before {
   .collections-result .swiper .swiper-slide {
     
   }
+  .featured-offers .title-selection {
+    margin: 24px 0;
+  }
 
 .homepage .product-item,
 .homepage .collections-result .swiper .swiper-slide{
@@ -3150,7 +3158,9 @@ button.reset:hover:before {
   }
 
   .product-item .product-item__header h4 {
-    font-size: 14px;
+    font-size: 16px;
+    max-height: 66px;
+    -webkit-line-clamp: 3;
   }
 
   .product-item .product-price {
@@ -3161,7 +3171,6 @@ button.reset:hover:before {
     font-size: 12px;
   }
   .product-price .discount-label {
-    font-size: 10px;
   }
   .product-item .discount-label img {
     width: 14px;
@@ -3184,7 +3193,12 @@ button.reset:hover:before {
   }
 
   .hero-homepage .hightlight .collection-item__content h2 {
-    font-size: 18px;
+    font-size: 20px;
+    margin: 0;
+  }
+
+  .hero-homepage .collection-item__content h2 {
+    margin:  0;
   }
 
   .hero-homepage .hero-list {
@@ -3214,11 +3228,14 @@ button.reset:hover:before {
 
   .featured-offers .featured-offers__item h3{
     margin: 8px auto 8px;
-    font-size: 1rem;
   }
 
   .featured-offers .featured-offers__item p {
     font-size: 14px;
+  }
+
+  .bestseller .container{
+    padding: 16px 0 32px;
   }
 
   .bestseller .bestseller-detail {
@@ -3227,7 +3244,7 @@ button.reset:hover:before {
   }
 
   .bestseller .title-selection {
-    margin: 0 auto 8px;
+    margin: 24px auto ;
   }
 
   .bestseller .bestseller-list {
@@ -3260,11 +3277,19 @@ button.reset:hover:before {
     padding: 16px 8px 24px;
   }
 
+  .today-interesting {
+    margin: 8px auto 16px;
+  }
+
   .today-interesting__intro {
     width: 100%;
     display: block;
     max-width: none;
-    padding: 16px;
+    padding: 24px 0;
+  }
+
+  .today-interesting__intro .title-selection {
+    margin: 0 auto;
   }
 
   .today-interesting .grid {
@@ -3395,7 +3420,6 @@ button.reset:hover:before {
 
   .footer-block__heading {
     color: #979797;
-    font-size: 12px;
     text-align: center;
     margin-right: 0;
   }
@@ -3464,6 +3488,68 @@ button.reset:hover:before {
   .footer-mainmenu .menu-item__group.open .submenu {
     max-height: 300px
   }
+
+
+
+
+  /* collection */
+  .collection {
+    flex-direction: column;
+  }
+  .filter-form__product {
+    padding: 16px 0;
+    width: 100%;
+    flex: 0 0 100%;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
