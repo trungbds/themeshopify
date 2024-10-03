@@ -3,7 +3,7 @@ import { Link, useFetcher } from '@remix-run/react';
 import { ProductItemDefault } from '~/components/custom-components/ProductItemDefault';
 
 // Swiper
-import { Navigation,  Pagination as PaginationSwiper  } from 'swiper/modules';
+import { Navigation,  Pagination as PaginationSwiper, Mousewheel, Keyboard  } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
 import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
@@ -72,7 +72,7 @@ export default function BestSellerSelection({ collectionsList, onSelectProduct }
                         <>
                         <Swiper
                             key = 'bestseller-swiper'
-                            modules={[Navigation, PaginationSwiper]}
+                            modules={[Navigation, PaginationSwiper, Mousewheel, Keyboard]}
                             spaceBetween={8}
                             slidesPerView='auto'
                             navigation= {{
@@ -84,7 +84,17 @@ export default function BestSellerSelection({ collectionsList, onSelectProduct }
                                 el: '.images-pagination',
                                 type: 'fraction' 
                             }}
-                        >
+
+                            breakpoints={{
+                                768: { // Trên 768px, không sử dụng cssMode
+                                  cssMode: false,
+                                },
+                                0: { // Dưới 768px, bật cssMode
+                                  cssMode: true,
+                                  mousewheel: false, // Tắt cuộn bằng bánh xe chuột trên mobile
+                                }
+                              }}
+                            >
                             {products.map((product: any) => (
                                 <SwiperSlide>
                                     <ProductItemDefault
