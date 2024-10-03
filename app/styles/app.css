@@ -142,10 +142,15 @@ form {
   width: 100%;
   height: auto;
 }
+
+.swiper-wrapper {
+  will-change: transform;
+}
 .swiper-slide {
   display: flex;
   justify-content: center;
   align-items: center;
+  will-change: transform;
 }
 
 
