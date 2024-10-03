@@ -90,10 +90,11 @@ export default function BestSellerSelection({ collectionsList, onSelectProduct }
                                   cssMode: false,
                                 },
                                 0: { // Dưới 768px, bật cssMode
-                                  cssMode: true,
-                                  mousewheel: false, // Tắt cuộn bằng bánh xe chuột trên mobile
+                                    cssMode: true,
+                                    mousewheel: false, // Tắt cuộn bằng bánh xe chuột trên mobile
                                 }
-                              }}
+                            }}
+
                             >
                             {products.map((product: any) => (
                                 <SwiperSlide>

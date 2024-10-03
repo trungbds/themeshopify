@@ -10,7 +10,7 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom';
 
 // Swiper
-import { Navigation, Pagination as PaginationSwiper } from 'swiper/modules';
+import { Navigation, Pagination as PaginationSwiper, Mousewheel, Keyboard } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperType } from 'swiper'; // Import kiểu Swiper
 
@@ -58,7 +58,7 @@ export function ProductImage({
       >
         {hasImages && (
           <Swiper
-            modules={[Navigation, PaginationSwiper]}
+            modules={[Navigation, PaginationSwiper, Mousewheel, Keyboard]}
             className="product-carousel"
             spaceBetween={32}
             slidesPerView={1}
@@ -72,6 +72,16 @@ export function ProductImage({
             }}
             onSwiper={(swiper) => {
               swiperRef.current = swiper; // Gán giá trị cho swiperRef
+            }}
+
+            breakpoints={{
+                768: { // Trên 768px, không sử dụng cssMode
+                  cssMode: false,
+                },
+                0: { // Dưới 768px, bật cssMode
+                    cssMode: true,
+                    mousewheel: false, // Tắt cuộn bằng bánh xe chuột trên mobile
+                }
             }}
           >
             {/* Kiểm tra và in ra currentImage nếu nó tồn tại */}

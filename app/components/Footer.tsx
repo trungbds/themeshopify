@@ -110,7 +110,7 @@ function FooterMenu({
                   />
                 ))}
 
-                <div className="col-span-4 sm:col-span-4 md:col-span-4 md:order-1 -order-1">
+                <div className="col-span-4 sm:col-span-4 md:col-span-4 md:order-0 -order-1">
                   <div className='footer-right__area'>
 
                     <Link

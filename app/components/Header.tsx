@@ -25,6 +25,8 @@ interface HeaderProps {
 
 type Viewport = 'desktop' | 'mobile';
 
+type MenuItemType = NonNullable<HeaderQuery['menu']>['items'][number];
+
 export function Header({
   header,
   isLoggedIn,
@@ -110,6 +112,49 @@ export function HeaderMenu({
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
+
+
+  const items = menu?.items || []
+
+  const renderItems = (items: MenuItemType[]) => {
+    return items.map((item) => {
+      if (!item.url) return null;
+
+      const url =
+        item.type === "COLLECTION"
+          ? `/c${new URL(item.url).pathname.replace('/collections', '')}`
+          : item.type === "PRODUCT"
+          ? `/p${new URL(item.url).pathname.replace('/products', '')}`
+          : item.url.includes('myshopify.com') ||
+            item.url.includes(publicStoreDomain) ||
+            item.url.includes(primaryDomainUrl)
+            ? new URL(item.url).pathname
+            : item.url;
+
+      return (
+
+        <div className={`menu-item ${item.items && item.items.length > 0 ? 'menu-item__group' : ''}`}> {/* Đổi tên class cho item cha */}
+          <NavLink
+            end
+            prefetch="intent"
+            style={activeLinkStyle}
+            to={url}
+          >
+            {item.title}
+          </NavLink>
+          
+          {item.items && item.items.length > 0 && (
+            <div className="sub-menu nested-sub-menu"> {/* Đổi tên class cho sub-menu */}
+              {renderItems(item.items)} {/* Gọi lại hàm renderItems cho các item con */}
+            </div>
+          )}
+
+        </div>
+      );
+
+    });
+  };
+  
   const className = `header-menu-${viewport}`;
 
   function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
@@ -127,35 +172,15 @@ export function HeaderMenu({
           onClick={closeAside}
           prefetch="intent"
           style={activeLinkStyle}
+          className="menu-item"
           to="/"
         >
           Home
         </NavLink>
       )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-        if (!item.url) return null;
 
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            onClick={closeAside}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
+      {renderItems(items)}
+
     </nav>
   );
 }
