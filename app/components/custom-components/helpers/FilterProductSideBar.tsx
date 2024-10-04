@@ -5,6 +5,8 @@ import iconreset from '~/assets/fonts/icons/icon-reset.svg';
 import iconclose from '~/assets/fonts/icons/icon-close.svg';
 import iconcheckbox from '~/assets/fonts/icons/icon-checkbox.svg';
 import iconcheckboxoutline from '~/assets/fonts/icons/icon-checkbox-outline.svg';
+import iconfilter from '~/assets/fonts/icons/icon-filter.svg';
+
 
 type FilterProductSideBarProps = {
   isActive?: boolean;
@@ -34,6 +36,8 @@ export function FilterProductSideBar({ isActive, data, filtersParams, collection
       [section]: !prevState[section],
     }));
   };
+
+
 
   const getElementDistanceTop = (selector: string) => {
     const element = document.querySelector(selector) as HTMLElement;
@@ -218,11 +222,20 @@ export function FilterProductSideBar({ isActive, data, filtersParams, collection
 
   return (
     <div
-      className="filter-form__product border-gray-200"
+      className={`filter-form__product border-gray-200 ${expandedSections['filter-form__product-content'] ? 'open' : ''}`}
       style={{ top: `${stickyTop}px` }}
     >
-      <div className="filter-form__product-header">
-        <h3 className="title font-medium">Filter</h3>
+      <div 
+        className="filter-form__product-header"
+        onClick={() => toggleSection('filter-form__product-content')}
+        
+      >
+        <h3 className="title font-medium">
+          <img src={iconfilter} />
+          <span>Filter</span>
+
+          { selectedFilters.length > 0 && <span className="filter-count">( {selectedFilters.length} )</span> } 
+        </h3>
         <button
           type="button"
           className={`btn link-primary btn-reset text-sm inline-flex font-semibold gap-1 items-center ${selectedFilters.length > 0 ? 'isActived' : ''}`}
@@ -268,8 +281,8 @@ export function FilterProductSideBar({ isActive, data, filtersParams, collection
 
       <div className="filter-form__product-content">
         {data.map((item: any) => (
-          <div key={item.id} className="filter-form__block border-t border-gray-200 py-6">
-            <div className="-mx-2 -my-3 flow-root">
+          <div key={item.id} className="filter-form__block border-t border-gray-200">
+            <div className="flow-root">
               <button
                 type="button"
                 className="btn flex w-full items-center justify-between bg-white px-2"
