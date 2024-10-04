@@ -59,19 +59,22 @@ form {
 .main {
   width: 100%;
   margin: auto;
-  padding-top: 24px
+  padding-top: 16px
 }
 .breadcrumbs-section {
-  padding: 0 0 24px;
+  padding: 0 0 16px;
 }
 
 .breadcrumbs {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   line-height: 1;
   justify-content: space-between;
-  /* display: none; */
 }
+.breadcrumbs ol {
+  width: 100%;
+}
+
 
 .breadcrumbs .breadcrumbs-list li {
  margin: 0;
@@ -87,11 +90,16 @@ form {
   height: 20px;
 }
 
-.breadcrumbs .breadcrumbs-list li:last-child span {
-  max-width: 220px;
-  overflow: hidden; 
+.breadcrumbs .breadcrumbs-list li:last-child {
+  width: auto;
+  overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap; 
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.breadcrumbs .breadcrumbs-list li:last-child span {
+
 }
 
 
@@ -1217,6 +1225,7 @@ button.reset:hover:before {
   font-weight: 300;
   margin-bottom: 4px;
  }
+
  .hero-list {
   display: flex;
   width: 100%;
@@ -1704,7 +1713,7 @@ button.reset:hover:before {
   display: inline-flex;
   gap: 8px;
   overflow-y: hidden;
-  overflow-x: atuo;
+  overflow-x: auto;
 }
 .collection-header .dependent-categories .categories-nav-item {
 
@@ -1749,7 +1758,7 @@ button.reset:hover:before {
 
 .collection-title h1 {
   height: 48px;
-  line-height: 48px;
+  line-height: 1.2;
 }
 
 
@@ -2081,7 +2090,7 @@ button.reset:hover:before {
 */
 
 .cart-page {
-
+  min-height: 80vh;
 }
 .cart-page__discounts {
   padding-bottom: 16px;
@@ -2205,6 +2214,8 @@ button.reset:hover:before {
 
 .helpers-product {
   font-size: 12px;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .product-content {
@@ -2225,8 +2236,9 @@ button.reset:hover:before {
 }
 
 .product-description .product-description__header .title {
-  text-transform: uppercase;
   letter-spacing: .2px;
+  color: #000;
+  font-weight: 600;
 }
 
 .product-main {
@@ -2241,6 +2253,7 @@ button.reset:hover:before {
   flex-wrap: nowrap;
   align-items: flex-start;
   margin-bottom: 16px;
+  position: relative;
 }
 
 .product-main .product-header .product-title {
@@ -2255,7 +2268,9 @@ button.reset:hover:before {
   border-radius: 18px;
   background: #F5F5F5;
   cursor: pointer;
-  flex: 1 0 36px;
+  position: absolute;
+  right: -40px;
+  top: 0;
 }
 
 .product-main .product-header .btn-wishlist:hover {
@@ -2275,6 +2290,7 @@ button.reset:hover:before {
 
 .product-main .product-header .product-title .brand {
   font-size: 12px;
+  margin-bottom: 8px;
 }
 
 .product-title .rating-tilte p, .product-title .rating-tilte a {
@@ -2553,14 +2569,22 @@ button.reset:hover:before {
   min-width: 160px;
   justify-content: flex-start;
   gap: 4px;
-  border: 1px solid #ddd;
   cursor: pointer;
   
 }
 
 .box-sort .box-sort__btn button img:last-child {
   margin-left: auto;
+  opacity: .3;
+  transform: rotate(0deg);
+  will-change: transform;
+  transition: transform .2s ease-in-out;
 }
+
+.box-sort .box-sort__btn button[aria-expanded="true"]  img:last-child  {
+  transform: rotate(180deg);
+}
+
 
 .box-sort .box-sort__expand {
   min-width: 188px;
@@ -3715,7 +3739,7 @@ button.reset:hover:before {
 
   /* collection */
   .breadcrumbs-section{
-    padding: 8px 0 16px;
+    padding: 0px 0px 8px;
   }
 
   .product-page__section{
@@ -3723,10 +3747,12 @@ button.reset:hover:before {
   }
   .breadcrumbs ol{
     flex-wrap: wrap;
+    
   }
 
   .breadcrumbs .breadcrumbs-list li:last-child span{
     max-width: 100%;
+    display: block;
   }
   .helpers-product{
     display: none;
@@ -3786,19 +3812,21 @@ button.reset:hover:before {
   }
 
   .collection-page__header {
-    padding: 8px 0 16px;
+    padding: 0;
    
   }
   .collection-header{
     flex-wrap: wrap;
+    padding: 24px 0;
+
   }
 
   .collection-header .dependent-categories {
     width: 100%;
     overflow: hidden;
     gap: 4px;
-    overflow-x: visible;
-    padding-bottom: 8px;
+    overflow-x: scroll;
+    padding: 16px 0 8px;
   }
 
   .collection-header .dependent-categories::-webkit-scrollbar {
@@ -3815,7 +3843,10 @@ button.reset:hover:before {
   }
   
 
-
+  .collection-title {
+    flex: 0 0 100%;
+    width: 100%;
+  }
   .collection-title h1 {
     height: auto;
     font-size: 20px;
@@ -3868,8 +3899,16 @@ button.reset:hover:before {
     flex: 1 1 auto;
   }
 
+  .product-sku{
+    margin-bottom: 8px;
+  }
+
+  .product-detail {
+    gap: 0;
+  }
+
   .product-form{
-    gap: 16px;
+    gap: 16px 8px;
   }
 
   .product-options-grid {

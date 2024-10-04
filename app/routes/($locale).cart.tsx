@@ -108,9 +108,9 @@ function CartMain({layout, cart: originalCart}: CartMainProps) {
 
   return (
     <>
-      <div className='grid grid-cols-12 gap-4 justify-center'>
-        <div className="col-span-2"></div>
-        <div className="col-span-4">
+      <div className='grid md:grid-cols-12 grid-cols-4 gap-4 justify-center'>
+        <div className="md:col-span-2 col-span-0"></div>
+        <div className="md:col-span-4 col-span-4">
 
           {cartHasItems && <CartDiscounts discountCodes={cart.discountCodes} />}
           {cartHasItems && <CalculateShippingFees />}
@@ -145,7 +145,7 @@ function CartMain({layout, cart: originalCart}: CartMainProps) {
 
         </div>
         <div className="col-span-1"></div>
-        <div className="col-span-3">
+        <div className="md:col-span-3 col-span-4">
           {cartHasItems && <CartSummary cart={cart} layout={layout} />}
         </div>
         <div className="col-span-2"></div>

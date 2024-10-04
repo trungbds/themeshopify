@@ -64,11 +64,11 @@ export function BoxSort({ selectedSort = "Featured", countProducts }: BoxSortPro
         >
           <img src={iconswap} alt="Sort Icon" />
           Sort: <span><strong>{sortKeyLabels[currentSortKey] || sortKeyLabels['PRICE_ASC']}</strong></span>
-          <img src={icondropdown} alt="Dropdown Icon" />
+          <img className='icon' src={icondropdown} alt="Dropdown Icon" />
         </button>
         {isOpen && (
           <div
-            className="box-sort__expand absolute right-0 z-10 mt-2 bg-white shadow-lg focus:outline-none"
+            className="box-sort__expand absolute right-0 z-10 mt-0 bg-white shadow-lg focus:outline-none"
             role="menu"
             aria-orientation="vertical"
             aria-labelledby="menu-button"
