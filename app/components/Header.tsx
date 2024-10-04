@@ -178,6 +178,7 @@ export function HeaderMenu({
               <div
                 className="menu-item menu-item__title"
                 onClick={() => toggleOpen(item.id)} // Gọi toggleOpen khi nhấp vào
+                
               >
                 <span>{item.title}</span>
                 <img src={icondropdown} alt="icon dropdown" />

@@ -55,14 +55,29 @@ export function FilterProductSideBar({ isActive, data, filtersParams, collection
   };
 
   const calculateStickyTop = () => {
-    const breadcrumbsHeight = getElementHeight('.breadcrumbs-section');
-    const collectionHeaderHeight = getElementHeight('.collection-page__header');
-    const collectionDetailPadding = getElementDistanceTop('.collection-page__detail');
-    const mainDetailPadding = getElementDistanceTop('.collection-page__detail');
-    const selfDetailPadding = getElementDistanceTop('.filter-form__product');
+  const breadcrumbsHeight = getElementHeight('.breadcrumbs-section');
+  const collectionHeaderHeight = getElementHeight('.collection-page__header');
+  const collectionDetailPadding = getElementDistanceTop('.collection-page__detail');
+  const mainDetailPadding = getElementDistanceTop('.collection-page__detail');
+  const selfDetailPadding = getElementDistanceTop('.filter-form__product');
 
-    const totalHeight = breadcrumbsHeight + collectionHeaderHeight - collectionDetailPadding - mainDetailPadding - selfDetailPadding;
-    setStickyTop(totalHeight);
+  let totalHeight;
+
+  if (window.innerWidth <= 768) { // Kiểm tra nếu là mobile (tối đa 768px)
+    // Logic cho mobile
+    const headerHeight = getElementHeight('header[class="header"]');
+    totalHeight = headerHeight;
+  } else {
+    // Logic cho desktop
+    totalHeight =
+      breadcrumbsHeight +
+      collectionHeaderHeight -
+      collectionDetailPadding -
+      mainDetailPadding -
+      selfDetailPadding;
+  }
+
+  setStickyTop(totalHeight);
   };
 
   useEffect(() => {
@@ -72,6 +87,7 @@ export function FilterProductSideBar({ isActive, data, filtersParams, collection
       window.removeEventListener('resize', calculateStickyTop);
     };
   }, []);
+
 
   const IconDropdown = ({ className }: { className: string }) => {
     return (
@@ -250,139 +266,142 @@ export function FilterProductSideBar({ isActive, data, filtersParams, collection
         </ul>
       </div>
 
-      {data.map((item: any) => (
-        <div key={item.id} className="filter-form__block border-t border-gray-200 py-6">
-          <div className="-mx-2 -my-3 flow-root">
-            <button
-              type="button"
-              className="btn flex w-full items-center justify-between bg-white px-2"
-              aria-controls={`filter-block-${item.id}`}
-              aria-expanded={expandedSections[item.id]}
-              onClick={() => toggleSection(item.id)}
-            >
-              <h5 className="font-medium">{item.label}</h5>
-              <span className="ml-6 flex items-center">
-                <IconDropdown className={expandedSections[item.id] ? "expanded" : "collapsed"} />
-              </span>
-            </button>
-
-            {expandedSections[item.id] && (
-              <div
-                className={`filter-options__list pt-6 ${
-                  item.id === "filter.v.price" ? "filter-options__list--price" :
-                  item.id === "filter.v.availability" ? "filter-options__list--availability" :
-                  ""
-                }`}
-                id={`filter-block-${item.id}`}
+      <div className="filter-form__product-content">
+        {data.map((item: any) => (
+          <div key={item.id} className="filter-form__block border-t border-gray-200 py-6">
+            <div className="-mx-2 -my-3 flow-root">
+              <button
+                type="button"
+                className="btn flex w-full items-center justify-between bg-white px-2"
+                aria-controls={`filter-block-${item.id}`}
+                aria-expanded={expandedSections[item.id]}
+                onClick={() => toggleSection(item.id)}
               >
-                {(() => {
-                  {/* Nội dung tùy chỉnh cho "filter.v.price" */}
-                  switch (item.id) {
-                    case "filter.v.price":
-                      return (
-                        <>
-                          <div 
-                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('Under $50') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange({price:{min: 0, max: 50}},{price:{min: 0, max: 50}})}
-                            data-input="{price:{min: 0, max: 50}}"
-                          >
-                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 0, max: 50}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
-                            Under $50
-                          </div>
+                <h5 className="font-medium">{item.label}</h5>
+                <span className="ml-6 flex items-center">
+                  <IconDropdown className={expandedSections[item.id] ? "expanded" : "collapsed"} />
+                </span>
+              </button>
 
-                          <div 
-                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('$50 - $100') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange({price:{min: 50, max: 100}},{price:{min: 50, max: 100}})}
-                            data-input="{price:{min: 50, max: 100}}"
-                          >
-                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 50, max: 100}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
-                            $50 - $100
-                          </div>
-
-                          <div 
-                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('$100 - $150') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange({price:{min: 100, max: 150}},{price:{min: 100, max: 150}})}
-                            data-input="{price:{min: 100, max: 150}}"
-                          >
-                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 100, max: 150}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
-                            $100 - $150
-                          </div>
-
-                          <div 
-                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('$150 - $250') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange({price:{min: 150, max: 250}},{price:{min: 150, max: 250}})}
-                            data-input="{price:{min: 150, max: 250}}"
-                          >
-                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 150, max: 250}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
-                            $150 - $250
-                           
-                          </div>
-
-                          <div 
-                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('$250 - $500') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange({price:{min: 250, max: 500}},{price:{min: 250, max: 500}})}
-                            data-input="{price:{min: 250, max: 500}}"
-                          >
-                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 250, max: 500}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
-                            $250 - $500
-                          </div>
-
-                          <div 
-                            className={`items-center option-item cursor-pointer ${selectedFilters.includes('{price:{min: 500}}') ? "selected" : ""}`}
-                            onClick={() => handleOptionChange({price:{min: 500}},{price:{min: 500}})}
-                            data-input="{price:{min: 500}}"
-                          >
-                            <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price: {min: 500}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
-                            Over $500
-                          </div>
-                        </>
-                      );
-
-                    {/* Nội dung tùy chỉnh cho "filter.v.availability" */}
-                    case "filter.v.availability":
-                      return item.values.map((option: any, index: number) => {
-                        // const inputValue = JSON.parse(option.input);
-                        const inputValue = JSON.parse(option.input);
+              {expandedSections[item.id] && (
+                <div
+                  className={`filter-options__list pt-6 ${
+                    item.id === "filter.v.price" ? "filter-options__list--price" :
+                    item.id === "filter.v.availability" ? "filter-options__list--availability" :
+                    ""
+                  }`}
+                  id={`filter-block-${item.id}`}
+                >
+                  {(() => {
+                    {/* Nội dung tùy chỉnh cho "filter.v.price" */}
+                    switch (item.id) {
+                      case "filter.v.price":
                         return (
-                          <div 
-                            key={index} 
-                            className={`items-center option-item cursor-pointer ${selectedFilters.includes(option.label) ? "selected" : ""}`}
-                            onClick={() => handleOptionChange(inputValue, inputValue)}
-                            data-input={JSON.stringify(inputValue)}
-                          >
-                            <div className="min-w-0 flex-1">
-                              {option.label}
+                          <>
+                            <div 
+                              className={`items-center option-item cursor-pointer ${selectedFilters.includes('Under $50') ? "selected" : ""}`}
+                              onClick={() => handleOptionChange({price:{min: 0, max: 50}},{price:{min: 0, max: 50}})}
+                              data-input="{price:{min: 0, max: 50}}"
+                            >
+                              <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 0, max: 50}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                              Under $50
                             </div>
-                          </div>
-                        );
-                      });
 
-                    default:
-                      return item.values.map((option: any, index: number) => {
-                        const inputValue = JSON.parse(option.input);
-                        let check = selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify(inputValue));
-
-                        return (
-                          <div 
-                            key={index} 
-                            className={`items-center option-item cursor-pointer ${check? "selected" : ""}`}
-                            onClick={() => handleOptionChange(inputValue, inputValue)}
-                            data-input={JSON.stringify(inputValue)}
-                          >
-                            <div className="min-w-0 flex-1">
-                              {option.label}
+                            <div 
+                              className={`items-center option-item cursor-pointer ${selectedFilters.includes('$50 - $100') ? "selected" : ""}`}
+                              onClick={() => handleOptionChange({price:{min: 50, max: 100}},{price:{min: 50, max: 100}})}
+                              data-input="{price:{min: 50, max: 100}}"
+                            >
+                              <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 50, max: 100}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                              $50 - $100
                             </div>
-                          </div>
+
+                            <div 
+                              className={`items-center option-item cursor-pointer ${selectedFilters.includes('$100 - $150') ? "selected" : ""}`}
+                              onClick={() => handleOptionChange({price:{min: 100, max: 150}},{price:{min: 100, max: 150}})}
+                              data-input="{price:{min: 100, max: 150}}"
+                            >
+                              <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 100, max: 150}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                              $100 - $150
+                            </div>
+
+                            <div 
+                              className={`items-center option-item cursor-pointer ${selectedFilters.includes('$150 - $250') ? "selected" : ""}`}
+                              onClick={() => handleOptionChange({price:{min: 150, max: 250}},{price:{min: 150, max: 250}})}
+                              data-input="{price:{min: 150, max: 250}}"
+                            >
+                              <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 150, max: 250}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                              $150 - $250
+                            
+                            </div>
+
+                            <div 
+                              className={`items-center option-item cursor-pointer ${selectedFilters.includes('$250 - $500') ? "selected" : ""}`}
+                              onClick={() => handleOptionChange({price:{min: 250, max: 500}},{price:{min: 250, max: 500}})}
+                              data-input="{price:{min: 250, max: 500}}"
+                            >
+                              <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price:{min: 250, max: 500}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                              $250 - $500
+                            </div>
+
+                            <div 
+                              className={`items-center option-item cursor-pointer ${selectedFilters.includes('{price:{min: 500}}') ? "selected" : ""}`}
+                              onClick={() => handleOptionChange({price:{min: 500}},{price:{min: 500}})}
+                              data-input="{price:{min: 500}}"
+                            >
+                              <img src={selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify({price: {min: 500}})) ? iconcheckbox : iconcheckboxoutline} alt="Checkbox Icon" />
+                              Over $500
+                            </div>
+                          </>
                         );
-                      });
-                  }
-                })()}
-              </div>
-            )}
+
+                      {/* Nội dung tùy chỉnh cho "filter.v.availability" */}
+                      case "filter.v.availability":
+                        return item.values.map((option: any, index: number) => {
+                          // const inputValue = JSON.parse(option.input);
+                          const inputValue = JSON.parse(option.input);
+                          return (
+                            <div 
+                              key={index} 
+                              className={`items-center option-item cursor-pointer ${selectedFilters.includes(option.label) ? "selected" : ""}`}
+                              onClick={() => handleOptionChange(inputValue, inputValue)}
+                              data-input={JSON.stringify(inputValue)}
+                            >
+                              <div className="min-w-0 flex-1">
+                                {option.label}
+                              </div>
+                            </div>
+                          );
+                        });
+
+                      default:
+                        return item.values.map((option: any, index: number) => {
+                          const inputValue = JSON.parse(option.input);
+                          let check = selectedFilters.some(filter => JSON.stringify(filter) === JSON.stringify(inputValue));
+
+                          return (
+                            <div 
+                              key={index} 
+                              className={`items-center option-item cursor-pointer ${check? "selected" : ""}`}
+                              onClick={() => handleOptionChange(inputValue, inputValue)}
+                              data-input={JSON.stringify(inputValue)}
+                            >
+                              <div className="min-w-0 flex-1">
+                                {option.label}
+                              </div>
+                            </div>
+                          );
+                        });
+                    }
+                  })()}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
+      
 
     </div>
   );

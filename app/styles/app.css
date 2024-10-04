@@ -1241,7 +1241,7 @@ button.reset:hover:before {
   position: relative;
   border-radius: 8px;
   border: 1px solid transparent;
-  background-color: rgb(243 241 241);
+  background-color: rgb(241 244 245);
  }
 
  .hero-list .hero-list__item img{
@@ -1699,15 +1699,24 @@ button.reset:hover:before {
 }
 
 .collection-header .dependent-categories{
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   width: 100%;
   display: inline-flex;
   gap: 8px;
+  overflow-y: hidden;
+  overflow-x: atuo;
+}
+.collection-header .dependent-categories .categories-nav-item {
+
 }
 .collection-header .dependent-categories .categories-nav-item a{
   padding: 0 24px;
   background-color: #fff;
   height: 48px;
+}
+
+.collection-header .dependent-categories .categories-nav-item a span {
+  opacity: .75;
 }
 
 
@@ -2487,6 +2496,7 @@ button.reset:hover:before {
 
 .header-menu-mobile .menu-item__group .menu-item__title img{
   opacity: .3;
+  transform: rotate(0deg);
 }
 
 
@@ -2503,6 +2513,7 @@ button.reset:hover:before {
 
 .header-menu-mobile .menu-item__group.open>.menu-item__title img {
   opacity: 1;
+  transform: rotate(180deg);
 }
 
 
@@ -2581,6 +2592,8 @@ button.reset:hover:before {
   align-self: start;
   position: sticky;
   top: 0;
+  background-color: #fff;
+  z-index: 9;
 }
 
 .filter-form__product::before {
@@ -3329,7 +3342,9 @@ button.reset:hover:before {
 
 
 
-
+  .hero-homepage {
+    padding: 0 0 8px;
+  }
 
   .hero-homepage .collection-item img {
     object-fit: cover;
@@ -3352,7 +3367,9 @@ button.reset:hover:before {
     margin: 16px 0;
     scrollbar-width: initial;
     padding-bottom: 8px;
-    gap: 16px;
+    gap: 4px;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
   }
 
 
@@ -3363,11 +3380,12 @@ button.reset:hover:before {
 
   .hero-list::-webkit-scrollbar-thumb {
     background-color: #c7c7c7; /* Màu của thanh cuộn */
-    border-radius: 10px;
+    border-radius: 8px;
   }
 
   .hero-list::-webkit-scrollbar-track {
     background-color: #f1f1f1; /* Màu nền của thanh cuộn */
+    border-radius: 8px;
   }
 
 
@@ -3696,9 +3714,15 @@ button.reset:hover:before {
     flex-direction: column;
   }
   .filter-form__product {
-    padding: 16px 0;
-    width: 100%;
-    flex: 0 0 100%;
+    width: calc(100% + 16px);
+    flex: 0 0 calc(100% + 16px);
+    padding: 0;
+    transform: translateX(-8px);
+    
+  }
+
+  .filter-form__product-header {
+    margin-bottom: 0;
   }
 
   .collection-page__header {
