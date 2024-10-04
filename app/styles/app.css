@@ -2563,7 +2563,7 @@ button.reset:hover:before {
 }
 .box-sort .box-sort__btn button {
   align-items: center;
-  padding: 8px 8px;
+  padding: 8px 8px 8px 0;
   border-radius: 8px;
   height: 46px;
   min-width: 160px;
@@ -3773,6 +3773,22 @@ button.reset:hover:before {
   .filter-form__product-header {
     margin-bottom: 0px;
     padding: 16px 8px 8px;
+    justify-content: initial;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filter-form__product-header .icon-dropdown{
+    margin-left: auto;
+    width: 18px;
+    opacity: .3;
+    transform: rotate(0deg);
+    transition: transform .2s ease-in-out;
+    will-change: transfom;
+  }
+
+  .filter-form__product.open .filter-form__product-header .icon-dropdown{
+    transform: rotate(-180deg);
   }
 
   .filter-form__product-header .filter-result{
@@ -3802,7 +3818,10 @@ button.reset:hover:before {
 
   .filter-form__product-header .title {
     height: 24px;
-    margin-bottom: 8px;
+  }
+
+  .filter-form__product-header .btn-reset {
+    margin-left: 0px;
   }
 
 
@@ -3861,7 +3880,7 @@ button.reset:hover:before {
   }
 
   .box-sort {
-    margin: 24px 0 0;
+    margin: 16px 0 0;
     justify-content: flex-start;
   }
 

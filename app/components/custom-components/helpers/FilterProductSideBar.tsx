@@ -6,6 +6,8 @@ import iconclose from '~/assets/fonts/icons/icon-close.svg';
 import iconcheckbox from '~/assets/fonts/icons/icon-checkbox.svg';
 import iconcheckboxoutline from '~/assets/fonts/icons/icon-checkbox-outline.svg';
 import iconfilter from '~/assets/fonts/icons/icon-filter.svg';
+import icondropdown from '~/assets/fonts/icons/icon-dropdown.svg';
+
 
 
 type FilterProductSideBarProps = {
@@ -244,6 +246,9 @@ export function FilterProductSideBar({ isActive, data, filtersParams, collection
           <img src={iconreset} alt="reset icon" />
           <span className="link-hover">Reset all</span>
         </button>
+
+        <img className="icon-dropdown" src={icondropdown} alt="icon dropdown" />
+
         <ul className="filter-result">
           {selectedFilters.map((filter, index) => {
             let filterLabel = '';
