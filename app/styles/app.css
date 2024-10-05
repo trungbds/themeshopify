@@ -73,6 +73,7 @@ form {
 }
 .breadcrumbs ol {
   width: 100%;
+  flex: 0 0 auto;
 }
 
 
@@ -96,6 +97,7 @@ form {
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 100%;
+  flex: 1 1 auto;
 }
 
 .breadcrumbs .breadcrumbs-list li:last-child span {
@@ -2317,6 +2319,43 @@ button.reset:hover:before {
   max-height: 100vh;
 }
 
+.product-carousel--modal .image-number-list {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  background: #efefef;
+}
+
+.image-number-list .image-number-btn{
+  flex: 0 0 48px;
+  height: 48px;
+}
+
+/*  */
+.image-number-list {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.image-number-btn {
+  margin: 0 8px;
+  padding: 8px 12px;
+  background-color: #f1f1f1;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.image-number-btn:hover {
+  background-color: #ddd;
+}
+/*  */
+
 
 
 
@@ -3850,7 +3889,7 @@ button.reset:hover:before {
     margin-top: 0;
   }
   .breadcrumbs ol{
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     
   }
 

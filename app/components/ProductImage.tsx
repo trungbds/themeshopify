@@ -26,20 +26,25 @@ function FullscreenModal({ isOpen, onClose, startIndex, images }) {
     }
   }, [startIndex]);
 
+  const scrollToImage = (index: number) => {
+    // Hàm cuộn đến hình ảnh tương ứng khi click vào số
+    if (modalContentRef.current) {
+      const selectedImage = modalContentRef.current.children[index];
+      if (selectedImage) {
+        selectedImage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="product-carousel--modal">
-      <button
-        className="btn close-modal-btn"
-        onClick={onClose}
-      >
+      <button className="btn close-modal-btn" onClick={onClose}>
         <img src={iconclosetwhite} alt="Đóng modal" />
       </button>
 
-      <div className="product-carousel--header">
-        
-      </div>
+      <div className="product-carousel--header"></div>
 
       <div className="product-carousel--content" ref={modalContentRef} style={{ overflowY: 'auto', maxHeight: '100vh' }}>
         <div className="image-list">
@@ -55,11 +60,24 @@ function FullscreenModal({ isOpen, onClose, startIndex, images }) {
             />
           ))}
         </div>
-        
+      </div>
+
+      {/* Danh sách các số tương ứng với hình ảnh */}
+      <div className="image-number-list">
+        {images.map((_, idx) => (
+          <button
+            key={idx}
+            className="image-number-btn"
+            onClick={() => scrollToImage(idx)} // Cuộn đến hình ảnh khi click
+          >
+            {idx + 1}
+          </button>
+        ))}
       </div>
     </div>
   );
 }
+
 
 export function ProductImage({ currentImage, images }: { currentImage: any, images: any }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -67,6 +85,9 @@ export function ProductImage({ currentImage, images }: { currentImage: any, imag
   const imageList = images.edges.map(edge => edge.node);
   const swiperRef = useRef<SwiperType | null>(null);
   const hasImages = imageList.length > 0 || currentImage;
+
+  console.log(images)
+
 
   useEffect(() => {
     if (swiperRef.current && currentImage) {
@@ -87,6 +108,12 @@ export function ProductImage({ currentImage, images }: { currentImage: any, imag
   if (!hasImages) {
     return <div className="product-images">Không có hình ảnh nào</div>;
   }
+
+  useEffect(() => {
+    if (swiperRef.current && swiperRef.current.initialized) {
+      swiperRef.current.update(); // Buộc Swiper cập nhật khi có sự thay đổi
+    }
+  }, [images, currentImage]); // Kiểm tra khi images hoặc currentImage thay đổi
 
   return (
     <div className="product-images">
