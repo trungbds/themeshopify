@@ -290,7 +290,7 @@ export function FilterProductSideBar({ isActive, data, filtersParams, collection
             <div className="flow-root">
               <button
                 type="button"
-                className="btn flex w-full items-center justify-between bg-white px-2"
+                className="btn flex w-full items-center justify-between bg-white"
                 aria-controls={`filter-block-${item.id}`}
                 aria-expanded={expandedSections[item.id]}
                 onClick={() => toggleSection(item.id)}

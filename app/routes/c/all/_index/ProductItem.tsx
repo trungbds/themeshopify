@@ -2,7 +2,8 @@ import {Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import type {ProductItemFragment} from 'storefrontapi.generated';
-import noVariantColor from '~/assets/images/no-image.png';
+import noVariantColor from '~/assets/images/no-variant-color.png';
+
 
 interface ProductItemProps {
   product: ProductItemFragment; 

@@ -2,9 +2,9 @@ import {Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import type {ProductItemFragment} from 'storefrontapi.generated';
-import noVariantColor from '~/assets/images/no-image-available.png';
 import iconcart from '~/assets/fonts/icons/icon-cart.svg';
 import { ProductPriceV3 } from './ProductPriceV3';
+import noVariantColor from '~/assets/images/no-variant-color.png';
 
 interface ProductItemProps {
   product: ProductItemFragment; 

@@ -1,139 +1,184 @@
-import React, { useEffect, useRef } from "react";
-
-import type { ProductVariantFragment, ProductFragment } from 'storefrontapi.generated';
+import React, { useState, useRef, useEffect } from "react";
 import { Image as HydrogenImage } from '@shopify/hydrogen';
-import LightGallery from 'lightgallery/react';
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-thumbnail.css';
-import 'lightgallery/css/lg-zoom.css';
-import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import lgZoom from 'lightgallery/plugins/zoom';
+import 'swiper/css/thumbs';
 
 // Swiper
 import { Navigation, Pagination as PaginationSwiper, Mousewheel, Keyboard } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Swiper as SwiperType } from 'swiper'; // Import kiểu Swiper
+import { Swiper as SwiperType } from 'swiper';
 
-import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
-import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
+import iconchevronrightwhite from '~/assets/fonts/icons/icon-chevron-right-white.svg';
+import iconchevronleftwhite from '~/assets/fonts/icons/icon-chevron-left-white.svg';
+import iconclosetwhite from '~/assets/fonts/icons/icon-close-white.svg';
 
-export function ProductImage({
-  currentImage,
-  images,
-}: {
-  currentImage: ProductVariantFragment | null | undefined; // Sửa lại kiểu cho currentImage
-  images: ProductFragment['images'];
-}) {
-  const imageList = images.edges.map(edge => edge.node);
-  const lightGallery = useRef<any>(null);
-  const swiperRef = useRef<SwiperType | null>(null);
-  const hasImages = imageList.length > 0 || currentImage; // Kiểm tra xem có hình ảnh hay không
 
-  // Cập nhật Swiper khi currentImage thay đổi
+// Component Modal cho chuỗi hình ảnh
+function FullscreenModal({ isOpen, onClose, startIndex, images }) {
+  const modalContentRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (swiperRef.current && currentImage) {
-      swiperRef.current.slideTo(0); // Cập nhật chỉ số của Swiper
+    // Cuộn đến hình ảnh bắt đầu trong modal nếu chỉ số được chỉ định
+    if (modalContentRef.current && startIndex !== null) {
+      const selectedImage = modalContentRef.current.children[startIndex];
+      if (selectedImage) {
+        selectedImage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     }
-  }, [currentImage, imageList]); // Chạy khi currentImage thay đổi
+  }, [startIndex]);
 
-  // Start
-  if (!hasImages) {
-    return <div className="product-image">No images available</div>;
-  }
-
-  console.log(currentImage); 
+  if (!isOpen) return null;
 
   return (
-    <div className="product-image">
-      <LightGallery
-        speed={150}
-        closeOnTap={false}
-        download={false}
-        licenseKey={'000000000000000'}
-        plugins={[lgThumbnail, lgZoom]}
-        selector={'.img-lightbox'}
-        onInit={(detail) => {
-          lightGallery.current = detail.instance;
-        }}
+    <div className="product-carousel--modal">
+      <button
+        className="btn close-modal-btn"
+        onClick={onClose}
       >
-        {hasImages && (
-          <Swiper
-            modules={[Navigation, PaginationSwiper, Mousewheel, Keyboard]}
-            className="product-carousel"
-            spaceBetween={32}
-            slidesPerView={1}
-            navigation={{
-              prevEl: '.carousel-btn-prev',
-              nextEl: '.carousel-btn-next',
-            }}
-            pagination={{
-              el: '.images-pagination',
-              type: 'fraction'
-            }}
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper; // Gán giá trị cho swiperRef
-            }}
+        <img src={iconclosetwhite} alt="Đóng modal" />
+      </button>
 
-            breakpoints={{
-                768: { // Trên 768px, không sử dụng cssMode
+      <div className="product-carousel--header">
+        
+      </div>
+
+      <div className="product-carousel--content" ref={modalContentRef} style={{ overflowY: 'auto', maxHeight: '100vh' }}>
+        <div className="image-list">
+          {images.map((img, idx) => (
+            <HydrogenImage
+              key={idx}
+              alt={img.altText || 'product carousel'}
+              src={img.url}
+              aspectRatio="auto"
+              loading="lazy"
+              width="auto"
+              sizes="(min-width: 45em) 50vw, 100vw"
+            />
+          ))}
+        </div>
+        
+      </div>
+    </div>
+  );
+}
+
+export function ProductImage({ currentImage, images }: { currentImage: any, images: any }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [startIndex, setStartIndex] = useState<number | null>(null);
+  const imageList = images.edges.map(edge => edge.node);
+  const swiperRef = useRef<SwiperType | null>(null);
+  const hasImages = imageList.length > 0 || currentImage;
+
+  useEffect(() => {
+    if (swiperRef.current && currentImage) {
+      swiperRef.current.slideTo(0); // Đặt lại Swiper về slide đầu tiên
+    }
+  }, [currentImage]);
+
+  const openModal = (index: number) => {
+    setStartIndex(index);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setStartIndex(null);
+  };
+
+  if (!hasImages) {
+    return <div className="product-images">Không có hình ảnh nào</div>;
+  }
+
+  return (
+    <div className="product-images">
+      {hasImages && (
+        <>
+          <div className="product-carousel">
+            <Swiper
+              modules={[Navigation, PaginationSwiper, Mousewheel, Keyboard]}
+              className="product-carousel__images"
+              spaceBetween={32}
+              slidesPerView={1}
+              navigation={{
+                prevEl: '.carousel-btn-prev',
+                nextEl: '.carousel-btn-next',
+              }}
+              pagination={{
+                el: '.images-pagination',
+                type: 'fraction',
+              }}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
+              breakpoints={{
+                768: {
                   cssMode: false,
                 },
-                0: { // Dưới 768px, bật cssMode
-                    cssMode: true,
-                    mousewheel: false, // Tắt cuộn bằng bánh xe chuột trên mobile
-                }
-            }}
-          >
-            {/* Kiểm tra và in ra currentImage nếu nó tồn tại */}
-            {currentImage && currentImage.image && ( // Kiểm tra xem currentImage có tồn tại và có trường image
-              <SwiperSlide>
-                <a 
-                  className="img-lightbox"
-                  data-src={currentImage.image.url} // Sửa đường dẫn đến ảnh
-                  key={currentImage.image.id} // Sửa key
-                >
-                  <HydrogenImage
-                    key={currentImage.image.id} // Sửa key
-                    alt={`${currentImage.selectedOptions[0].name}: ${currentImage.selectedOptions[0].value}` || 'Product Image'} // Sửa alt text
-                    src={currentImage.image.url} // Sửa đường dẫn đến ảnh
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 50vw, 100vw"
-                    loading="lazy"
-                  />
-                </a>
-              </SwiperSlide>
-            )}
+                0: {
+                  cssMode: true,
+                  mousewheel: false,
+                },
+              }}
+            >
+              {currentImage && currentImage.image && (
+                <SwiperSlide>
+                  <a
+                    className="img-lightbox"
+                    onClick={() => openModal(0)} // Mở modal với hình ảnh đầu tiên
+                  >
+                    <HydrogenImage
+                      key={currentImage.image.id}
+                      alt={`${currentImage.selectedOptions[0].name}: ${currentImage.selectedOptions[0].value}`}
+                      src={currentImage.image.url}
+                      aspectRatio="1/1"
+                      sizes="(min-width: 45em) 50vw, 100vw"
+                      loading="lazy"
+                    />
+                  </a>
+                </SwiperSlide>
+              )}
 
-            {imageList.map(img => (
-              <SwiperSlide key={img.id}>
-                <a 
-                  className="img-lightbox"
-                  data-src={img.url}
-                >
-                  <HydrogenImage
-                    alt={img.altText || 'Product Image'}
-                    src={img.url}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 50vw, 100vw"
-                    loading="lazy"
-                  />
-                </a>
-              </SwiperSlide>
-            ))}
+              {imageList.map((img, index) => (
+                <SwiperSlide key={img.id}>
+                  <a
+                    className="img-lightbox"
+                    onClick={() => openModal(index + 1)} // Mở modal với hình ảnh được click
+                  >
+                    <HydrogenImage
+                      alt={img.altText || 'Hình ảnh sản phẩm'}
+                      src={img.url}
+                      aspectRatio="1/1"
+                      sizes="(min-width: 45em) 50vw, 100vw"
+                      loading="lazy"
+                    />
+                  </a>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          <div className="product-carousel--nav">
             <div className="carousel-btn-prev">
-              <img src={iconchevronleft} alt="" width='24px' height='auto' />
+              <img src={iconchevronleftwhite} alt="" width="24px" height="auto" />
             </div>
             <div className="carousel-btn-next">
-              <img src={iconchevronright} alt="" width='24px' height='auto' />
+              <img src={iconchevronrightwhite} alt="" width="24px" height="auto" />
             </div>
-          </Swiper>
-        )}
-      </LightGallery>
+          </div>
+        </>
+      )}
 
       <div className="carousel-helpers">
-        <button className="all-lightbox btn-primary"> View all </button>
+        <button className="all-lightbox btn-primary">Xem tất cả</button>
         <div className="images-pagination"></div>
       </div>
+
+      {/* Modal hiển thị chuỗi hình ảnh */}
+      <FullscreenModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        startIndex={startIndex}
+        images={imageList}
+      />
     </div>
   );
 }

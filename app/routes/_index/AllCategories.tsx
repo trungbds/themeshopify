@@ -20,6 +20,24 @@ export default function AllCategories({ collectionsList }: { collectionsList: an
                 <div className="flex flex-wrap -mb-px items-baseline all-categories-list">
                     <h2 className="title-selection"> All categories</h2>
 
+                    {/* <div className='all-categories__list'>
+                        {items.map((item: any, index: number) => (
+                                <Link 
+                                    to='/'
+                                    className={`all-categories__item link-primary`}
+                                    aria-current={index ? "page" : undefined}
+                                >
+                                    <h4 className='link-hover'>{item.title}</h4> 
+                                    <img src={item.resource?.image?.url || noImage}  alt="" width='100%' />
+                                </Link>
+
+                            
+                        ))}
+
+                    </div> */}
+
+                    
+
                     <Swiper
                         key = 'all-categories-swiper'
                         modules={[Navigation, PaginationSwiper]}
@@ -42,8 +60,9 @@ export default function AllCategories({ collectionsList }: { collectionsList: an
                                     className={`all-categories__item link-primary`}
                                     aria-current={index ? "page" : undefined}
                                 >
-                                    <h4 className='link-hover'>{item.title}</h4> 
+                                   
                                     <img src={item.resource?.image?.url || noImage}  alt="" width='100%' />
+                                    <h4 className='link-hover'>{item.title}</h4> 
                                 </Link>
 
                             </SwiperSlide>

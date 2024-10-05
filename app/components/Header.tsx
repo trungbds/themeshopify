@@ -16,6 +16,8 @@ import CartHeader from './custom-components/CartHeader';
 import icondropdown from '~/assets/fonts/icons/icon-dropdown.svg';
 import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
 import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
+import iconadd from '~/assets/fonts/icons/icon-add.svg';
+import iconremove from '~/assets/fonts/icons/icon-remove.svg';
 
 
 
@@ -181,7 +183,7 @@ export function HeaderMenu({
                 
               >
                 <span>{item.title}</span>
-                <img src={icondropdown} alt="icon dropdown" />
+                {isOpen ?  <img src={iconremove} alt="icon remove"/> : <img src={iconadd} alt="icon add" />}
               </div>
               <div className="sub-menu nested-sub-menu">
                 <div className="menu-item">

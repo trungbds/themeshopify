@@ -21,6 +21,7 @@ import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import 'swiper/css/thumbs';
 import RouteError from './components/empty/RouteError';
 
 export type RootLoader = typeof loader;
