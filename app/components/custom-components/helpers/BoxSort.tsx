@@ -13,8 +13,8 @@ const sortKeyLabels: { [key: string]: string } = {
   TITLE: 'Featured',
   BEST_SELLING: 'Best Selling',
   CREATED: 'Newest',
-  PRICE_ASC: 'Price: Low to High', // Đặt tên cho tùy chọn này
-  PRICE_DESC: 'Price: High to Low', // Đặt tên cho tùy chọn này
+  PRICE_ASC: 'Price: Low to High', 
+  PRICE_DESC: 'Price: High to Low', 
 };
 
 export function BoxSort({ selectedSort = "Featured", countProducts }: BoxSortProps) {
@@ -76,62 +76,56 @@ export function BoxSort({ selectedSort = "Featured", countProducts }: BoxSortPro
           >
             <div className="py-1" role="none">
               <Link
-                className="block px-4 py-2 text-gray-900"
+                className={`block px-4 py-2 text-gray-900 ${currentSortKey === 'MANUAL' ? 'active' : ''}`}
                 to={createUrl("MANUAL", false)}
                 onClick={handleLinkClick}
                 role="menuitem"
                 prefetch="intent"
-                tabIndex={-1}
               >
                 Most Popular
               </Link>
               <Link
-                className="block px-4 py-2 text-gray-900"
+                className={`block px-4 py-2 text-gray-900 ${currentSortKey === 'TITLE' ? 'active' : ''}`}
                 to={createUrl("TITLE", false)}
                 onClick={handleLinkClick}
                 role="menuitem"
                 prefetch="intent"
-                tabIndex={-1}
               >
                 Featured
               </Link>
               <Link
-                className="block px-4 py-2 text-gray-900"
+                className={`block px-4 py-2 text-gray-900 ${currentSortKey === 'BEST_SELLING' ? 'active' : ''}`}
                 to={createUrl("BEST_SELLING", false)}
                 onClick={handleLinkClick}
                 role="menuitem"
                 prefetch="intent"
-                tabIndex={-1}
               >
                 Best Selling
               </Link>
               <Link
-                className="block px-4 py-2 text-gray-900"
+                className={`block px-4 py-2 text-gray-900 ${currentSortKey === 'CREATED' ? 'active' : ''}`}
                 to={createUrl("CREATED", false)}
                 onClick={handleLinkClick}
                 role="menuitem"
                 prefetch="intent"
-                tabIndex={-1}
               >
                 Newest
               </Link>
               <Link
-                className="block px-4 py-2 text-gray-900"
+                className={`block px-4 py-2 text-gray-900 ${(currentSortKey === 'PRICE' && !currentReverse) ? 'active' : ''}`}
                 to={createUrl("PRICE", false)}
                 onClick={handleLinkClick}
                 role="menuitem"
                 prefetch="intent"
-                tabIndex={-1}
               >
                 Price: Low to High
               </Link>
               <Link
-                className="block px-4 py-2 text-gray-900"
+                className={`block px-4 py-2 text-gray-900 ${(currentSortKey === 'PRICE' && currentReverse) ? 'active' : ''}`}
                 to={createUrl("PRICE", true)}
                 onClick={handleLinkClick}
                 role="menuitem"
                 prefetch="intent"
-                tabIndex={-1}
               >
                 Price: High to Low
               </Link>

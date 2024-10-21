@@ -1,3 +1,4 @@
+import { Link } from '@remix-run/react';
 import React, { useState, useRef, useEffect } from 'react';
 import iconlivehelp from '~/assets/fonts/icons/icon-livehelp.svg';
 
@@ -37,7 +38,7 @@ export default function HeaderSupportBtn() {
             <div className="btn-support">
                 <button
                     type="button"
-                    className="w-full justify-center gap-x-1.5 px-3 py-2 hover:bg-gray-100"
+                    className="w-full justify-center gap-x-1.5 px-3 py-2"
                     id="menu-button"
                     aria-expanded={isOpen}
                     aria-haspopup="true"
@@ -56,42 +57,34 @@ export default function HeaderSupportBtn() {
                     aria-labelledby="menu-button"
                     tabIndex={-1}
                 >
-                    <a
-                        href="#"
+                    <Link 
+                        to={'/'}
                         className="block px-4 py-2"
                         role="menuitem"
-                        tabIndex={-1}
-                        id="menu-item-0"
                     >
                         Live chat
-                    </a>
-                    <a
-                        href="#"
+                    </Link>
+                    <Link 
+                        to={'/contact'}
                         className="block px-4 py-2"
                         role="menuitem"
-                        tabIndex={-1}
-                        id="menu-item-1"
                     >
-                        Call us
-                    </a>
-                    <a
-                        href="#"
+                        Contact Us
+                    </Link>
+                    <Link 
+                        to={'/helpcenter'}
                         className="block px-4 py-2"
                         role="menuitem"
-                        tabIndex={-1}
-                        id="menu-item-2"
                     >
                         Help Center
-                    </a>
-                    <a
-                        href="#"
+                    </Link>
+                    <Link 
+                        to={'/faqs'}
                         className="block px-4 py-2"
                         role="menuitem"
-                        tabIndex={-1}
-                        id="menu-item-3"
                     >
-                        FaQ
-                    </a>
+                        FAQs
+                    </Link>
                 </div>
             )}
         </div>

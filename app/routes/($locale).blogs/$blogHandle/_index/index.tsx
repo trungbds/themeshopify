@@ -3,10 +3,17 @@ import {Link, useLoaderData, type MetaFunction} from '@remix-run/react';
 import {Image, getPaginationVariables} from '@shopify/hydrogen';
 import type {ArticleItemFragment} from 'storefrontapi.generated';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import noImage from '~/assets/images/no-image-available.png';
+
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.blog.title ?? ''} blog`}];
 };
+
+export const handle = {
+  breadcrumbType :'blog'
+}
+
 
 export async function loader(args: LoaderFunctionArgs) {
   // Start fetching non-critical data without blocking time to first byte
@@ -28,7 +35,7 @@ async function loadCriticalData({
   params,
 }: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 4,
+    pageBy: 24,
   });
 
   if (!params.blogHandle) {
@@ -66,20 +73,27 @@ export default function Blog() {
   const {articles} = blog;
 
   return (
-    <div className="blog">
-      <h1>{blog.title}</h1>
-      <div className="blog-grid">
-        <PaginatedResourceSection connection={articles}>
-          {({node: article, index}) => (
-            <ArticleItem
-              article={article}
-              key={article.id}
-              loading={index < 2 ? 'eager' : 'lazy'}
-            />
-          )}
-        </PaginatedResourceSection>
+
+    <section>
+      <div className="container">
+        <div className="blog">
+          <h1>{blog.title}</h1>
+          <div className="blog-grid">
+            <PaginatedResourceSection connection={articles}>
+              {({node: article, index}) => (
+                <ArticleItem
+                  article={article}
+                  key={article.id}
+                  loading={index < 2 ? 'eager' : 'lazy'}
+                />
+              )}
+            </PaginatedResourceSection>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </section>
+    
   );
 }
 
@@ -98,18 +112,23 @@ function ArticleItem({
   return (
     <div className="blog-article" key={article.id}>
       <Link to={`/blogs/${article.blog.handle}/${article.handle}`}>
-        {article.image && (
-          <div className="blog-article-image">
-            <Image
-              alt={article.image.altText || article.title}
-              aspectRatio="3/2"
-              data={article.image}
-              loading={loading}
-              sizes="(min-width: 768px) 50vw, 100vw"
-            />
-          </div>
+
+     
+      <div className="blog-article-image">
+        {article.image ? (
+          <Image
+            alt={article.image.altText || article.title}
+            aspectRatio="3/2"
+            data={article.image}
+            loading={loading}
+            sizes="(min-width: 768px) 50vw, 100vw"
+          />
+        ) : (
+          <img src={noImage} alt='no image available' />
         )}
-        <h3>{article.title}</h3>
+      </div>
+
+        <h3 className='title'>{article.title}</h3>
         <small>{publishedAt}</small>
       </Link>
     </div>

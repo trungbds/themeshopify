@@ -10,9 +10,6 @@
 
   --primary-color: #0046be;
   --secondary-color: #013196;
-  
-
-  --effect-color: #2d66ed;
 }
 
 img {
@@ -117,15 +114,11 @@ form {
 }
 
 .link-primary:hover .link-hover {
-  color: var(--effect-color)
+  text-decoration: underline;
 }
 
 .link-underline {
   text-decoration: underline;
-}
-
-.link-secondary {
-  color: var(--primary-color)
 }
 
 .link-secondary:hover .link-hover{
@@ -439,11 +432,12 @@ button.reset:hover:before {
 * --------------------------------------------------
 */
 .header {
-  background: var(--primary-color);
+  background: rgb(255, 255, 255);
   position: sticky;
   top: 0px;
   z-index: 99;
   width: 100%;
+  border-bottom: 1px solid #ddd;
 
 }
 
@@ -511,9 +505,9 @@ button.reset:hover:before {
   position: relative;
   padding: 11px;
   border-radius: 25px;
+  border: 1px solid #ddd;
   margin-left: 8px;
   width: 48px;
-  background-color: #2969d7ba;
 }
 .cart-badge {
   position: absolute;
@@ -796,15 +790,14 @@ button.reset:hover:before {
   border-radius: 8px;
   gap: 4px;
   align-items: center;
-  height: 48px;
-  padding: 0px 16px 0 12px;
+  height: 44px;
+  padding: 0 12px 0 8px;
   margin-bottom: 32px;
   margin-left: auto;
-  font-weight: 500;
 }
 
 .footer-right__area .btn-dark img{
-  width: 24px;
+  width: 20px;
 }
 .footer-right__area .btn-dark span {
   line-height: 1;
@@ -2727,17 +2720,12 @@ table td.number {
   position: relative;
   margin: 0px;
   padding: 12px 16px;
+  border: 1px solid #000;
   border-radius: 8px;
   font-weight: 600;
   line-height: 1;
   height: 48px;
   cursor: pointer;
-  background-color: #fff;
-  gap: 4px;
-}
-
-.categories-btn span {
-  /* color: var(--color-light); */
 }
 
 .menu-expand {
@@ -2935,12 +2923,9 @@ table td.number {
   font-weight: 500;
   margin-bottom: 4px;
 }
-.box-sort__expand a.active,
+
 .box-sort__expand a:hover {
   background-color: #efefef;
-}
-.box-sort__expand a.active {
-  font-weight: 600;
 }
 
 .filter-form__product {
@@ -3568,7 +3553,7 @@ table td.number {
 /* ----------------- */
 
 .btn-user button[aria-expanded="true"] {
-  background-color: #3478ed;
+  background-color: #e5e5e5;
 }
 
 .header-cta__block-expand {
@@ -3601,11 +3586,6 @@ table td.number {
   border-radius: 24px;
   padding: 10px 12px;
   cursor: pointer;
-  background-color: #2969d7ba;
-}
-
-.btn-user button img {
-  opacity: .5;
 }
 
 
@@ -3618,7 +3598,6 @@ table td.number {
   cursor: pointer;
   line-height: 1;
   height: 48px;
-  color: var(--color-light);
 }
 
 .btn-support button span{
@@ -3627,13 +3606,18 @@ table td.number {
 }
 
 .btn-support button[aria-expanded="true"]{
-  background-color: #3478ed;
+  background-color: #e5e5e5;
 }
 /* CHANGE COLOR HEADER */
 /* .header{
   background-color:#0046be;
 }
-
+.categories-btn, */
+.btn-support button,
+.btn-user button,
+.btn-cart{
+  background-color: #fff;
+}
 
 
 /* ----------------- */
@@ -3816,20 +3800,24 @@ table td.number {
   align-items: center;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 64px 0;
-  gap: 16px;
+  padding: 56px 0;
+  gap: 8px;
 }
 
 .help-grid__item .title {
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .help-grid__item .icon{
-
+  background: whitesmoke;
+  width: 64px;
+  padding: 14px;
+  border-radius: 32px;
 }
 
 .help-contact {
-  height: 320px;
+  height: 300px;
   position: relative;
   background: linear-gradient(90deg, #3313C2, #214DBE);
   border-radius: 16px;
@@ -3841,44 +3829,38 @@ table td.number {
   position: absolute;
   height: 100%;
   width: auto;
-  right: 0%;
+  right: 18%;
   bottom: 0;
-  min-height: 320px;
-  z-index: -1;
 }
 
 .help-contact__detail {
+  width: auto;
   display: inline-flex;
+  justify-content: center;
   flex-wrap: wrap;
+  align-items: center;
   gap: 16px;
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  left: 18%;
+  transform: translate(0, -50%);
+  align-items: flex-end;
   z-index: 9;
-  height: 100%;
-  align-items: center;
-  width: 968px;
-}
-.help-contact__title{
-  margin-bottom: 22px;
-  margin-right: 16px;
-
 }
 
 .help-contact__title h3{
   font-size: 28px;
   color: rgb(255, 255, 255);
   font-weight: 400;
+  margin-right: 32px;
 }
 
 .help-contact__title p {
   color: #fff;
   opacity: .8;
-  font-weight: 300;
 }
 
-.help-contact .help-contact__detail .help-contact__link {
+.help-contact .help-contact__link {
   background: #fff;
   padding: 10px 16px;
   height: 44px;
@@ -3890,7 +3872,7 @@ table td.number {
   justify-content: center;
 }
 
-.help-contact .help-contact__detail .help-contact__link:nth-child(3) {
+.help-contact .help-contact__link:last-child {
   background: transparent;
   border: 1px solid #fff;
   color: #fff;
@@ -3904,7 +3886,7 @@ table td.number {
 }
 
 .faqs__category {
-  padding: 16px 0px 32px;
+  padding: 16px 16px 32px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -3912,13 +3894,9 @@ table td.number {
 }
 
 .faqs__category .title {
-  margin-bottom: 16px;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
-}
-.faqs__category .note {
-  font-size: 14px;
-  font-style: italic;
+  margin-bottom: 8px;
 }
 
 .faqs__item {
@@ -3931,10 +3909,9 @@ table td.number {
   text-decoration: underline;
 }
 
-.faqs__category .link-secondary {
+.faqs__category .link-underline {
   font-weight: 600;
   margin-top: 16px;
-  font-size: 14px;
 }
 
 
@@ -3956,6 +3933,7 @@ table td.number {
   position: relative;
   z-index: 9;
   align-items: flex-start;
+  font-size: 16px;
   height: 64px;
   padding: 22px 0px;
 }

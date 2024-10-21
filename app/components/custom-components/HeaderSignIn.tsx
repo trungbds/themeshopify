@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import iconmenu from '~/assets/fonts/icons/icon-menu.svg';
 import iconuser from '~/assets/fonts/icons/icon-user.svg';
+import { IconUser } from './icons/IconUser';
 
 export default function HeaderSignIn() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -39,13 +40,15 @@ export default function HeaderSignIn() {
             <div className='btn-user'>
                 <button
                     type="button"
-                    className="w-full justify-center gap-x-1.5 px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                    className="w-full justify-center gap-x-1.5 px-3 py-2 text-gray-900 shadow-sm hover:bg-gray-50"
                     id="menu-button"
                     aria-expanded={isOpen}
                     aria-haspopup="true"
                     onClick={toggleDropdown} // Gán hàm toggleDropdown vào sự kiện onClick
                 >
-                    <img src={iconuser} alt="" />
+                    <IconUser 
+                        color = {'#fff'}
+                    />
                     <img src={iconmenu} alt="" />
 
                 </button>

@@ -92,7 +92,7 @@ function ArticleItem({
 }) {
   const publishedAt = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
-    month: 'long',
+    month: 'numeric',
     day: 'numeric',
   }).format(new Date(article.publishedAt!));
   return (

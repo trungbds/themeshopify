@@ -1,0 +1,36 @@
+{
+  "data": [
+    {
+      "id": 14,
+      "documentId": "x9dhhjl9y1eztcba6ngvv8mb",
+      "category": "Frequently asked questions",
+      "slug": "frequently-asked-questions"
+    },
+    {
+      "id": 15,
+      "documentId": "cpd7p1i8gfpk2ujtzor5tb66",
+      "category": "Order",
+      "slug": "order"
+    },
+    {
+      "id": 16,
+      "documentId": "t135hnxnf1be3471qys5508p",
+      "category": "Shipping",
+      "slug": "shipping"
+    },
+    {
+      "id": 17,
+      "documentId": "gjr1380uy8tmr9hptohtkrc3",
+      "category": "Payment",
+      "slug": "payment"
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 4
+    }
+  }
+}

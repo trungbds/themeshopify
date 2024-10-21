@@ -28,6 +28,7 @@
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-loading-skeleton": "^3.5.0",
     "swiper": "^11.1.11",
     "tailwindcss": "^4.0.0-alpha.17"
   },

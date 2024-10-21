@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import iconmenu from '~/assets/fonts/icons/icon-menu.svg';
 import iconuser from '~/assets/fonts/icons/icon-user.svg';
+import { IconUser } from './icons/IconUser';
 
 export default function HeaderAccount(){
     // Khởi tạo state cho trạng thái hiển thị của dropdown
@@ -23,7 +24,7 @@ export default function HeaderAccount(){
                     aria-haspopup="true"
                     onClick={toggleDropdown} // Gán hàm toggleDropdown vào sự kiện onClick
                 >
-                    <img src={iconuser} alt="" />
+                    <IconUser />
                     <img src={iconmenu} alt="" />
 
                 </button>

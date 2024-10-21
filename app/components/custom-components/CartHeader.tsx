@@ -8,6 +8,7 @@ import {CartMain} from '~/components/CartMain';
 
 // custom
 import iconcart from '~/assets/fonts/icons/icon-bag.svg';
+import { IconBag } from './icons/IconBag';
 
 type Viewport = 'desktop' | 'mobile';
 interface CartHeaderProps {
@@ -98,7 +99,9 @@ function CartHeaderBtn (
           } as CartViewPayload);
         }}
       >
-        <img src={iconcart} width={'24px'} />
+        <IconBag 
+          color='#fff'
+        />
         {count !== null && count !== 0 && (
           <span className='cart-badge'>
             {count}

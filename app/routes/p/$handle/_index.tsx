@@ -295,7 +295,6 @@ export default function Product() {
     <div className="product">
 
 
-
       <section className='product-page__section'>
         <div className="container">
           <div className="product-sku">SKU: <span>{sku}</span></div>

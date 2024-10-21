@@ -22,6 +22,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/thumbs';
+import 'react-loading-skeleton/dist/skeleton.css';
+
 import RouteError from './components/empty/RouteError';
 
 export type RootLoader = typeof loader;

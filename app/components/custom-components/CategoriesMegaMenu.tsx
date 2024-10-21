@@ -3,6 +3,7 @@ import {NavLink} from '@remix-run/react';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {MenuExpand} from './MenuExpand';
 import iconcategories from '~/assets/fonts/icons/icon-categories.svg';
+import { IconCategories } from './icons/IconCategories';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -78,7 +79,9 @@ export function CategoriesMegaMenu({
         type="button" 
         className="categories-btn hover:bg-[#f3f4f6]/90 focus:ring-4 focus:outline-none focus:ring-[#f3f4f6]/50 px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#f3f4f6]/55 me-2 mb-2"
       >
-        <img className='w-4 h-4 me-2' src={iconcategories} alt="" />
+        <IconCategories 
+          // color='#fff'
+        />
         <span>Categories</span>
         {activeMenu === 'menu' && items.length > 0 && (
           <MenuExpand 

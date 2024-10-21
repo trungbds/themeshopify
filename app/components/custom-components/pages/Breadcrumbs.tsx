@@ -3,7 +3,6 @@ import { z } from 'zod';
 import iconhome from '~/assets/fonts/icons/icon-home.svg';
 
 
-type TemplateType = 'default' | 'product' | 'homepage';
 type BreadcrumbsProps = {
   isActive: boolean;
 };
@@ -21,22 +20,58 @@ interface ProductData {
   };
 }
 
+interface BlogsData {
+  handle: string;
+  title: string;
+}
+
+interface BlogData {
+  handle: string;
+  title: string;
+}
+
+interface ArticleBlogData {
+  title: string;
+  handle: string;
+  blog: BlogData;
+}
+
+interface FaqData {
+  
+}
+
+
+
+
+
 interface RouteHandle {
-  breadcrumbType?: 'collections' | 'collection' | 'product';
+  breadcrumbType?: 'collections' | 'collection' | 'product' | 'policies' | 'policy' | 'blogs' | 'blog' | 'article' | 'helpcenter' | 'faqs' | 'faq' ;
 }
 
 interface DeepestRoute {
   handle?: RouteHandle;
   data?: {
-    collection?: CollectionData; // Define the shape of your data
-    product?: ProductData; // Define the shape of your product data
+    collection?: CollectionData; 
+    product?: ProductData;
+    blogs?: BlogsData;
+    blog? : BlogData;
+    article? : ArticleBlogData;
+    matchedCategory? : any
   };
 }
 
 export const breadcrumbTypeSchema = z.enum([
   'collections', 
   'collection',
-  'product'
+  'product',
+  'policies',
+  'policy',
+  'blogs',
+  'blog',
+  'article',
+  'helpcenter',
+  'faqs',
+  'faq'
 ]);
 export type TBreadcrumbType = z.infer<typeof breadcrumbTypeSchema>;
 
@@ -74,8 +109,9 @@ export function Breadcrumbs({ isActive }: BreadcrumbsProps) {
             name: collection.title,
           });
         }
+        
 
-        break;
+      break;
 
       case 'product':
         pages.push({
@@ -99,7 +135,106 @@ export function Breadcrumbs({ isActive }: BreadcrumbsProps) {
             name: product.title,
           });
         }
-        break;
+      break;
+        
+      case 'policies':
+        pages.push({
+          href: '/policies',
+          name: 'Policies',
+        });
+      break;
+        
+      case 'policy':
+        pages.push({
+          href: '/policies',
+          name: 'Policies',
+        });
+
+        const policy = deepestRoute.data?.policy;
+        if (policy) {
+          pages.push({
+            href: `/policies/${policy.handle}`,
+            name: policy.title,
+          });
+        }
+
+      break;
+
+      case 'blogs':
+        pages.push({
+          href: '/blogs',
+          name: 'Blogs',
+        });
+      break;
+
+      case 'blog':
+        pages.push({
+          href: '/blogs',
+          name: 'Blogs',
+        });
+
+        const blog = deepestRoute.data?.blog;
+        if (blog) {
+          pages.push({
+            href: `/c/${blog.handle}`,
+            name: blog.title,
+          });
+        }
+      break;
+
+      case 'article':
+        pages.push({
+          href: '/blogs',
+          name: 'Blogs',
+        });
+
+        const article = deepestRoute.data?.article;
+        if (article) {
+          const firstBlog = article.blog;
+          if (firstBlog) {
+            pages.push({
+              href: `/blogs/${firstBlog.handle}`,
+              name: firstBlog.title,
+            });
+          }
+
+          pages.push({
+            href: `/blogs/${article.handle}`,
+            name: article.title,
+          });
+        }
+      break;
+
+      case 'helpcenter':
+        pages.push({
+          href: '/c',
+          name: 'Help center',
+        });
+      break;
+
+      case 'faqs':
+        pages.push({
+          href: '/faqs',
+          name: 'FAQs',
+        });
+      break;
+
+      case 'faq':
+        pages.push({
+          href: '/faqs',
+          name: 'FAQs',
+        });
+
+        const faq = deepestRoute.data?.matchedCategory;
+        if (faq) {
+          pages.push({
+            href: `/c/${faq.slug}`,
+            name: faq.category,
+          });
+        }
+      break;
+          
+        
 
       default:
         break;

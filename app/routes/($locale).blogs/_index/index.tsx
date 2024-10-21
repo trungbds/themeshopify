@@ -7,6 +7,10 @@ export const meta: MetaFunction = () => {
   return [{title: `Hydrogen | Blogs`}];
 };
 
+export const handle = {
+  breadcrumbType :'blogs'
+}
+
 export async function loader(args: LoaderFunctionArgs) {
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
@@ -51,23 +55,32 @@ export default function Blogs() {
   const {blogs} = useLoaderData<typeof loader>();
 
   return (
-    <div className="blogs">
-      <h1>Blogs</h1>
-      <div className="blogs-grid">
-        <PaginatedResourceSection connection={blogs}>
-          {({node: blog}) => (
-            <Link
-              className="blog"
-              key={blog.handle}
-              prefetch="intent"
-              to={`/blogs/${blog.handle}`}
-            >
-              <h2>{blog.title}</h2>
-            </Link>
-          )}
-        </PaginatedResourceSection>
-      </div>
-    </div>
+
+    <>
+      <section>
+        <div className="container">
+        <div className="blogs">
+          <h1>Blogs</h1>
+          <div className="blogs-grid">
+            <PaginatedResourceSection connection={blogs}>
+              {({node: blog}) => (
+                <Link
+                  className="blog"
+                  key={blog.handle}
+                  prefetch="intent"
+                  to={`/blogs/${blog.handle}`}
+                >
+                  <h2>{blog.title}</h2>
+                </Link>
+              )}
+            </PaginatedResourceSection>
+          </div>
+        </div>
+
+        </div>
+      </section>
+    </>
+    
   );
 }
 

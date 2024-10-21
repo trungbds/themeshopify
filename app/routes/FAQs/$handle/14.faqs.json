@@ -1,0 +1,64 @@
+{
+  "data": [
+    {
+      "id": 48,
+      "documentId": "za2ic0f9h1842gubpy4kliut",
+      "question": " How long do I have to pick up my order?",
+      "shortAnswer": null,
+      "fullAnswer": null,
+      "faq_category": {
+        "id": 14,
+        "documentId": "x9dhhjl9y1eztcba6ngvv8mb",
+        "category": "Frequently asked questions",
+        "slug": "frequently-asked-questions"
+      }
+    },
+    {
+      "id": 49,
+      "documentId": "mkwc05qs1qngtf61fdsz6ijh",
+      "question": " What do I need to bring to pick up my order?",
+      "shortAnswer": null,
+      "fullAnswer": null,
+      "faq_category": {
+        "id": 14,
+        "documentId": "x9dhhjl9y1eztcba6ngvv8mb",
+        "category": "Frequently asked questions",
+        "slug": "frequently-asked-questions"
+      }
+    },
+    {
+      "id": 51,
+      "documentId": "adcx4mj6hhhdt8kv9xttl6r5",
+      "question": "When will my Ship-to-Store order be ready for pickup?",
+      "shortAnswer": "\u003Cp\u003E30 days, 1 question asked: How can we do better?\u003C/p\u003E\u003Cul\u003E\u003Cli\u003EFor any returns within the US and Canada, head over to our Returns Portal and we'll email you a pre-paid return label.\u003C/li\u003E\u003Cli\u003EFeel free to wear the shoes outside to ensure it works with your every day.\u003C/li\u003E\u003Cli\u003EOur masks are not eligible for returns or exchanges.\u003C/li\u003E\u003Cli\u003ECustom made shoes and limited edition shoes are available for one exchange only.\u003C/li\u003E\u003Cli\u003EWe don't offer free returns for international orders yet and the customer must bear the cost for international shipping and returns.\u003C/li\u003E\u003Cli\u003EFor any acceptable international return, mention your order number on the package along with your name, please ship it to\u003C/li\u003E\u003C/ul\u003E",
+      "fullAnswer": null,
+      "faq_category": {
+        "id": 14,
+        "documentId": "x9dhhjl9y1eztcba6ngvv8mb",
+        "category": "Frequently asked questions",
+        "slug": "frequently-asked-questions"
+      }
+    },
+    {
+      "id": 54,
+      "documentId": "i94aoer5w38reutaev9kps9z",
+      "question": " How can I tell if a product is available for Ship-to-Store?",
+      "shortAnswer": "\u003Cp\u003E30 days, 1 question asked: How can we do better?\u003C/p\u003E\u003Cul\u003E\u003Cli\u003EFor any returns within the US and Canada, head over to our Returns Portal and we'll email you a pre-paid return label.\u003C/li\u003E\u003Cli\u003EFeel free to wear the shoes outside to ensure it works with your every day.\u003C/li\u003E\u003Cli\u003EOur masks are not eligible for returns or exchanges.\u003C/li\u003E\u003Cli\u003ECustom made shoes and limited edition shoes are available for one exchange only.\u003C/li\u003E\u003Cli\u003EWe don't offer free returns for international orders yet and the customer must bear the cost for international shipping and returns.\u003C/li\u003E\u003Cli\u003EFor any acceptable international return, mention your order number on the package along with your name, please ship it to\u003C/li\u003E\u003C/ul\u003E",
+      "fullAnswer": null,
+      "faq_category": {
+        "id": 14,
+        "documentId": "x9dhhjl9y1eztcba6ngvv8mb",
+        "category": "Frequently asked questions",
+        "slug": "frequently-asked-questions"
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 4
+    }
+  }
+}

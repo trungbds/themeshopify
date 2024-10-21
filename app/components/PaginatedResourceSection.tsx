@@ -36,7 +36,7 @@ export function PaginatedResourceSection<NodesType>({
         const { pageInfo } = connection;
 
         return (
-          <div>
+          <>
             {resourcesClassName ? (
               <div className={resourcesClassName}>{resourcesMarkup}</div>
             ) : (
@@ -76,7 +76,7 @@ export function PaginatedResourceSection<NodesType>({
               )}
             </div>
 
-          </div>
+          </>
         );
       }}
     </Pagination>
