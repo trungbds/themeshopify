@@ -13,6 +13,8 @@ export const CUSTOMER_UPDATE_MUTATION = `#graphql
         phoneNumber {
           phoneNumber
         }
+        email
+        phone
       }
       userErrors {
         code

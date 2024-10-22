@@ -68,7 +68,7 @@ export type CustomerAddressCreateMutation = {
 
 export type CustomerFragment = Pick<
   CustomerAccountAPI.Customer,
-  'id' | 'firstName' | 'lastName'
+  'id' | 'firstName' | 'lastName' | 'phone' | 'email'
 > & {
   defaultAddress?: CustomerAccountAPI.Maybe<
     Pick<

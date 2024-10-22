@@ -45,7 +45,7 @@ interface FaqData {
 
 
 interface RouteHandle {
-  breadcrumbType?: 'collections' | 'collection' | 'product' | 'policies' | 'policy' | 'blogs' | 'blog' | 'article' | 'helpcenter' | 'faqs' | 'faq' ;
+  breadcrumbType?: 'collections' | 'collection' | 'product' | 'policies' | 'policy' | 'blogs' | 'blog' | 'article' | 'helpcenter' | 'faqs' | 'faq' | 'account' ;
 }
 
 interface DeepestRoute {
@@ -71,7 +71,8 @@ export const breadcrumbTypeSchema = z.enum([
   'article',
   'helpcenter',
   'faqs',
-  'faq'
+  'faq',
+  'account'
 ]);
 export type TBreadcrumbType = z.infer<typeof breadcrumbTypeSchema>;
 
@@ -228,11 +229,29 @@ export function Breadcrumbs({ isActive }: BreadcrumbsProps) {
         const faq = deepestRoute.data?.matchedCategory;
         if (faq) {
           pages.push({
-            href: `/c/${faq.slug}`,
+            href: `/faqs/${faq.slug}`,
             name: faq.category,
           });
         }
       break;
+      
+
+      case 'account':
+        pages.push({
+          href: '/account',
+          name: 'Account',
+        });
+
+        const account = deepestRoute.data?.matchedCategory;
+        if (account) {
+          pages.push({
+            href: `/account/${account.slug}`,
+            name: account.category,
+          });
+        }
+      break;
+
+
           
         
 

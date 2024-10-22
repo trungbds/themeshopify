@@ -1,6 +1,5 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Form, NavLink, Outlet, useLoaderData} from '@remix-run/react';
-import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
 import iconlogout from '~/assets/fonts/icons/icon-logout.svg';
 import { IconDefaultPerson } from '~/components/custom-components/icons/default/IconDefaultPerson';
 import { IconDefaultOrder } from '~/components/custom-components/icons/default/IconDefaultAddress copy 3';
@@ -8,21 +7,10 @@ import { IconDefaultAddress } from '~/components/custom-components/icons/default
 import { IconDefaultWishlist } from '~/components/custom-components/icons/default/IconDefaultWishlist';
 
 
-export function shouldRevalidate() {
-  return true;
-}
+
 
 export async function loader({context}: LoaderFunctionArgs) {
-  const {data, errors} = await context.customerAccount.query(
-    CUSTOMER_DETAILS_QUERY,
-  );
-
-  if (errors?.length || !data?.customer) {
-    throw new Error('Customer not found');
-  }
-
   return json(
-    {customer: data.customer},
     {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -31,10 +19,30 @@ export async function loader({context}: LoaderFunctionArgs) {
   );
 }
 
-export default function AccountLayout() {
-  const {customer} = useLoaderData<typeof loader>();
 
-  const heading = customer
+
+
+export default function AccountLayout() {
+
+  const customer = {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'johndoe@example.com',
+    orders: [
+      {
+        id: '12345',
+        status: 'Shipped',
+        items: [
+          {
+            name: 'Product 1',
+            quantity: 2,
+            price: 99.99,
+          },
+        ],
+      },
+    ],
+  }
+  const heading = 'customer'
     ? customer.firstName
       ? `Welcome, ${customer.firstName}`
       : `Welcome to your account.`
@@ -58,6 +66,7 @@ export default function AccountLayout() {
         </div>
       </div>
     </section>
+    
   );
 }
 
@@ -77,7 +86,7 @@ function AccountMenu() {
 
   return (
     <nav className="account-nav" role="navigation">
-      <NavLink to="/account/profile">
+      <NavLink to="/accountstyle/profile">
         {({ isActive, isPending }) => (
           <>
             <IconDefaultPerson 
@@ -92,7 +101,7 @@ function AccountMenu() {
         )}
       </NavLink>
 
-      <NavLink to="/account/orders">
+      <NavLink to="/accountstyle/orders">
         {({ isActive, isPending }) => (
           <>
             <IconDefaultOrder 
@@ -107,7 +116,7 @@ function AccountMenu() {
         )}
       </NavLink>
 
-      <NavLink to="/account/addresses">
+      <NavLink to="/accountstyle/addresses">
         {({ isActive, isPending }) => (
           <>
             <IconDefaultAddress 
@@ -122,7 +131,7 @@ function AccountMenu() {
         )}
       </NavLink>
 
-      <NavLink to="/account/wishlist">
+      <NavLink to="/accountstyle/wishlist">
         {({ isActive, isPending }) => (
           <>
             <IconDefaultWishlist 
@@ -137,7 +146,7 @@ function AccountMenu() {
         )}
       </NavLink>
 
-      <NavLink to="/account/help">
+      <NavLink to="/accountstyle/help">
         {({ isActive, isPending }) => (
           <>
             <span
@@ -149,7 +158,7 @@ function AccountMenu() {
         )}
       </NavLink>
 
-      <NavLink to="/account/faqs">
+      <NavLink to="/accountstyle/faqs">
         {({ isActive, isPending }) => (
           <>
             <span
@@ -164,7 +173,8 @@ function AccountMenu() {
       <Logout />
     </nav>
   );
-} 
+}
+
 function Logout() {
   return (
     <Form className="account-logout" method="POST" action="/account/logout">

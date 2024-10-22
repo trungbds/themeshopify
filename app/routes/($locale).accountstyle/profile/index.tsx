@@ -15,6 +15,11 @@ import {
   type MetaFunction,
 } from '@remix-run/react';
 
+export const handle = {
+  breadcrumbType :'account'
+}
+
+
 export type ActionResponse = {
   error: string | null;
   customer: CustomerFragment | null;
@@ -25,8 +30,6 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({context}: LoaderFunctionArgs) {
-  await context.customerAccount.handleAuthStatus();
-
   return json({});
 }
 
@@ -84,10 +87,18 @@ export async function action({request, context}: ActionFunctionArgs) {
 }
 
 export default function AccountProfile() {
-  const account = useOutletContext<{customer: CustomerFragment}>();
-  const {state} = useNavigation();
+  const { state } = useNavigation();
   const action = useActionData<ActionResponse>();
-  const customer = action?.customer ?? account?.customer;
+
+  // Initialize customer info
+  const customer = {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'johndoe@example.com',
+    phone: '',
+    dateOfBirth: '',
+    gender: 'Private',
+  };
 
   // Local state for form data
   const [formData, setFormData] = useState({
@@ -95,8 +106,8 @@ export default function AccountProfile() {
     lastName: customer.lastName,
     email: customer.email,
     phone: customer.phone,
-    // dateOfBirth: customer.dateOfBirth,
-    // gender: customer.gender,
+    dateOfBirth: customer.dateOfBirth,
+    gender: customer.gender,
   });
 
   // Local state for tracking form changes
@@ -117,10 +128,9 @@ export default function AccountProfile() {
       formData.firstName !== customer.firstName ||
       formData.lastName !== customer.lastName ||
       formData.email !== customer.email ||
-      formData.phone !== customer.phone ;
-      // formData.phone !== customer.phone ||
-      // formData.dateOfBirth !== customer.dateOfBirth ||
-      // formData.gender !== customer.gender;
+      formData.phone !== customer.phone ||
+      formData.dateOfBirth !== customer.dateOfBirth ||
+      formData.gender !== customer.gender;
 
     setHasChanges(isFormChanged);
   }, [formData]);
@@ -140,7 +150,7 @@ export default function AccountProfile() {
               
               placeholder=""
               aria-label="First name"
-              defaultValue={customer.firstName || ''}
+              defaultValue={customer.firstName}
               minLength={2}
               onChange={handleInputChange}
             />
@@ -157,8 +167,8 @@ export default function AccountProfile() {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
               aria-label="Last name"
-              defaultValue={customer.lastName || ''}
-              minLength={2} 
+              defaultValue={customer.lastName}
+              minLength={2}
               onChange={handleInputChange}
             />
             <label className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -174,7 +184,7 @@ export default function AccountProfile() {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
               aria-label="Email"
-              defaultValue={customer.email || ''}
+              defaultValue={customer.email}
               minLength={2}
               onChange={handleInputChange}
             />
@@ -205,6 +215,7 @@ export default function AccountProfile() {
               name="dateOfBirth"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
               placeholder=" "
+              
               onChange={handleInputChange}
             />
             <label className="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-black peer-focus:dark:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -217,7 +228,8 @@ export default function AccountProfile() {
             <select
               name="gender"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
-              // defaultValue={customer.gender}
+              
+              defaultValue={customer.gender}
               onChange={handleInputChange}
             >
               <option value="Private">Private</option>
@@ -251,5 +263,5 @@ export default function AccountProfile() {
       </Form>
     </div>
   );
-
 }
+

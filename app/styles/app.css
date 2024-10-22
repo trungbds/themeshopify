@@ -513,7 +513,7 @@ button.reset:hover:before {
   border-radius: 25px;
   margin-left: 8px;
   width: 48px;
-  background-color: #2969d7ba;
+  background-color: #4788f7ba;
 }
 .cart-badge {
   position: absolute;
@@ -521,13 +521,13 @@ button.reset:hover:before {
   width: 24px;
   height: 24px;
   text-align: center;
-  background: #0047FF;
-  color: #fff;
+  background: #ffffff;
+  color: #000000;
   border-radius: 12px;
   top: -4px;
   right: -6px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .cart-expand {
@@ -3601,7 +3601,7 @@ table td.number {
   border-radius: 24px;
   padding: 10px 12px;
   cursor: pointer;
-  background-color: #2969d7ba;
+  background-color: #4788f7ba;
 }
 
 .btn-user button img {
@@ -3988,6 +3988,37 @@ table td.number {
   padding: 16px 44px 24px 0px
 }
 
+
+/* ACCOUT */
+.account {
+  position: relative;
+}
+
+.account-page {
+  position: relative;
+}
+
+.account-page .page-sidebar {
+  padding-top: 24px;
+}
+
+.account-nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-nav a, .account-logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  padding: 12px 0;
+  margin-bottom: 4px;
+}
+
+.account-profile form input {
+
+}
 
 
 
