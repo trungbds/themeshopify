@@ -5,22 +5,18 @@ import { IconUser } from './icons/IconUser';
 
 export default function HeaderSignIn() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const dropdownRef = useRef<HTMLDivElement>(null); // Tạo tham chiếu đến dropdown
+    const dropdownRef = useRef<HTMLDivElement>(null); 
 
-    // Hàm xử lý sự kiện mở/đóng dropdown
     const toggleDropdown = () => {
         setIsOpen(prev => !prev);
     };
 
-    // Hàm xử lý click ngoài dropdown
     const handleClickOutside = (event: MouseEvent) => {
-        // Kiểm tra nếu click bên ngoài vùng dropdown và button thì đóng dropdown
         if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
             setIsOpen(false);
         }
     };
 
-    // useEffect để lắng nghe sự kiện click toàn bộ document
     useEffect(() => {
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside);
@@ -28,7 +24,6 @@ export default function HeaderSignIn() {
             document.removeEventListener('mousedown', handleClickOutside);
         }
 
-        // Dọn dẹp sự kiện khi component unmount
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };

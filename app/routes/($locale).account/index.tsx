@@ -1,6 +1,8 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Form, NavLink, Outlet, useLoaderData} from '@remix-run/react';
 import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
+import iconlogout from '~/assets/fonts/icons/icon-logout.svg';
+
 
 export function shouldRevalidate() {
   return true;
@@ -38,9 +40,16 @@ export default function AccountLayout() {
     <section>
       <div className="container">
         <div className="account">
+          
           <h1>{heading}</h1>
-          <AccountMenu />
-          <Outlet context={{customer}} />
+          <div className="page-sidebar">
+            <AccountMenu />
+          </div>
+          <div className="page-content">
+            <Outlet context={{customer}} />
+          </div>
+          
+         
         </div>
       </div>
     </section>
@@ -63,27 +72,27 @@ function AccountMenu() {
   }
 
   return (
-    <nav role="navigation">
+
+    <nav className='account-nav' role="navigation">
       <NavLink to="/account/orders" style={isActiveStyle}>
         Orders  
       </NavLink>
-        | 
       <NavLink to="/account/profile" style={isActiveStyle}>
-           Profile  
+        Profile  
       </NavLink>
-        | 
       <NavLink to="/account/addresses" style={isActiveStyle}>
-           Addresses  
+        Addresses  
       </NavLink>
-        | 
       <Logout />
     </nav>
+    
   );
 }
 
 function Logout() {
   return (
     <Form className="account-logout" method="POST" action="/account/logout">
+      <img src={iconlogout} alt="" />
       <button type="submit">Sign out</button>
     </Form>
   );
