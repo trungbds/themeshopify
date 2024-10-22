@@ -98,7 +98,7 @@ function AccountMenu() {
       <div className='group-large'>
 
         <NavLink 
-          to="/accountstyle/home"
+          to="/account/home"
         >
           {({ isActive, isPending }) => (
             <>
@@ -115,7 +115,7 @@ function AccountMenu() {
         </NavLink>
 
         
-        <NavLink to="/accountstyle/orders">
+        <NavLink to="/account/orders">
           {({ isActive, isPending }) => (
             <>
               <IconDefaultOrder
@@ -129,7 +129,7 @@ function AccountMenu() {
             </>
           )}
         </NavLink>
-        <NavLink to="/accountstyle/profile">
+        <NavLink to="/account/profile">
           {({ isActive, isPending }) => (
             <>
               <IconDefaultPerson 
@@ -143,7 +143,7 @@ function AccountMenu() {
             </>
           )}
         </NavLink>
-        <NavLink to="/accountstyle/addresses">
+        <NavLink to="/account/addresses">
           {({ isActive, isPending }) => (
             <>
               <IconDefaultAddress 
@@ -157,7 +157,7 @@ function AccountMenu() {
             </>
           )}
         </NavLink>
-        <NavLink to="/accountstyle/wishlist">
+        <NavLink to="/account/wishlist">
           {({ isActive, isPending }) => (
             <>
               <IconDefaultWishlist 
@@ -174,7 +174,7 @@ function AccountMenu() {
       </div>
 
       <div className='group-medium'>
-        <NavLink to="/accountstyle/help">
+        <NavLink to="/helpcenter">
           {({ isActive, isPending }) => (
             <>
               <span
@@ -186,7 +186,7 @@ function AccountMenu() {
           )}
         </NavLink>
 
-        <NavLink to="/accountstyle/faqs">
+        <NavLink to="/faqs">
           {({ isActive, isPending }) => (
             <>
               <span
