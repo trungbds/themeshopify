@@ -107,16 +107,19 @@ export function Header({
   );
 }
 
+
 export function HeaderMenu({
   menu,
   primaryDomainUrl,
   viewport,
   publicStoreDomain,
+  isLoggedIn
 }: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderProps['header']['shop']['primaryDomain']['url'];
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
+  isLoggedIn : Promise<boolean>
 }) {
 
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
@@ -205,16 +208,29 @@ export function HeaderMenu({
   return (
     <nav className={`header-menu-${viewport}`} role="navigation">
       {viewport === 'mobile' && (
-        <div className="menu-item">
-          <NavLink 
-            prefetch="intent" 
-            style={activeLinkStyle} 
-            to="/"
-            onClick={closeAside}
-          >
-            Home
-          </NavLink>
-        </div>
+        <>
+          <Suspense fallback='loading'>
+            <Await 
+              resolve={isLoggedIn} 
+              errorElement="Error">
+              {(isLoggedIn) => (
+                (isLoggedIn ? <HeaderAccount/> : <HeaderSignIn/>)
+              )}
+              
+            </Await>
+          </Suspense>
+          <div className="menu-item">
+            <NavLink 
+              prefetch="intent" 
+              style={activeLinkStyle} 
+              to="/"
+              onClick={closeAside}
+            >
+              Home
+            </NavLink>
+          </div>
+        </>
+        
       )}
       {renderItems(items)}
     </nav>
@@ -242,6 +258,7 @@ function HeaderCtas({
           
         </Await>
       </Suspense>
+
     </div>
   );
 }
@@ -250,7 +267,7 @@ function HeaderMenuMobileToggle() {
   const {open} = useAside();
   return (
     <button
-      className="header-menu-mobile-toggle reset"
+      className="header-menu-mobile-toggle"
       onClick={() => open('mobile')}
     >
       <img src={iconmenu} alt="" />
@@ -270,47 +287,3 @@ function activeLinkStyle({
     color: isPending ? 'grey' : 'black',
   };
 }
-
-
-
-const FALLBACK_HEADER_MENU = {
-  id: 'gid://shopify/Menu/199655587896',
-  items: [
-    {
-      id: 'gid://shopify/MenuItem/461609500728',
-      resourceId: null,
-      tags: [],
-      title: 'Collections',
-      type: 'HTTP',
-      url: '/c/all',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609533496',
-      resourceId: null,
-      tags: [],
-      title: 'Blog',
-      type: 'HTTP',
-      url: '/blogs/journal',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609566264',
-      resourceId: null,
-      tags: [],
-      title: 'Policies',
-      type: 'HTTP',
-      url: '/policies',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609599032',
-      resourceId: 'gid://shopify/Page/92591030328',
-      tags: [],
-      title: 'About',
-      type: 'PAGE',
-      url: '/pages/about',
-      items: [],
-    },
-  ],
-};

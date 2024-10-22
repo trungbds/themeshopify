@@ -1,5 +1,5 @@
 import {createContext, type ReactNode, useContext, useState} from 'react';
-import iconclose from '~/assets/fonts/icons/icon-close.svg';
+import iconclose from '~/assets/fonts/icons/icon-close-white.svg';
 
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
@@ -39,13 +39,12 @@ export function Aside({
     >
       <button className="close-outside" onClick={close} />
       <aside>
-        <header>
-          <h3>{heading}</h3>
+        <main>
           <button className="close reset" onClick={close}>
+            <span>Close</span>
             <img src={iconclose}/>
           </button>
-        </header>
-        <main>{children}</main>
+          {children}</main>
       </aside>
     </div>
   );

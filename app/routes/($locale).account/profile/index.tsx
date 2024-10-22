@@ -246,7 +246,7 @@ export default function AccountProfile() {
         )}
 
         <button
-          className={`btn btn-primary ${hasChanges ? 'bg-blue-500' : 'bg-gray-300'} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+          className={`btn btn-primary ${hasChanges ? 'hasChanges' : ''} `}
           type="submit"
           disabled={state !== 'idle'}
         >

@@ -36,7 +36,11 @@ export function PageLayout({
       <SearchHeaderExpand.Provider>
         <CartHeaderExpand.Provider>
           
-          <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
+          <MobileMenuAside 
+            header={header} 
+            publicStoreDomain={publicStoreDomain} 
+            isLoggedIn = {isLoggedIn}
+          />
           
           {header && (
             <Header
@@ -67,9 +71,11 @@ export function PageLayout({
 function MobileMenuAside({
   header,
   publicStoreDomain,
+  isLoggedIn
 }: {
   header: PageLayoutProps['header'];
   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
+  isLoggedIn: Promise<boolean>;
 }) {
   return (
     header.menu &&
@@ -81,6 +87,7 @@ function MobileMenuAside({
           viewport="mobile"
           primaryDomainUrl={header.shop.primaryDomain.url}
           publicStoreDomain={publicStoreDomain}
+          isLoggedIn={isLoggedIn}
         />
 
       </Aside>

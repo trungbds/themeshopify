@@ -373,7 +373,7 @@ aside li {
 }
 
 .overlay .close-outside {
-  background: transparent;
+  background: #0000009c;
   border: none;
   color: transparent;
   height: 100%;
@@ -407,10 +407,17 @@ aside li {
 
 button.reset {
   background: inherit;
-  font-size: inherit;
-  position: relative;
   z-index: 1;
   cursor: pointer;
+  position: absolute;
+  right: 16px;
+  top: 20px;
+  display: flex;
+  font-weight: 300;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+  align-items: center;
 }
 
 button.reset > * {
@@ -4105,8 +4112,10 @@ table td.number {
   .header {
     padding: 0 16px;
   }
-  .header-cta__block {
-    display: none; /* Hiển thị phần tử khi kích thước màn hình >= 768px */
+  .header-menu-mobile .header-cta__block {
+    display: inline-flex;
+    background-color: var(--primary-color);
+    padding: 8px 16px;
   }
   .search-header__btn input[type="search"] {
     height: 40px;
