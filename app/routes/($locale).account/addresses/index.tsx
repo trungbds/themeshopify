@@ -31,6 +31,10 @@ export type ActionResponse = {
   updatedAddress?: AddressFragment;
 };
 
+export const handle = {
+  breadcrumbType :'account'
+}
+
 export const meta: MetaFunction = () => {
   return [{title: 'Addresses'}];
 };

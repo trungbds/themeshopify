@@ -16,6 +16,10 @@ export const meta: MetaFunction = () => {
   return [{title: 'Orders'}];
 };
 
+export const handle = {
+  breadcrumbType :'account'
+}
+
 export async function loader({request, context}: LoaderFunctionArgs) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 20,
@@ -63,11 +67,10 @@ function OrdersTable({orders}: Pick<CustomerOrdersFragment, 'orders'>) {
 
 function EmptyOrders() {
   return (
-    <div>
-      <p>You haven&apos;t placed any orders yet.</p>
-      <br />
+    <div className='empty-order'>
+      <p>You haven't placed any orders yet.</p>
       <p>
-        <Link to="/collections">Start Shopping →</Link>
+        <Link to="/">Start Shopping </Link>
       </p>
     </div>
   );

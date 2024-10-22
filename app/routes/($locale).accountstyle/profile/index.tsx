@@ -137,7 +137,7 @@ export default function AccountProfile() {
 
   return (
     <div className="account-profile">
-      <h2>My profile</h2>
+      <h2 className='title'>My profile</h2>
       <br />
       <Form method="PUT" className="max-w-md mx-auto">
         <div className="grid md:grid-cols-2 md:gap-6">
@@ -254,7 +254,7 @@ export default function AccountProfile() {
         )}
 
         <button
-          className={`btn btn-primary ${hasChanges ? 'bg-blue-500' : 'bg-gray-300'} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+          className={`btn ${hasChanges ? 'bg-blue-500' : 'bg-gray-300'} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
           type="submit"
           disabled={state !== 'idle'}
         >

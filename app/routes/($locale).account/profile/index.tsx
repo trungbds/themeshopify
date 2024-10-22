@@ -15,6 +15,10 @@ import {
   type MetaFunction,
 } from '@remix-run/react';
 
+export const handle = {
+  breadcrumbType :'account'
+}
+
 export type ActionResponse = {
   error: string | null;
   customer: CustomerFragment | null;

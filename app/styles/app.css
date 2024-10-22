@@ -3996,15 +3996,20 @@ table td.number {
 
 .account-page {
   position: relative;
+  margin-top: 32px;
 }
 
 .account-page .page-sidebar {
-  padding-top: 24px;
+}
+
+.account-page .page-content {
+  min-height: 65vh;
 }
 
 .account-nav {
   display: flex;
   flex-direction: column;
+  gap: 24px;
 }
 
 .account-nav a, .account-logout {
@@ -4012,12 +4017,28 @@ table td.number {
   align-items: center;
   gap: 8px;
   font-weight: 500;
-  padding: 12px 0;
   margin-bottom: 4px;
+}
+
+.account-logout {
+  margin-top: 32px;
+}
+
+.account-nav .group-large a {
+  padding: 8px 0;
+}
+
+.account-nav .group-medium a {
+  padding: 4px 0;
 }
 
 .account-profile form input {
 
+}
+
+
+.account-nav__mobile {
+  display: none;
 }
 
 

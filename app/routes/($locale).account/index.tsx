@@ -1,12 +1,13 @@
+import { useState } from 'react';
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Form, NavLink, Outlet, useLoaderData} from '@remix-run/react';
 import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
 import iconlogout from '~/assets/fonts/icons/icon-logout.svg';
 import { IconDefaultPerson } from '~/components/custom-components/icons/default/IconDefaultPerson';
-import { IconDefaultOrder } from '~/components/custom-components/icons/default/IconDefaultAddress copy 3';
+import { IconDefaultOrder } from '~/components/custom-components/icons/default/IconDefaultOrder';
 import { IconDefaultAddress } from '~/components/custom-components/icons/default/IconDefaultAddress';
 import { IconDefaultWishlist } from '~/components/custom-components/icons/default/IconDefaultWishlist';
-
+import { IconDefaultHome } from '~/components/custom-components/icons/default/IconDefaultHome';
 
 export function shouldRevalidate() {
   return true;
@@ -71,100 +72,139 @@ function AccountMenu() {
     isPending: boolean;
   }) {
     return {
-      color: isActive ? '#0046be' : '#000',
+      color: isActive ? '#0046be' : '',
     };
   }
 
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeContent, setActiveContent] = useState('');
+
+  const handleActiveLink = (content: string, isActive: boolean) => {
+    if (isActive) {
+      setActiveContent(content); // Cập nhật nội dung NavLink khi nó active
+    }
+  };
+
+  function toggleMenu() {
+    setMenuOpen(!menuOpen);
+  }
+
   return (
-    <nav className="account-nav" role="navigation">
-      <NavLink to="/account/profile">
-        {({ isActive, isPending }) => (
-          <>
-            <IconDefaultPerson 
-              color={isActiveStyle({ isActive, isPending }).color || '#000'}
-            />
-            <span
-              style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
-            >
-              Profile
-            </span>
-          </>
-        )}
-      </NavLink>
+    <>
+    <button className="account-nav__mobile menu-toggle" onClick={toggleMenu}>
+      Menu mobile{activeContent}
+    </button>
+    <nav className={`account-nav ${menuOpen ? 'open' : ''}`} role="navigation">
+      <div className='group-large'>
 
-      <NavLink to="/account/orders">
-        {({ isActive, isPending }) => (
-          <>
-            <IconDefaultOrder 
-              color={isActiveStyle({ isActive, isPending }).color || '#000'}
-            />
-            <span
-              style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
-            >
-              Orders
-            </span>
-          </>
-        )}
-      </NavLink>
+        <NavLink 
+          to="/accountstyle/home"
+        >
+          {({ isActive, isPending }) => (
+            <>
+              <IconDefaultHome 
+                color={isActiveStyle({ isActive, isPending }).color }
+              />
+              <span
+                style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
+              >
+                Home
+              </span>
+            </>
+          )}
+        </NavLink>
 
-      <NavLink to="/account/addresses">
-        {({ isActive, isPending }) => (
-          <>
-            <IconDefaultAddress 
-              color={isActiveStyle({ isActive, isPending }).color || '#000'}
-            />
-            <span
-              style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
-            >
-              Addresses
-            </span>
-          </>
-        )}
-      </NavLink>
+        
+        <NavLink to="/accountstyle/orders">
+          {({ isActive, isPending }) => (
+            <>
+              <IconDefaultOrder
+                color={isActiveStyle({ isActive, isPending }).color || '#000'}
+              />
+              <span
+                style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
+              >
+                Orders
+              </span>
+            </>
+          )}
+        </NavLink>
+        <NavLink to="/accountstyle/profile">
+          {({ isActive, isPending }) => (
+            <>
+              <IconDefaultPerson 
+                color={isActiveStyle({ isActive, isPending }).color || '#000'}
+              />
+              <span
+                style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
+              >
+                Profile
+              </span>
+            </>
+          )}
+        </NavLink>
+        <NavLink to="/accountstyle/addresses">
+          {({ isActive, isPending }) => (
+            <>
+              <IconDefaultAddress 
+                color={isActiveStyle({ isActive, isPending }).color || '#000'}
+              />
+              <span
+                style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
+              >
+                Addresses
+              </span>
+            </>
+          )}
+        </NavLink>
+        <NavLink to="/accountstyle/wishlist">
+          {({ isActive, isPending }) => (
+            <>
+              <IconDefaultWishlist 
+                color={isActiveStyle({ isActive, isPending }).color || '#000'}
+              />
+              <span
+                style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
+              >
+                Wishlist
+              </span>
+            </>
+          )}
+        </NavLink>
+      </div>
 
-      <NavLink to="/account/wishlist">
-        {({ isActive, isPending }) => (
-          <>
-            <IconDefaultWishlist 
-              color={isActiveStyle({ isActive, isPending }).color || '#000'}
-            />
-            <span
-              style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
-            >
-              Wishlist
-            </span>
-          </>
-        )}
-      </NavLink>
+      <div className='group-medium'>
+        <NavLink to="/accountstyle/help">
+          {({ isActive, isPending }) => (
+            <>
+              <span
+                style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
+              >
+                Help Center
+              </span>
+            </>
+          )}
+        </NavLink>
 
-      <NavLink to="/account/help">
-        {({ isActive, isPending }) => (
-          <>
-            <span
-              style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
-            >
-              Help Center
-            </span>
-          </>
-        )}
-      </NavLink>
-
-      <NavLink to="/account/faqs">
-        {({ isActive, isPending }) => (
-          <>
-            <span
-              style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
-            >
-              FAQs
-            </span>
-          </>
-        )}
-      </NavLink>
-
+        <NavLink to="/accountstyle/faqs">
+          {({ isActive, isPending }) => (
+            <>
+              <span
+                style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
+              >
+                FAQs
+              </span>
+            </>
+          )}
+        </NavLink>
+      </div>
       <Logout />
     </nav>
+    </>
+    
   );
-} 
+}
+
 function Logout() {
   return (
     <Form className="account-logout" method="POST" action="/account/logout">
