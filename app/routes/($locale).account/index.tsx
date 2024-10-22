@@ -119,7 +119,7 @@ function AccountMenu() {
           {({ isActive, isPending }) => (
             <>
               <IconDefaultOrder
-                color={isActiveStyle({ isActive, isPending }).color || '#000'}
+                color={isActiveStyle({ isActive, isPending }).color}
               />
               <span
                 style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
@@ -129,11 +129,12 @@ function AccountMenu() {
             </>
           )}
         </NavLink>
+
         <NavLink to="/account/profile">
           {({ isActive, isPending }) => (
             <>
               <IconDefaultPerson 
-                color={isActiveStyle({ isActive, isPending }).color || '#000'}
+                color={isActiveStyle({ isActive, isPending }).color}
               />
               <span
                 style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
@@ -147,7 +148,7 @@ function AccountMenu() {
           {({ isActive, isPending }) => (
             <>
               <IconDefaultAddress 
-                color={isActiveStyle({ isActive, isPending }).color || '#000'}
+                color={isActiveStyle({ isActive, isPending }).color}
               />
               <span
                 style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
@@ -157,11 +158,27 @@ function AccountMenu() {
             </>
           )}
         </NavLink>
+
+        <NavLink to="/account/coupons">
+          {({ isActive, isPending }) => (
+            <>
+              <IconDefaultOrder
+                color={isActiveStyle({ isActive, isPending }).color}
+              />
+              <span
+                style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}
+              >
+              Coupons
+              </span>
+            </>
+          )}
+        </NavLink>
+
         <NavLink to="/account/wishlist">
           {({ isActive, isPending }) => (
             <>
               <IconDefaultWishlist 
-                color={isActiveStyle({ isActive, isPending }).color || '#000'}
+                color={isActiveStyle({ isActive, isPending }).color}
               />
               <span
                 style={{ color: isActiveStyle({ isActive, isPending }).color || '#000' }}

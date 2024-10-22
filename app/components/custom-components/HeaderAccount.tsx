@@ -60,8 +60,8 @@ export default function HeaderAccount() {
                     aria-labelledby="menu-button"
                     tabIndex={-1}
                 >
-                    <div className='greeting'>
-                        <h4> Hi,</h4>
+                    <div className='greeting block px-4 py-2'>
+                        <h4>Hi,</h4>
                     </div>
 
                     <div className="border-b border-gray-200"></div>
@@ -83,28 +83,7 @@ export default function HeaderAccount() {
                         to={'/account/profile'}
                         className='block px-4 py-2'
                     >
-                        <span>Coupons</span>
-                    </Link>
-
-                    <Link 
-                        to={'/account/profile'}
-                        className='block px-4 py-2'
-                    >
-                        <span>Wishlist</span>
-                    </Link>
-                    
-
-                    <Link 
-                        to={'/account/addresses'}
-                        className='block px-4 py-2'
-                    >
-                        <span>Addresses</span>
-                    </Link>
-                    <Link 
-                        to={'/account/wishlist'}
-                        className='block px-4 py-2'
-                    >
-                        <span>Wishlist</span>
+                        <span>Wishlists</span>
                     </Link>
                     <div className="border-b border-gray-200"></div>
 
