@@ -18,6 +18,7 @@ interface PageLayoutProps {
   isLoggedIn: Promise<boolean>;
   publicStoreDomain: string;
   children?: React.ReactNode;
+  customerAccount? : any;
 }
 
 export function PageLayout({
@@ -27,7 +28,7 @@ export function PageLayout({
   header,
   isLoggedIn,
   publicStoreDomain,
-  
+  customerAccount
    
 }: PageLayoutProps) {
 
@@ -44,6 +45,7 @@ export function PageLayout({
               cart={cart}
               isLoggedIn={isLoggedIn}
               publicStoreDomain={publicStoreDomain}
+              customerAccount = {customerAccount}
             />
           )}
 

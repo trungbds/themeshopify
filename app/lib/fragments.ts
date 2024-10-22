@@ -206,8 +206,6 @@ export const HEADER_QUERY = `#graphql
       supportedDigitalWallets
     }
     shipsToCountries
-
-
   }
   query Header(
     $country: CountryCode

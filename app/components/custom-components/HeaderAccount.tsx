@@ -6,9 +6,10 @@ import { Link } from '@remix-run/react';
 import iconlogout from '~/assets/fonts/icons/icon-logout.svg';
 
 
-export default function HeaderAccount() {
+export default function HeaderAccount( customerAccount : any) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null); 
+    console.log('customerAccount' , customerAccount ); 
 
     const toggleDropdown = () => {
         setIsOpen(prev => !prev);
