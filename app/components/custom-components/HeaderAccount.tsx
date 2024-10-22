@@ -60,29 +60,39 @@ export default function HeaderAccount() {
                     aria-labelledby="menu-button"
                     tabIndex={-1}
                 >
-                    
-                    <a
-                        href="/account"
-                        className="block px-4 py-2"
-                        role="menuitem"
-                        tabIndex={-1}
-                        id="menu-item-1"
-                    >
-                        <strong>Login</strong>
-                    </a>
+                    <div className='greeting'>
+                        <h4> Hi,</h4>
+                    </div>
 
-                    <Link 
-                        to={'/account/profile'}
-                        className='block px-4 py-2'
+                    <div className="border-b border-gray-200"></div>
+                    <Link
+                        to="/account/home"
+                        className="block px-4 py-2"
                     >
-                        <span>Profile</span>
+                        <strong>My Account</strong>
                     </Link>
+
                     <Link 
                         to={'/account/orders'}
                         className='block px-4 py-2'
                     >
                         <span>Orders</span>
                     </Link>
+
+                    <Link 
+                        to={'/account/profile'}
+                        className='block px-4 py-2'
+                    >
+                        <span>Coupons</span>
+                    </Link>
+
+                    <Link 
+                        to={'/account/profile'}
+                        className='block px-4 py-2'
+                    >
+                        <span>Wishlist</span>
+                    </Link>
+                    
 
                     <Link 
                         to={'/account/addresses'}

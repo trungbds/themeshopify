@@ -32,3 +32,6 @@ export function IconDefaultPerson({ color, width = 'inherit', height }: IconDefa
         </div>
     );
 }
+
+
+
