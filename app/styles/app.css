@@ -411,12 +411,16 @@ button.reset {
   cursor: pointer;
   position: absolute;
   right: 16px;
-  top: 20px;
-  display: flex;
+  top: 12px;
   font-weight: 300;
-  color: #fff;
   text-transform: uppercase;
   font-size: 12px;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  border-radius: 24px;
+  border: 1px solid #ddd;
   align-items: center;
 }
 
@@ -446,12 +450,25 @@ button.reset:hover:before {
 * --------------------------------------------------
 */
 .header {
-  background: var(--primary-color);
   position: sticky;
   top: 0px;
   z-index: 99;
   width: 100%;
+}
 
+.header .header-bg {
+  background: var(--primary-color);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  transition: height .1s ease-in-out;
+}
+
+.header:hover .header-bg{
+  /* height: calc(100% + 8px); */
 }
 
 .header .header-container {
@@ -4111,6 +4128,10 @@ table td.number {
 
   .header {
     padding: 0 16px;
+  }
+
+  .header-cta__block {
+    display: none;
   }
   .header-menu-mobile .header-cta__block {
     display: inline-flex;

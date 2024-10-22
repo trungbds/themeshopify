@@ -41,7 +41,6 @@ export function Aside({
       <aside>
         <main>
           <button className="close reset" onClick={close}>
-            <span>Close</span>
             <img src={iconclose}/>
           </button>
           {children}</main>

@@ -103,6 +103,9 @@ export function Header({
 
       {/* overlay */}
       <div className={`header-overlay ${overlayActive ? 'active' : ''}`}></div>
+
+      {/* overlay */}
+      <div className={`header-bg`}></div>
     </header>
   );
 }
