@@ -69,6 +69,7 @@ function OrdersTable({orders}: Pick<CustomerOrdersFragment, 'orders'>) {
 function EmptyOrders() {
   return (
     <div className='empty-order'>
+      <h2 className='title'>Your Orders</h2>
       <p>You haven't placed any orders yet.</p>
       <p>
         <Link to="/">Start Shopping </Link>

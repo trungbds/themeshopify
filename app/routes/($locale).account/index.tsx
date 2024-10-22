@@ -8,6 +8,7 @@ import { IconDefaultOrder } from '~/components/custom-components/icons/default/I
 import { IconDefaultAddress } from '~/components/custom-components/icons/default/IconDefaultAddress';
 import { IconDefaultWishlist } from '~/components/custom-components/icons/default/IconDefaultWishlist';
 import { IconDefaultHome } from '~/components/custom-components/icons/default/IconDefaultHome';
+import { IconDefaultCoupon } from '~/components/custom-components/icons/default/IconDefaultCoupon';
 
 export function shouldRevalidate() {
   return true;
@@ -118,7 +119,7 @@ function AccountMenu() {
         <NavLink to="/account/orders">
           {({ isActive, isPending }) => (
             <>
-              <IconDefaultOrder
+              <IconDefaultCoupon
                 color={isActiveStyle({ isActive, isPending }).color}
               />
               <span
