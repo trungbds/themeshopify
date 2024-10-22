@@ -27,7 +27,6 @@ interface HeaderProps {
   cart: Promise<CartApiQueryFragment | null>;
   isLoggedIn: Promise<boolean>;
   publicStoreDomain: string;
-  customerAccount : any;
 }
 
 type Viewport = 'desktop' | 'mobile';
@@ -39,7 +38,6 @@ export function Header({
   isLoggedIn,
   cart,
   publicStoreDomain,
-  customerAccount
 }: HeaderProps) {
   
   const {shop, menu} = header;
@@ -93,7 +91,6 @@ export function Header({
           <HeaderCtas 
             isLoggedIn={isLoggedIn} 
             cart={cart} 
-            customerAccount = {customerAccount}
           />
           <CartHeader 
             openOverlayClick={openOverlayClick}
@@ -225,8 +222,8 @@ export function HeaderMenu({
 }
 
 function HeaderCtas({
-  isLoggedIn, customerAccount
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart' | 'customerAccount'>) {
+  isLoggedIn,
+}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
     <div className="header-ctas" role="navigation">
       {/* header menu mobile btn */}
@@ -240,7 +237,7 @@ function HeaderCtas({
           resolve={isLoggedIn} 
           errorElement="Error">
           {(isLoggedIn) => (
-            (isLoggedIn ? <HeaderAccount customerAccount ={customerAccount}/> : <HeaderSignIn/>)
+            (isLoggedIn ? <HeaderAccount/> : <HeaderSignIn/>)
           )}
           
         </Await>

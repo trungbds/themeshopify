@@ -143,11 +143,9 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
       console.error(error);
       return null;
     });
-
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
-    customerAccount: customerAccount, 
     footer,
   };
 }
