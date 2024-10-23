@@ -7,7 +7,7 @@ import { ProductModalVariantOptions } from './ProductModalVariantOptions';
 import { Link } from '@remix-run/react';
 import type {MoneyV2} from '@shopify/hydrogen/storefront-api-types';
 
-import iconclosewhite from '~/assets/fonts/icons/icon-close-white.svg';
+import iconclose from '~/assets/fonts/icons/icon-close.svg';
 
 // Swiper
 import { Navigation,  Pagination as PaginationSwiper  } from 'swiper/modules';
@@ -89,10 +89,19 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
     <div className="modal product-modal">
       <div className="modal-overlay" onClick={onClose} />
       <div className="modal-content">
-        <button className='btn btn-close link-primary' onClick={onClose}>
-          <img src={iconclosewhite} alt="close" />
-          <span className='link-hover'>Close</span>
-        </button>
+
+        <div className="product-modal__header">
+          <button className='btn btn-close link-primary' onClick={onClose}>
+            <img src={iconclose} alt="close" />
+          </button>
+
+          <div className="product-modal__title">
+            <h4 className='title'>{productItem.title}</h4>
+            <img src={iconchevronright} alt="close" />
+
+          </div>
+        </div>
+        
 
         <div className="product-modal__detail">
           {/* Hiển thị hình ảnh sản phẩm */}

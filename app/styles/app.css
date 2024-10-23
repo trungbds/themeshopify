@@ -1642,18 +1642,12 @@ button.reset:hover:before {
 }
 .all-categories__list {
   gap: 8px;
+  -ms-overflow-style: none;
   display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
-
-    display: flex;
-    overflow-x: scroll; /* Vẫn cần cuộn ngang mặc định để xử lý logic cuộn */
-    scrollbar-width: none; /* Ẩn thanh cuộn trên Firefox */
-    -ms-overflow-style: none; /* Ẩn thanh cuộn trên IE */
-    position: relative;
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
   
 }
 
@@ -1687,7 +1681,6 @@ button.reset:hover:before {
   border-radius: 8px;
   flex: 0 0 186px;
   position: relative;
-  scroll-snap-align: start;
 }
 
 .all-categories__list .all-categories__item img{
@@ -3323,17 +3316,16 @@ table td.number {
 }
 
 .modal .btn-close {
-  position: absolute;
-  top: -36px;
-  left: 0;
-  color: #fff;
   display: flex;
-  align-items: center;
   gap: 4px;
   text-transform: uppercase;
   font-weight: 400;
   font-size: 12px;
   line-height: 1;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
 }
 .modal .btn-close img {
   width: 20px;
@@ -4472,7 +4464,6 @@ table td.number {
     scrollbar-width: none;
 
     /* Ẩn thanh cuộn trên Webkit (Chrome, Safari, Edge) */
-    -ms-overflow-style: none;  /* IE and Edge */
   }
   /* Ẩn thanh cuộn trên Webkit */
   .bestseller .bestseller-list::-webkit-scrollbar {
@@ -4537,6 +4528,42 @@ table td.number {
     transform: translate(-50%, 0%);
     border-radius: 8px 8px 0 0;
   }
+  .modal-content .product-modal__header {
+    display: flex;
+    
+  }
+
+  .modal-content .product-modal__header .btn-close {
+    flex: 0 0 40px;
+  }
+
+  .modal-content .product-modal__header .product-modal__title {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-content .product-modal__header .product-modal__title img{
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    opacity: .5;
+    padding: 6px;
+  }
+
+  .modal-content .product-modal__header .product-modal__title .title{
+    font-size: 14px;
+    max-height: 40px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    opacity: .75;
+  }
+
+
+
 
   .product-modal__detail{
     width: 100%;
