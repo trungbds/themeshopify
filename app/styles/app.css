@@ -1581,7 +1581,6 @@ button.reset:hover:before {
 
 .all-categories-list .title-selection{
   width: 100%;
-  text-align: center;
   margin: 0 0 22px;
 }
 
@@ -1622,19 +1621,32 @@ button.reset:hover:before {
   right: 0;
   border-radius: 0 8px 8px 0;
 }
-
-.all-categories-list .all-categories__item {
-  padding: 16px 16px 0px 16px;
-  display: inline-flex;
-  flex-direction: column;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
+.all-categories__list {
+  display: flex;
+  gap: 8px;
 }
 
+.all-categories__list .all-categories__item {
+  border-radius: 8px;
+  flex: 0 0 186px;
+  position: relative;
+}
+
+.all-categories__list .all-categories__item img{
+  position: relative;
+  object-fit: cover;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+
 .all-categories-list .all-categories__item h4 {
-  font-weight: 600;
-  margin: 16px auto;
+  font-weight: 500;
+  margin: 8px auto;
+  position: absolute;
+  bottom: 0;
+  left: 8px;
+  color: #000;
 }
 
 

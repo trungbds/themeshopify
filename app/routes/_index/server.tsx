@@ -140,9 +140,11 @@ export const HOMEPAGE_BESTSELLER_LIST = `#graphql
               id
               handle
               image {
-                url(
-                  transform: { crop: CENTER, maxWidth: 240, maxHeight: 240 }
-                )
+                altText
+                height
+                id
+                url
+                width
               }
               
             }
