@@ -67,7 +67,12 @@ export function Header({
 
       <div className="header-container grid md:grid-cols-12 grid-cols-4 gap-4">
         <div className="col-span-1 md:col-span-3 flex items-center">
-          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+          <NavLink 
+            className='logo'
+            prefetch="intent" 
+            to="/" 
+            end
+            >
             <img src={logoUrl} alt={shop.name} />
           </NavLink>
           <CategoriesMegaMenu

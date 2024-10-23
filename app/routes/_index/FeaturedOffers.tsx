@@ -26,7 +26,7 @@ export default function FeaturedOffers(
                                     data={collection.image}
                                     loading="lazy"
                                     className=""
-                                    aspectRatio="400/320"
+                                    aspectRatio="1/1"
                                     width={600}
                                 />
                                 <h3 className="link-hover">{collection.title}</h3>

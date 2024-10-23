@@ -476,6 +476,10 @@ button.reset:hover:before {
   width: 100%;
 }
 
+.header .logo img {
+  max-height: 50px;
+}
+
 .header .header-bg {
   background: var(--primary-color);
   position: absolute;
@@ -1406,6 +1410,14 @@ button.reset:hover:before {
   border-radius: 8px;
   border: 1px solid #ddd;
   overflow: hidden;
+  display: flex;
+}
+
+.featured-offers .grid .grid-item {
+  flex: 0 0 calc(25%);
+  max-width: calc(25%);
+  padding: 16px;
+  position: relative;
 }
 
 .featured-offers .title-selection{
@@ -1416,7 +1428,7 @@ button.reset:hover:before {
 .featured-offers .grid .col-span-1 {
   position: relative;
 }
-.featured-offers .grid .col-span-1::after {
+.featured-offers .grid .grid-item::after {
   position: absolute;
   top: 0;
   left: -8px;
@@ -1459,8 +1471,11 @@ button.reset:hover:before {
   margin: 16px auto;
   line-height: 1;
   align-items: center;
-  font-weight: 600;
+  font-weight: 400;
   opacity: 1;
+  margin-top: auto;
+  font-size: 14px;
+  color: var(--primary-color);
 }
 
 
@@ -4192,7 +4207,8 @@ table td.number {
   }
 
   .title-selection {
-    font-size: 20px;
+    font-size: 16px;
+    text-align: left;
   }
   
   .container {
@@ -4244,6 +4260,7 @@ table td.number {
   }
   .featured-offers .title-selection {
     margin: 24px 0;
+    text-align: left;
   }
 
 .homepage .product-item,
@@ -4355,10 +4372,11 @@ table td.number {
   .featured-offers .grid {
     border: none;
     display: flex;
+    gap: 8px;
   }
   .featured-offers .grid .grid-item {
-    flex: 0 0 75%;
-    max-width: 75%;
+    flex: 0 0 66%;
+    max-width: 66%;
     border-radius: 8px;
     border: 1px solid #ddd;
   }
@@ -4366,8 +4384,11 @@ table td.number {
   .featured-offers .featured-offers__item {
     margin: auto;
     border-radius: 8px;
-    border: 1px solid #ddd;
-    width: 92%;
+    height: 100%;
+  }
+
+  .featured-offers .grid .grid-item::after {
+    content: none;
   }
 
   .featured-offers .featured-offers__item>img {
@@ -4397,6 +4418,7 @@ table td.number {
 
   .bestseller .title-selection {
     margin: 24px auto ;
+    text-align: left;
   }
 
   .bestseller .bestseller-list {
