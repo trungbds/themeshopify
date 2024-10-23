@@ -212,7 +212,8 @@ export function Breadcrumbs({ isActive }: BreadcrumbsProps) {
           name: 'Help center',
         });
       break;
-
+      
+  
       case 'faqs':
         pages.push({
           href: '/faqs',

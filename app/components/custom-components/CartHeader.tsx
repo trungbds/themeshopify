@@ -9,6 +9,7 @@ import {CartMain} from '~/components/CartMain';
 // custom
 import iconcart from '~/assets/fonts/icons/icon-bag.svg';
 import { IconBag } from './icons/IconBag';
+import LoadingCircle from './skeleton/LoadingCircle';
 
 type Viewport = 'desktop' | 'mobile';
 interface CartHeaderProps {
@@ -114,7 +115,7 @@ function CartHeaderBtn (
 
 function CartExpand({cart}: {cart : Promise<CartApiQueryFragment | null>}) {
     return (
-        <Suspense fallback={<p>Loading cart ...</p>}>
+        <Suspense fallback={<LoadingCircle />}>
           <Await resolve={cart}>
               {(resolvedCart) => {
                 const totalQuantity = resolvedCart?.totalQuantity || 0; // Lấy giá trị totalQuantity từ cart

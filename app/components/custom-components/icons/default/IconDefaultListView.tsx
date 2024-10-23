@@ -20,11 +20,13 @@ export function IconDefaultListView({ color, width = 'inherit', height }: IconDe
             </svg>
         ) : (
             <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                height="24px" 
+                
+                width={width ?? 24}
+                height={height ?? 24} 
                 viewBox="0 -960 960 960" 
-                width="24px" 
-                fill={color} >
+                fill={color} 
+                xmlns="http://www.w3.org/2000/svg" 
+                >
                     <path d="M360-160h520v-160H360v160ZM80-640h200v-160H80v160Zm0 240h200v-160H80v160Zm0 240h200v-160H80v160Zm280-240h520v-160H360v160Zm0-240h520v-160H360v160Z"/>
             </svg>
         )}

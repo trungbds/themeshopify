@@ -38,18 +38,14 @@ export function ProductPriceV3({
       discountedMaxPrice = (parseFloat(maxVariantPrice.amount) * (1 - discountPercentage)).toFixed(2);
     }
 
-    title = discountSelected.title;
+    // title = discountSelected.title;
+     title = `- ${discountSelected.metafield.value}%`;
   }
 
   return (
     <div className="product-price">
 
-      {title && (
-        <div className="discount-label inline-flex">
-          <img src={icondiscount} alt="" width="16px" />
-          {title}
-        </div>
-      )}
+      
 
       <div className="price-detail">
         {/* Nếu có chiết khấu, hiển thị giá cũ với gạch ngang */}
@@ -77,31 +73,44 @@ export function ProductPriceV3({
           
           <>
             {discountSelected && (
-              <div className="before-discount">
-                <s>
-                    <Money data={minVariantPrice} />
-                </s>
-                {!isSamePrice && (
-                  <>
-                    {' - '}
-                    <s>
-                      <Money data={maxVariantPrice} />
-                    </s>
-                  </>
-                )}
-              </div>
+              <>
+                
+                <div className="before-discount">
+                  {title && (
+                    <div className="discount-label inline-flex">
+                      {/* <img src={icondiscount} alt="" width="16px" /> */}
+                      {title}
+                    </div>
+                  )}
+                  <s>
+                      <Money data={minVariantPrice} />
+                  </s>
+
+                  {/* more */}
+                  {/* {!isSamePrice && (
+                    <>
+                      {' - '}
+                      <s>
+                        <Money data={maxVariantPrice} />
+                      </s>
+                    </>
+                  )} */}
+                </div>
+              </>
+              
             )}
 
             {/* Hiển thị giá mới (sau khi chiết khấu) hoặc giá thông thường nếu không có chiết khấu */}
             {discountedMinPrice ? (
               <div className="after-discount">
                 <Money data={{ amount: discountedMinPrice, currencyCode: minVariantPrice.currencyCode }} />
-                {!isSamePrice && discountedMaxPrice && (
+                {/* more */}
+                {/* {!isSamePrice && discountedMaxPrice && (
                   <>
                     {' - '}
                     <Money data={{ amount: discountedMaxPrice, currencyCode: maxVariantPrice.currencyCode }} />
                   </>
-                )}
+                )} */}
               </div>
             ) : (
               <div className="after-discount">
