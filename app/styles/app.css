@@ -1624,6 +1624,7 @@ button.reset:hover:before {
 .all-categories__list {
   display: flex;
   gap: 8px;
+  overflow-x: scroll;
 }
 
 .all-categories__list .all-categories__item {
@@ -4353,6 +4354,13 @@ table td.number {
 
   .featured-offers .grid {
     border: none;
+    display: flex;
+  }
+  .featured-offers .grid .grid-item {
+    flex: 0 0 75%;
+    max-width: 75%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
   }
 
   .featured-offers .featured-offers__item {
