@@ -1636,16 +1636,58 @@ button.reset:hover:before {
   right: 0;
   border-radius: 0 8px 8px 0;
 }
-.all-categories__list {
-  display: flex;
-  gap: 8px;
-  overflow-x: scroll;
+
+.all-categories__list-wrapper {
+  width: 100%;
 }
+.all-categories__list {
+  gap: 8px;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+
+    display: flex;
+    overflow-x: scroll; /* Vẫn cần cuộn ngang mặc định để xử lý logic cuộn */
+    scrollbar-width: none; /* Ẩn thanh cuộn trên Firefox */
+    -ms-overflow-style: none; /* Ẩn thanh cuộn trên IE */
+    position: relative;
+  
+}
+
+.all-categories__list::-webkit-scrollbar {
+  display: none; /* Ẩn thanh cuộn mặc định trên Chrome, Safari */
+}
+
+.custom-scrollbar {
+  height: 4px;
+  background-color: rgb(177 177 177 / 20%);
+  position: relative;
+  left: 0;
+  right: 0;
+  border-radius: 3px;
+  margin-top: 16px
+}
+
+.custom-scrollbar-thumb {
+  height: 100%;
+  width: 36px;
+  background-color: #a3a3a3;
+  border-radius: 3px;
+  position: relative;
+}
+
+
+
+
 
 .all-categories__list .all-categories__item {
   border-radius: 8px;
   flex: 0 0 186px;
   position: relative;
+  scroll-snap-align: start;
 }
 
 .all-categories__list .all-categories__item img{
@@ -1656,7 +1698,7 @@ button.reset:hover:before {
 }
 
 
-.all-categories-list .all-categories__item h4 {
+.all-categories__item h4 {
   font-weight: 500;
   margin: 8px auto;
   position: absolute;
