@@ -1763,7 +1763,14 @@ button.reset:hover:before {
 
 .collection-result {
   flex: 1 1 auto;
-} 
+}
+.collection-result__header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 8px;
+}
 
 .collection-result .pagination {
   display: flex;
@@ -2903,12 +2910,9 @@ table td.number {
 
 /* FILTER COMPONENT */
 .box-sort {
-  display: flex;
-  justify-content: flex-end;
 }
 
 .box-sort .box-sort__btn {
-  margin-bottom: 8px;
   position: relative
 }
 .box-sort .box-sort__btn button {
@@ -2965,6 +2969,25 @@ table td.number {
 }
 .box-sort__expand a.active {
   font-weight: 600;
+}
+
+.grid-list{
+  border-radius: 8px;
+}
+
+.grid-list .btn{
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  border-radius: 8px;
+
+}
+
+.grid-list .btn.selected{
+  background-color: #ebebeb;
+  color: #000;
 }
 
 .filter-form__product {
@@ -3155,6 +3178,10 @@ table td.number {
   width: 12px;
   height: 12px; 
   border-radius: 50%;
+}
+
+.collection-result .products-grid.list-view {
+
 }
 
 
@@ -4703,12 +4730,15 @@ table td.number {
   }
 
   .box-sort {
-    margin: 16px 0 0;
-    justify-content: flex-start;
   }
 
   .box-sort .box-sort__expand {
     left: 0;
+  }
+
+  .collection-result__header {
+    padding: 16px 0;
+    justify-content: space-between;
   }
   .collection-header .dependent-categories .categories-nav-item a{
     padding: 0px 16px;
@@ -4727,6 +4757,32 @@ table td.number {
     width: auto;
     max-width: unset;
     min-width: unset;
+  }
+
+  /* List View */
+  .collection-result .products-grid.list-view {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    gap: 0;
+  }
+
+  .collection-result .products-grid.list-view .product-item {
+    border-bottom: 1px solid #ddd;
+    padding: 16px 0;
+    border-radius: 0;
+  }
+
+  .collection-result .products-grid.list-view .product-item>a {
+    display: flex;
+  }
+
+  .collection-result .products-grid.list-view .product-item>a .product__featured-img{
+    max-width: 140px;
+    flex: 0 0 140px;
+
+  }
+
+  .collection-result .products-grid.list-view .product-item .btn-quickadd {
+    border-top: none;
   }
 
   

@@ -55,38 +55,44 @@ export function ProductItemCustom({
   return (
     <div className="product-item">
       <Link prefetch="intent" to={variantUrl}>
-      
-      {product.featuredImage ? (
-        <Image
-          alt={product.featuredImage.altText || product.title}
-          aspectRatio="1/1"
-          data={product.featuredImage}
-          loading={loading}
-          sizes="(min-width: 45em) 400px, 100vw"
-        />
-      ) : (
-        <img
-          src={noVariantColor}
-          alt={`No image available for ${product.title}`}
-        />
-      )}
-        <RenderColorVariants colorVariants={colorVariants} />
-        <div className='product-item__header'>
-          <h4 title={product.title}>{product.title}</h4>
+        <div className="product__featured-img">
+          {product.featuredImage ? (
+            <Image
+              alt={product.featuredImage.altText || product.title}
+              aspectRatio="1/1"
+              data={product.featuredImage}
+              loading={loading}
+              sizes="(min-width: 45em) 400px, 100vw"
+            />
+          ) : (
+            <img
+              src={noVariantColor}
+              alt={`No image available for ${product.title}`}
+            />
+          )}
+          <RenderColorVariants colorVariants={colorVariants} />
         </div>
+
+        <div className="product-item__details">
+          <div className='product-item__header'>
+            <h4 title={product.title}>{product.title}</h4>
+          </div>
           <ProductPriceV3 
             discountSelected={DiscountMetafieldSelected}
             priceRange={product.priceRange}
           />
+          <button
+            className = "btn btn-quickadd" 
+            onClick={onAddToCart}>
+              <img src={iconcart}/>
+              Add to Cart
+          </button>
+        </div>
+            
       </Link>
 
       {/* Thêm nút Add to Cart */}
-      <button
-        className = "btn btn-quickadd" 
-        onClick={onAddToCart}>
-          <img src={iconcart}/>
-          Add to Cart
-      </button>
+      
     </div>
   );
 }

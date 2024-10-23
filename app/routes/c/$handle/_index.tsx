@@ -18,6 +18,9 @@ import { ProductItemCustom } from '../all/_index/ProductItemCustom';
 import { ProductModal } from '../all/_index/ProductModal';
 import ProductsEmpty from '~/components/empty/ProductsEmpty';
 import SearchProductsEmpty from '~/components/empty/SearchProductsEmpty';
+import GridList from '~/components/custom-components/helpers/GridList';
+import { IconDefaultListView } from '~/components/custom-components/icons/default/IconDefaultListView';
+import { IconDefaultGridView } from '~/components/custom-components/icons/default/IconDefaultGridView';
 
 
 interface FilterParam {
@@ -212,6 +215,8 @@ export default function Collection() {
     fetcher.load(`/c/all/${handle}/quickview`);
   };
 
+  const [viewType, setViewType] = useState<'grid' | 'list'>('grid');
+
   useEffect(() => {
     if (fetcher.state === 'idle' && fetcher.data) {
       setSelectedProduct(fetcher.data as ProductQuickViewFragment);
@@ -260,16 +265,45 @@ export default function Collection() {
             
             <div className="collection-result">
               {/* sortby */}
-              <BoxSort />
+              <div className="collection-result__header">
+                <div className="grid-list inline-flex">
+                  <button
+                      type="button"
+                      className={`btn list-view ${viewType === 'list' ? 'selected' : ''}`} 
+                      onClick={() => setViewType('list')} 
+                  >
+                      <IconDefaultListView
+                          width='20'
+                          height='20'
+                          color={`${viewType === 'list' ? '#000' : '#ddd'}`} 
+                      />
+                      <span>List</span>
+                  </button>
+
+                  <button
+                      type="button"
+                      className={`btn grid-view ${viewType === 'grid' ? 'selected' : ''}`} 
+                      onClick={() => setViewType('grid')} 
+                  >
+                      <IconDefaultGridView 
+                          width='20'
+                          height='20'
+                          color={`${viewType === 'grid' ? '#000' : '#ddd'}`} 
+                      />
+                      <span>Grid</span>
+                  </button>
+                </div>
+    
+                <BoxSort />
+              </div>
 
               {/* pagination */}
-
               {products.nodes.length === 0 ? ( 
                 <SearchProductsEmpty /> // Thông báo nếu danh sách trống
               ) : (
                 <PaginatedResourceSection<ProductItemFragment>
                   connection={products}
-                  resourcesClassName="products-grid"
+                  resourcesClassName={`products-grid ${viewType === 'grid' ? 'grid-view' : 'list-view'}`}
                 >
                   {({node: product, index}) => (
                     <Suspense fallback={<div>Loading color variants...</div>}>
