@@ -4489,10 +4489,6 @@ table td.number {
     -webkit-line-clamp: 3;
   }
 
-  .product-item .product-price {
-    margin: 8px 0;
-  }
-
   .product-item .price-detail .before-discount {
     font-size: 12px;
   }
@@ -5083,7 +5079,7 @@ table td.number {
 
   .collection-result .products-grid{
     grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
-    gap: 12px 4px;
+    gap: 24px 4px;
     display: grid;
   }
 
@@ -5112,6 +5108,7 @@ table td.number {
 
   .collection-result .products-grid.list-view .product-item .product-item__details {
     width: 100%;
+    padding-top: 16px;
   }
 
   .collection-result .products-grid.list-view .product-item .product__featured-img{
