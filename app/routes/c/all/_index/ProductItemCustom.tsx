@@ -7,6 +7,7 @@ import { ProductPriceV3 } from './ProductPriceV3';
 import noVariantColor from '~/assets/images/no-variant-color.png';
 import { RatingCount } from '~/routes/p/$handle/RatingCount';
 import { IconDefaultCart } from '~/components/custom-components/icons/default/IconDefaultCart';
+import useHover from '~/components/custom-components/helpers/useHover';
 
 interface ProductItemProps {
   product: ProductItemFragment; 
@@ -22,6 +23,7 @@ interface ProductItemProps {
   onAddToCart: () => void;
   type?: 'default' | 'minus';
 }
+
 
 export function ProductItemCustom({
   product,
@@ -61,10 +63,17 @@ export function ProductItemCustom({
     }
   }
 
+  // hover
+  const { hovering, handleMouseOver, handleMouseOut } = useHover(); 
+
   
 
   return (
-    <div className="product-item">
+    <div 
+      className={`product-item ${hovering ? 'hovered' : ''}`}
+      onMouseOver={handleMouseOver}
+      onMouseOut={handleMouseOut}
+    >
       <Link 
         className="product__featured-img"
         prefetch="intent" 

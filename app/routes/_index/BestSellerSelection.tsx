@@ -62,6 +62,9 @@ export default function BestSellerSelection({ collectionsList, onSelectProduct }
                                 >
                                     {item.title}
                                 </a>
+                                <div className="curved-corner-topright"></div>
+                                <div className="curved-corner-topleft"></div>
+
                             </li>
                         ))}
                     </ul>
