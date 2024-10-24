@@ -40,6 +40,11 @@ h4 {
 h5 {
 }
 
+button,img {
+  user-select: none;
+}
+
+
 p {
   font-size: 1rem;
   line-height: 1.4;

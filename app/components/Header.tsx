@@ -67,6 +67,7 @@ export function Header({
 
       <div className="header-container grid md:grid-cols-12 grid-cols-4 gap-4">
         <div className="col-span-1 md:col-span-3 flex items-center">
+          
           <NavLink 
             className='logo'
             prefetch="intent" 
@@ -75,6 +76,7 @@ export function Header({
             >
             <img src={logoUrl} alt={shop.name} />
           </NavLink>
+          <HeaderMenuMobileToggle />
           <CategoriesMegaMenu
             menu={menu}
             viewport="desktop"
@@ -252,8 +254,6 @@ function HeaderCtas({
     <div className="header-ctas" role="navigation">
       {/* header menu mobile btn */}
       
-      <HeaderMenuMobileToggle />
-
       <HeaderSupportBtn/> 
 
       <Suspense fallback='loading'>

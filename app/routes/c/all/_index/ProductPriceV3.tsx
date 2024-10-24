@@ -48,8 +48,6 @@ export function ProductPriceV3({
       
 
       <div className="price-detail">
-        {/* Nếu có chiết khấu, hiển thị giá cũ với gạch ngang */}
-
         {priceShow ? (
           <>
             {discountSelected ? (
@@ -76,12 +74,12 @@ export function ProductPriceV3({
               <>
                 
                 <div className="before-discount">
-                  {title && (
+                  {/* {title && (
                     <div className="discount-label inline-flex">
-                      {/* <img src={icondiscount} alt="" width="16px" /> */}
+                      <img src={icondiscount} alt="" width="16px" />
                       {title}
                     </div>
-                  )}
+                  )} */}
                   <s>
                       <Money data={minVariantPrice} />
                   </s>

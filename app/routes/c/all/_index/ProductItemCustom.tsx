@@ -5,6 +5,8 @@ import type {ProductItemFragment} from 'storefrontapi.generated';
 import iconcart from '~/assets/fonts/icons/icon-cart.svg';
 import { ProductPriceV3 } from './ProductPriceV3';
 import noVariantColor from '~/assets/images/no-variant-color.png';
+import { RatingCount } from '~/routes/p/$handle/RatingCount';
+import { IconDefaultCart } from '~/components/custom-components/icons/default/IconDefaultCart';
 
 interface ProductItemProps {
   product: ProductItemFragment; 
@@ -34,6 +36,7 @@ export function ProductItemCustom({
   //  Discount
   const DiscountsMetafield = product.collections?.nodes;
   let DiscountMetafieldSelected: any | null = null;
+  let renderDiscount: string | null = null;
 
   if (DiscountsMetafield && DiscountsMetafield.length > 0) {
     const filteredMetafields = DiscountsMetafield.filter(
@@ -49,8 +52,16 @@ export function ProductItemCustom({
             : max;
         }
       );
+
+      if (DiscountMetafieldSelected) {
+        renderDiscount = `- ${DiscountMetafieldSelected.metafield.value}%`;
+      }
+
+
     }
   }
+
+  
 
   return (
     <div className="product-item">
@@ -81,20 +92,29 @@ export function ProductItemCustom({
           prefetch="intent" 
           to={variantUrl}
           className='product-item__header'>
-          <h4 title={product.title}>{product.title}</h4>
+          <h4 title={product.title}>
+            {renderDiscount && <div className='discount-label inline-flex'>{renderDiscount}</div>}
+            {product.title}
+          </h4>
         </Link>
+        <RatingCount /> 
         <ProductPriceV3 
           discountSelected={DiscountMetafieldSelected}
           priceRange={product.priceRange}
         />
+
+        {/* Thêm nút Add to Cart */}
         <button
           className = "btn btn-quickadd" 
           onClick={onAddToCart}>
-            <img src={iconcart}/>
-            +
+            <IconDefaultCart 
+              width='18'
+              height='18'
+            
+            />
+            <span> Add to cart</span>
         </button>
       </div>
-      {/* Thêm nút Add to Cart */}
       
     </div>
   );

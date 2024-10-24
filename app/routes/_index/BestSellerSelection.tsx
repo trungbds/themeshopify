@@ -49,7 +49,7 @@ export default function BestSellerSelection({ collectionsList, onSelectProduct }
                     <ul className="flex flex-wrap -mb-px items-baseline bestseller-list">
                         {items.map((item: any, index: number) => (
                             <li key={index} 
-                                className={`${
+                                className={`btn ${
                                     activeIndex === index
                                         ? "isCurrent"
                                         : ""

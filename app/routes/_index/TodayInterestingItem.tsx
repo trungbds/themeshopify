@@ -5,8 +5,10 @@ import { ProductItemDefault } from '~/components/custom-components/ProductItemDe
 // Swiper
 import { Navigation,  Pagination as PaginationSwiper  } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
-import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
+import iconchevronright from '~/assets/fonts/icons/icon-chevron-right-white.svg';
+import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left-white.svg';
+
+import bgtoday from '~/assets/images/bg-today.png'; 
 
 type TodayInterestingItemProps = {
     collections: any;
@@ -24,10 +26,16 @@ export default function TodayInterestingItem({ collections, onSelectProduct }: T
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 h-full">
                     <div className="col-span-1 sm:col-span-1 md:col-span-1 h-auto md:h-full flex flex-col">
                         <div className="today-interesting__intro">
-                            <h2 className="title-selection"> {collections.collection?.title}</h2>
-                            <p>{collections.collection?.description}</p>
+                            <img src={bgtoday} alt="today interesting" />
+                            <div className="content">
+                                <h2 className="title-selection">{collections.collection?.title}</h2>
+                                <p>{collections.collection?.description}</p>
+                            </div>
+                            
                         </div>
                     </div>
+
+
                     <div className="sm:col-span-3 md:col-span-3">
                         <div className="collections-result">
                             {products.length > 0 ? (
