@@ -1,6 +1,7 @@
 import { Link } from '@remix-run/react';
 import React, { useState, useRef, useEffect } from 'react';
 import iconlivehelp from '~/assets/fonts/icons/icon-livehelp.svg';
+import { IconDefaultLiveHelp } from './icons/default/IconDefaultLiveHelp';
 
 export default function HeaderSupportBtn() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -44,7 +45,7 @@ export default function HeaderSupportBtn() {
                     aria-haspopup="true"
                     onClick={toggleDropdown}
                 >
-                    <img src={iconlivehelp} alt="" width="22px" height="auto" />
+                    <IconDefaultLiveHelp />
                     <span> Support </span>
                 </button>
             </div>

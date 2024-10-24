@@ -86,6 +86,7 @@ form {
 
 .breadcrumbs .breadcrumbs-list li {
  margin: 0;
+ line-height: 1.2;
 }
 
 .breadcrumbs .breadcrumbs-list li img {
@@ -96,6 +97,13 @@ form {
 
 .breadcrumbs .breadcrumbs-list li a {
   height: 20px;
+  color: var(--p-secondary);
+  font-size: 14px;
+}
+
+.breadcrumbs .breadcrumbs-list li .home-link svg{
+  fill: var(--p-secondary); 
+  width: 20px;
 }
 
 .breadcrumbs .breadcrumbs-list li:last-child {
@@ -108,7 +116,7 @@ form {
 }
 
 .breadcrumbs .breadcrumbs-list li:last-child span {
-
+  font-size: 14px;
 }
 
 
@@ -534,10 +542,17 @@ button.reset:hover:before {
   flex-direction: column;
   gap: 2px;
 }
-.header-menu-mobile .header-cta__block {
+
+
+.header-menu-mobile .header-ctas {
   display: inline-flex;
   background-color: var(--primary-color);
   padding: 8px 16px;
+  margin-left: unset;
+}
+
+.header-menu-mobile .header-cta__block {
+  display: block;
 }
 
 .header-menu-desktop {
@@ -686,7 +701,7 @@ button.reset:hover:before {
   width: 100%;
   background: #fff;
   border: 1px solid #ddd;
-  padding: 16px;
+  padding: 16px 0;
   border-radius: 8px;
   top: calc(100% + 8px);
   height: auto;
@@ -702,6 +717,27 @@ button.reset:hover:before {
   visibility: visible;
 }
 
+.all-results-predictive p{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--p-secondary);
+  padding: 4px 12px;
+}
+
+.all-results-predictive p q {
+  font-weight: 600;
+  color: #000;
+  margin-right: 4px;
+}
+
+.all-results-predictive p svg {
+  fill: var(--p-secondary);
+}
+
+
+
+
 .predictive-search-result.queries ul li {
   display: flex;
   align-items: center;
@@ -709,6 +745,9 @@ button.reset:hover:before {
   cursor: context-menu;
   margin-bottom: 0;
   background-color: transparent;
+  padding: 4px 12px;
+  gap: 8px;
+  color: var(--p-secondary);
 }
 
 .predictive-search-result.queries ul li:hover{
@@ -739,7 +778,12 @@ button.reset:hover:before {
 }
 
 .header-overlay.active {
-  height: calc(100vh - 80px)
+  height: calc(100vh - 80px);
+  height: 0;
+}
+
+.header-overlay.actived {
+  height: calc(100vh - 80px);
 }
 
 .empty-collection img {
@@ -1197,17 +1241,20 @@ button.reset:hover:before {
 * --------------------------------------------------
 */
 .predictive-search-result {
-  margin-bottom: 2rem;
+  margin-bottom: 24px;
+  
 }
 
 .predictive-search-result h5 {
   text-transform: uppercase;
-  color: #777;
-  font-size: 12px;
+  color: var(--p-secondary);
+  font-size: 14px;
+  padding: 0px 12px;
 }
 
 .predictive-search-result-item {
   margin-bottom: 0.5rem;
+  padding: 0 12px;
 }
 
 .predictive-search-result-item a {
@@ -1521,6 +1568,7 @@ button.reset:hover:before {
 }
 
 .bestseller .bestseller-list {
+  padding: 0 8px;
 }
 
 .bestseller .bestseller-list li {
@@ -1807,7 +1855,7 @@ button.reset:hover:before {
   bottom: 0;
   left: 0;
   border-radius: 0 0 8px 8px;
-  background: linear-gradient(#00000000, #0000007a);
+  background: linear-gradient(#0000, #0000009e);
 }
 
 .all-categories__list .all-categories__item img{
@@ -2702,15 +2750,15 @@ table td.number {
 }
 .product-sku {
   width: 100%;
-  font-size: 12px;
-  margin-bottom: 24px ;
+  font-size: 14px;
+  padding: 8px 0;
 }
 .product-sku span {
   font-weight: 500;
 }
 
 .helpers-product {
-  font-size: 12px;
+  font-size: 14px;
   display: block;
   flex: 0 0 auto;
 }
@@ -3954,9 +4002,13 @@ table td.number {
   color: var(--color-light);
 }
 
+.btn-support button svg {
+  fill: #ffffffb3;
+}
+
 .btn-support button span{
   line-height: 1;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .btn-support button[aria-expanded="true"]{
@@ -4707,6 +4759,7 @@ table td.number {
   }
 
   .modal-content {
+
     width: 100%;
     height: 90%;
     top: auto;
@@ -4714,10 +4767,16 @@ table td.number {
     left: 50%;
     transform: translate(-50%, 0%);
     border-radius: 8px 8px 0 0;
+    overflow-y: auto;
+
   }
   .modal-content .product-modal__header {
     display: flex;
     padding: 4px 2px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #fff;
   }
 
   .modal-content .product-modal__header .btn-close {
@@ -4758,7 +4817,6 @@ table td.number {
     width: 100%;
     height: 100%;
     flex-direction: column;
-    overflow-y: auto;
   }
   .product-modal__detail .product-images {
     width: 100%;

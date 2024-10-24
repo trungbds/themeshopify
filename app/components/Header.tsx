@@ -219,16 +219,23 @@ export function HeaderMenu({
     <nav className={`header-menu-${viewport}`} role="navigation">
       {viewport === 'mobile' && (
         <>
-          <Suspense fallback='loading'>
-            <Await 
-              resolve={isLoggedIn} 
-              errorElement="Error">
-              {(isLoggedIn) => (
-                (isLoggedIn ? <HeaderAccount/> : <HeaderSignIn/>)
-              )}
-              
-            </Await>
-          </Suspense>
+        
+          <div className='header-ctas'>
+            <Suspense fallback='loading'>
+              <Await 
+                resolve={isLoggedIn} 
+                errorElement="Error">
+                {(isLoggedIn) => (
+                  (isLoggedIn ? <HeaderAccount/> : <HeaderSignIn/>)
+                )}
+                
+              </Await>
+            </Suspense>
+            <HeaderSupportBtn/>
+          </div>
+          
+
+
           <div className="menu-item">
             <NavLink 
               prefetch="intent" 

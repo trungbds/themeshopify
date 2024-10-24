@@ -8,6 +8,7 @@ import {
 } from '~/components/SearchFormPredictive';
 import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
 import {SearchHeaderExpand, useSearchExpand} from '~/components/custom-components/SearchHeaderExpand'
+import { IconDefaultArrowForward } from './icons/default/IconDefaultArrowForward';
 
 export function SearchHeader(
   {openOverlayClick,closeOverlayClick }: { 
@@ -125,12 +126,12 @@ function SearchResultsExpand() {
                 />
                 {term.current && total ? (
                   <Link
+                    className='all-results-predictive'
                     onClick={closeSearch}
                     to={`${SEARCH_ENDPOINT}?q=${term.current}`}
                   >
                     <p>
-                      View all results for <q>{term.current}</q>
-                      &nbsp; →
+                      View all results for <q>{term.current}</q><IconDefaultArrowForward />
                     </p>
                   </Link>
                 ) : null}

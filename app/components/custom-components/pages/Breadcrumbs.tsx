@@ -1,6 +1,7 @@
 import { Link, useMatches } from '@remix-run/react';
 import { z } from 'zod';
 import iconhome from '~/assets/fonts/icons/icon-home.svg';
+import { IconDefaultHome } from '../icons/default/IconDefaultHome';
 
 
 type BreadcrumbsProps = {
@@ -296,18 +297,23 @@ function BreadcrumbsComponent({ pages }: { pages: Pages[] }) {
                 {page.name === 'Home' ? (
                   <>
                     <Link
-                      className="flex items-center text-sm font-semibold text-blue-600 hover:text-blue-700 focus:outline-none focus:text-blue-700 dark:text-blue-500 dark:hover:text-blue-600 dark:focus:text-blue-600"
+                      className="flex items-center home-link"
                       to={page.href}
                       prefetch="intent"
                     >
-                      <img src={iconhome} alt="Home Icon" className="" />
+                      <IconDefaultHome 
+                        color='none'
+                        width='24'
+                        height='24'
+                      />
+                      
                     </Link>
                     {index < pages.length - 1 && lashMark}
                   </>
                 ) : index < pages.length - 1 ? (
                   <>
                     <Link
-                      className="link-primary flex items-center text-sm text-gray-500 hover:text-blue-600 focus:outline-none focus:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-500 dark:focus:text-blue-500"
+                      className="link-primary flex items-center"
                       to={page.href}
                       prefetch="intent"
                     >
@@ -316,7 +322,7 @@ function BreadcrumbsComponent({ pages }: { pages: Pages[] }) {
                     {lashMark}
                   </>
                 ) : (
-                  <span className="inline-flex items-center text-sm font-semibold text-gray-800 truncate dark:text-neutral-200">
+                  <span className="inline-flex items-center">
                     {page.name}
                   </span>
                 )}
