@@ -13,6 +13,8 @@
   
 
   --effect-color: #2d66ed;
+
+  --p-secondary: #787878
 }
 
 img {
@@ -794,7 +796,7 @@ button.reset:hover:before {
 }
 
 .shop-feature .shop-feature__detail .content p{
-  opacity: .8;
+  color: var(--p-secondary);
 }
 
 
@@ -868,7 +870,7 @@ button.reset:hover:before {
 }
 
 .footer-right__area .live-chat {
-  opacity: .8;
+  color: var(--p-secondary);
 }
 .footer-right__area .live-chat a {
   display: block;
@@ -876,7 +878,7 @@ button.reset:hover:before {
   color: #000;
 }
 .footer-right__area .live-chat a:hover {
-  opacity: .8;
+  color: var(--p-secondary);
 }
 
 .footer-block__ulti {
@@ -1472,7 +1474,7 @@ button.reset:hover:before {
   text-align: center;
   margin: 0 auto ;
   max-width: 80%;
-  opacity: .8;
+  color: var(--p-secondary);
 }
 
 .featured-offers .featured-offers__item .btn-discover{
@@ -2911,14 +2913,18 @@ table td.number {
 }
 
 .product-main .product-header .product-title .brand {
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 8px;
 }
 
-.product-title .rating-tilte p, .product-title .rating-tilte a {
+.product-main .product-header .rating-tilte{
+  font-size: 14px;
+}
+
+.product-title .rating-tilte span, .product-title .rating-tilte a {
   line-height: 16px;
 }
-.product-title .rating-tilte p {
+.product-title .rating-tilte span {
   margin-right: 8px;
 }
 
@@ -2947,7 +2953,7 @@ table td.number {
   margin-bottom: 8px;
 }
 .product-main .purchase-method .purchase-method__detail .description {
-  opacity: .8;
+  color: var(--p-secondary);
   max-width: 80%;
 }
 
@@ -2987,7 +2993,7 @@ table td.number {
   margin: 8px 0;
   padding-right: 16px;
   font-size: 1rem;
-  opacity: .8;
+  color: var(--p-secondary);
 }
 
 .recommended-product .product-price .discount-label {
@@ -3338,7 +3344,7 @@ table td.number {
 
 .filter-form__product h5 {
   font-weight: 600;
-  opacity: .8;
+  color: var(--p-secondary);
 }
 
 .filter-result .filter-result__item {
@@ -3502,8 +3508,7 @@ table td.number {
   justify-content: center;
 }
 .modal .btn-close img {
-  width: 20px;
-  margin-bottom: 2px;
+  width: 28px;
 }
 .product-modal__detail{
   display: flex;
@@ -3981,7 +3986,7 @@ table td.number {
   padding: 8px 0;
   transition: all .15s ease-in-out;
   border-radius: 8px;
-  opacity: .8;
+  color: var(--p-secondary);
   position: relative;
 
 }
@@ -4200,7 +4205,7 @@ table td.number {
 
 .help-contact__title p {
   color: #fff;
-  opacity: .8;
+  color: var(--p-secondary);
   font-weight: 300;
 }
 
@@ -4710,7 +4715,7 @@ table td.number {
   }
   .modal-content .product-modal__header {
     display: flex;
-    
+    padding: 4px 2px;
   }
 
   .modal-content .product-modal__header .btn-close {
@@ -4723,12 +4728,13 @@ table td.number {
     justify-content: space-between;
     align-items: center;
   }
-  .modal-content .product-modal__header .product-modal__title img{
-    flex: 0 0 40px;
-    width: 40px;
-    height: 40px;
-    opacity: .5;
+  .modal-content .product-modal__header .product-modal__title .btn{
+    flex: 0 0 auto;
+    width: auto;
     padding: 6px;
+    display: inline-flex;
+    align-items: center;
+
   }
 
   .modal-content .product-modal__header .product-modal__title .title{
@@ -4740,6 +4746,7 @@ table td.number {
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     opacity: .75;
+    line-height: 1.2;
   }
 
 
@@ -4795,7 +4802,7 @@ table td.number {
 
   .shop-feature .shop-feature__detail .content p{
     font-size: 14px;
-    opacity: .8;
+    color: var(--p-secondary);
   }
 
   

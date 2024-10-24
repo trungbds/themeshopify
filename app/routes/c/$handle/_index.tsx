@@ -234,6 +234,7 @@ export default function Collection() {
   if (!products.nodes || products.nodes.length === 0 && fiilterColectionData.length === 0) {
     return <ProductsEmpty title ={collection.title} />
   }
+  
 
   return (
     <>

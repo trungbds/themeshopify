@@ -333,8 +333,12 @@ export default function Product() {
 
               <div className="product-header">
                 <div className='product-title'>
-                  <div className='brand'> Brand: <strong>{vendor}</strong>  </div>
-                  <h1>{title}</h1>
+                  <h1 
+                    title={title}
+                  >
+                    {title}
+                  </h1>
+                  <div className='brand'> Brand: {vendor}</div>
                   <RatingCount />
                 </div>
                 <button className='btn-wishlist' onClick={handleWistlistClick}>

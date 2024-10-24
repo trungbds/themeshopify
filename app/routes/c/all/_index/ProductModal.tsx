@@ -17,6 +17,9 @@ import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
 import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
 import iconwishlist from '~/assets/fonts/icons/icon-wishlist.svg';
 import iconwishlistactived from '~/assets/fonts/icons/icon-wishlist__active.svg';
+
+import iconforward from '~/assets/fonts/icons/icon-forward.svg';
+
 import { ProductPriceV3 } from './ProductPriceV3';
 
 // type Loading = 'loading' | 'idle' | 'submitting';
@@ -92,12 +95,21 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
 
         <div className="product-modal__header">
           <button className='btn btn-close link-primary' onClick={onClose}>
+            
             <img src={iconclose} alt="close" />
           </button>
 
           <div className="product-modal__title">
             <h4 className='title'>{productItem.title}</h4>
-            <img src={iconchevronright} alt="close" />
+            <Link
+              className='btn'
+              to={`/p/${productItem.handle}`}
+            >
+              <span>Details</span>
+              <img src={iconforward} alt="close"/>
+
+            </Link>
+
 
           </div>
         </div>
