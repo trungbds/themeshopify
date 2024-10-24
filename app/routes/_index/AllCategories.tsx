@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from '@remix-run/react';
 import { Image } from '@shopify/hydrogen';
 import noImage from '~/assets/images/no-image-available.png';
+import icondresser from '~/assets/fonts/icons/icon-dresser.svg'
 
 export default function AllCategories({ collectionsList }: { collectionsList: any }) {
     const { items } = collectionsList;
@@ -53,7 +54,15 @@ export default function AllCategories({ collectionsList }: { collectionsList: an
                                         sizes="(min-width: 45em) 50vw, 100vw"
                                         aspectRatio="2/3"
                                     />
-                                    <h4 className="link-hover">{item.title}</h4>
+                                    <h4 className="link-hover">
+                                        
+                                        {item.title}
+                                        <img
+                                            className="icon-dresser"
+                                            src={icondresser}
+                                            alt="Dresser icon"
+                                        />
+                                    </h4>
                                 </Link>
                             ))}
                         </div>
