@@ -91,162 +91,160 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
   
 
   return (
-    <div className="modal product-modal">
-      <div className="modal-overlay" onClick={onClose} />
-      <div className="modal-content">
+    <div className=" product-modal">
+      <div className="product-modal__header">
+        <button className='btn btn-close link-primary' onClick={onClose}>
+          
+          <img src={iconclose} alt="close" />
+        </button>
 
-        <div className="product-modal__header">
-          <button className='btn btn-close link-primary' onClick={onClose}>
-            
-            <img src={iconclose} alt="close" />
-          </button>
-
-          <div className="product-modal__title">
-            <h4 className='title'>{productItem.title}</h4>
-            <Link
-              className='btn'
-              to={`/p/${productItem.handle}`}
-            >
-              <span>Details</span>
-              <img src={iconforward} alt="close"/>
-
-            </Link>
-
-
-          </div>
-        </div>
-        
-
-        <div className="product-modal__detail">
-          {/* Hiển thị hình ảnh sản phẩm */}
-          <div className="carousel">
-        
-          <Swiper 
-            className='product-images flex-auto' 
-            modules={[Navigation, PaginationSwiper, FreeMode]}
-            spaceBetween={16} 
-            slidesPerView={1}
-            navigation= {{
-              prevEl: '.carousel-btn-prev',
-              nextEl: '.carousel-btn-next',
-              
-            }}
-            pagination={{ 
-              el: '.images-pagination',
-              type: 'fraction' 
-            }}
-
-            breakpoints={{
-              768: { // Trên 768px, không sử dụng cssMode
-                cssMode: false,
-              },
-              0: { 
-                slidesPerView : 'auto',
-                cssMode: true,
-                freeMode: true, 
-              }
-            }}
-
+        <div className="product-modal__title">
+          <h4 className='title'>{productItem.title}</h4>
+          <Link
+            className='btn'
+            to={`/p/${productItem.handle}`}
           >
-            {imageList.map((img: any) => (
-              <SwiperSlide key={img.id}>
-                <a data-src={img.url}>
-                  <Image
-                    alt={img.altText || 'Product Image'}
-                    src={img.url}
-                    aspectRatio="1/1"
-                    sizes="(min-width: 45em) 50vw, 100vw"
-                    loading="lazy"
-                  />
-                </a>
-              </SwiperSlide>
-            ))}
-            <div className="carousel-btn-prev">
-              <img src={iconback} alt="" width='24px' height='auto' />
-            </div>
-            <div className="carousel-btn-next">
-              <img src={iconforward} alt=""  width='24px' height='auto'/>
-            </div>
-            <div className="images-pagination"></div>
-          </Swiper>
+            <span>Details</span>
+            <img src={iconforward} alt="close"/>
 
-          </div>
-          <div className="content">
+          </Link>
+
+
+        </div>
+      </div>
       
-            <div className="product-header">
-              <div className='product-title'>
-                <h2>{productItem.title}</h2>
-                <div className='brand'> Brand: <strong>{productItem.vendor}</strong></div>
-              </div>
-              <button className='btn-wishlist' onClick={handleWistlistClick}>
-                <img src={iconWishlist}  width={'20px'} />
-              </button>
+
+      <div className="product-modal__detail">
+        {/* Hiển thị hình ảnh sản phẩm */}
+        <div className="carousel">
+      
+        <Swiper 
+          className='product-images flex-auto' 
+          modules={[Navigation, PaginationSwiper, FreeMode]}
+          spaceBetween={16} 
+          slidesPerView={1}
+          navigation= {{
+            prevEl: '.carousel-btn-prev',
+            nextEl: '.carousel-btn-next',
+            
+          }}
+          pagination={{ 
+            el: '.images-pagination',
+            type: 'fraction' 
+          }}
+
+          breakpoints={{
+            768: { // Trên 768px, không sử dụng cssMode
+              cssMode: false,
+            },
+            0: { 
+              slidesPerView : 'auto',
+              cssMode: true,
+              freeMode: true, 
+              spaceBetween: 4
+
+            }
+          }}
+
+        >
+          {imageList.map((img: any) => (
+            <SwiperSlide key={img.id}>
+              <a data-src={img.url}>
+                <Image
+                  alt={img.altText || 'Product Image'}
+                  src={img.url}
+                  aspectRatio="1/1"
+                  sizes="(min-width: 45em) 50vw, 100vw"
+                  loading="lazy"
+                />
+              </a>
+            </SwiperSlide>
+          ))}
+          <div className="carousel-btn-prev">
+            <img src={iconback} alt="" width='24px' height='auto' />
+          </div>
+          <div className="carousel-btn-next">
+            <img src={iconforward} alt=""  width='24px' height='auto'/>
+          </div>
+          <div className="images-pagination"></div>
+        </Swiper>
+
+        </div>
+        <div className="content">
+    
+          <div className="product-header">
+            <div className='product-title'>
+              <h2>{productItem.title}</h2>
+              <div className='brand'> Brand: <strong>{productItem.vendor}</strong></div>
             </div>
+            <button className='btn-wishlist' onClick={handleWistlistClick}>
+              <img src={iconWishlist}  width={'20px'} />
+            </button>
+          </div>
 
-            <RatingCount />
+          <RatingCount />
 
-            <ProductPriceV3 
-              discountSelected={DiscountMetafieldSelected}
-              priceRange={productItem.priceRange}
-              priceShow={selectedVariant?.price}
+          <ProductPriceV3 
+            discountSelected={DiscountMetafieldSelected}
+            priceRange={productItem.priceRange}
+            priceShow={selectedVariant?.price}
+          />
+
+          {/* <ProductPrice
+            price={selectedVariant?.price}
+            compareAtPrice={selectedVariant?.compareAtPrice}
+          /> */}
+
+
+          <div className="product-form">
+            {/* Gọi component ProductModalVariantOptions và truyền hàm handleVariantSelected */}
+            <ProductModalVariantOptions
+              handle ={productItem.handle}
+              options={productItem.options}
+              variants={productItem.variants.nodes}
+              onVariantSelected={handleVariantSelected}
             />
-
-            {/* <ProductPrice
-              price={selectedVariant?.price}
-              compareAtPrice={selectedVariant?.compareAtPrice}
-            /> */}
-
-
-            <div className="product-form">
-              {/* Gọi component ProductModalVariantOptions và truyền hàm handleVariantSelected */}
-              <ProductModalVariantOptions
-                handle ={productItem.handle}
-                options={productItem.options}
-                variants={productItem.variants.nodes}
-                onVariantSelected={handleVariantSelected}
-              />
-              <AddToCartButton
-                disabled={!selectedVariant || !selectedVariant.availableForSale}
-                onClick={() => {
-                  onClose;
-                  open('cart');
-                }}
-                lines={
-                  selectedVariant
-                    ? [
-                        {
-                          merchandiseId: selectedVariant.id,
-                          quantity: 1,
-                        },
-                      ]
-                    : []
-                }
-              >
-                  {selectedVariant?.availableForSale ? (
-                    <>
-                      Add to cart
-                      <AddToCartPrice 
-                        price = {selectedVariant?.price}
-                        discountSelected = {DiscountMetafieldSelected}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      Add to cart
-                      <div className="product-price"></div>
-                    </>
-                  )}
-                  
-              </AddToCartButton>
-              <Link
-                to={`/p/${productItem.handle}`}
-                className="btn link-underline text-center product-link"
-              >
-                <span className='link-hover'>
-                  View product details
-                </span>
-              </Link>
-            </div>
+            <AddToCartButton
+              disabled={!selectedVariant || !selectedVariant.availableForSale}
+              onClick={() => {
+                onClose;
+                open('cart');
+              }}
+              lines={
+                selectedVariant
+                  ? [
+                      {
+                        merchandiseId: selectedVariant.id,
+                        quantity: 1,
+                      },
+                    ]
+                  : []
+              }
+            >
+                {selectedVariant?.availableForSale ? (
+                  <>
+                    Add to cart
+                    <AddToCartPrice 
+                      price = {selectedVariant?.price}
+                      discountSelected = {DiscountMetafieldSelected}
+                    />
+                  </>
+                ) : (
+                  <>
+                    Add to cart
+                    <div className="product-price"></div>
+                  </>
+                )}
+                
+            </AddToCartButton>
+            <Link
+              to={`/p/${productItem.handle}`}
+              className="btn link-underline text-center product-link"
+            >
+              <span className='link-hover'>
+                View product details
+              </span>
+            </Link>
           </div>
         </div>
       </div>

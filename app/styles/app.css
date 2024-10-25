@@ -3542,16 +3542,27 @@ table td.number {
   width: 100%;
   height: 100%;
   z-index: 100;
+  visibility: hidden;
+}
+
+.modal.open {
+  visibility: visible;
+  display: block;
 }
 
 
-.modal-content {
+.modal .modal-content {
   position: absolute;
   background-color: #fff;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 8px ;
+  transition: all .3s ease-in-out;
+}
+
+.modal.open .modal-content {
+  height: 90%;
 }
 
 .modal-overlay {
@@ -3589,6 +3600,11 @@ table td.number {
 
 .product-modal__detail .product-images .swiper-wrapper {
   height: auto;
+}
+
+.product-modal__detail .product-images .swiper-slide>a {
+  width: 100%;
+  display: block;
 }
 
 .product-modal__detail .product-images .images-pagination{
@@ -4773,10 +4789,10 @@ table td.number {
     min-width: unset;
   }
 
-  .modal-content {
+  .modal .modal-content {
 
     width: 100%;
-    height: 90%;
+    height: 0%;
     top: auto;
     bottom: 0;
     left: 50%;

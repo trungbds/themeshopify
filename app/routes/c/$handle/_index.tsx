@@ -330,29 +330,37 @@ export default function Collection() {
 
 
             </div>
+
             {/* product modal  -- click "Add to cart()"*/}
-            <div className='product_modal__cover'>
-              {isModalOpen && (
-                <Suspense fallback={
-                  <div className="modal product-modal loading">
-                    <div className="modal-overlay" />
-                    <div>Loading product item...</div>
-                  </div>
-                }>
-                  <Await
-                    resolve={fetcher.data}
-                    errorElement="There was a problem loading product"  
-                  >
-                    {(product) => (
-                      <ProductModal
-                        onClose={closeModal}
-                        product={product}
-                        loading={fetcher.state === 'loading'}
-                      />
-                    )}
-                  </Await>
-                </Suspense>
-              )}
+            <div 
+              className={ `modal ${isModalOpen ? 'open' :''}`}
+            >
+              <div className="modal-overlay" 
+                // onClick={onClose} 
+              />
+              <div className="modal-content">
+                {isModalOpen && (
+                  <Suspense fallback={
+                    <div className="modal product-modal loading">
+                      <div className="modal-overlay" />
+                      <div>Loading product item...</div>
+                    </div>
+                  }>
+                    <Await
+                      resolve={fetcher.data}
+                      errorElement="There was a problem loading product"  
+                    >
+                      {(product) => (
+                        <ProductModal
+                          onClose={closeModal}
+                          product={product}
+                          loading={fetcher.state === 'loading'}
+                        />
+                      )}
+                    </Await>
+                  </Suspense>
+                )}
+              </div>
             </div>
             
             <Analytics.CollectionView
