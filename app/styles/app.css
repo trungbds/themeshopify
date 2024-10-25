@@ -3540,7 +3540,7 @@ table td.number {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 0;
   z-index: 100;
   visibility: hidden;
 }
@@ -3548,6 +3548,7 @@ table td.number {
 .modal.open {
   visibility: visible;
   display: block;
+  height: 100%;
 }
 
 
@@ -3562,7 +3563,7 @@ table td.number {
 }
 
 .modal.open .modal-content {
-  height: 90%;
+  transform: translateY(0%);
 }
 
 .modal-overlay {
@@ -4790,16 +4791,15 @@ table td.number {
   }
 
   .modal .modal-content {
-
     width: 100%;
-    height: 0%;
+    height: 90%;
     top: auto;
     bottom: 0;
-    left: 50%;
-    transform: translate(-50%, 0%);
+    left: 0;
+    right: 0;
     border-radius: 8px 8px 0 0;
     overflow-y: auto;
-
+    transform: translateY(100%);
   }
   .modal-content .product-modal__header {
     display: flex;
