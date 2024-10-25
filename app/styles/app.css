@@ -3651,8 +3651,12 @@ table td.number {
     margin-bottom: 8px;
     line-height: 1;
 }
+.product-modal .rating-tilte svg{
+  width: 12px;
+  height: 12px;
+}
 
-.product-modal  .product-header .product-title {
+.product-modal .product-header .product-title {
   width: 100%;
 }
 
@@ -3674,7 +3678,7 @@ table td.number {
 }
 
 .product-modal .product-price {
-  margin: 0 0 8px; 
+  margin: 0 0 16px; 
 }
 
 .product-modal .product-price .price-detail {
