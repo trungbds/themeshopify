@@ -23,16 +23,18 @@ import iconback from '~/assets/fonts/icons/icon-back.svg';
 
 import { ProductPriceV3 } from './ProductPriceV3';
 import { RatingCount } from '~/routes/p/$handle/RatingCount';
+import useDisableScroll from '~/components/custom-components/helpers/useDisableScroll';
 
 // type Loading = 'loading' | 'idle' | 'submitting';
 
 interface ModalProps {
   onClose: () => void;
+  isOpen: boolean;
   product: any;
   loading: boolean;
 }
 
-export function ProductModal({ onClose, product, loading }: ModalProps) {
+export function ProductModal({ onClose, isOpen, product, loading }: ModalProps) {
   const [selectedVariant, setSelectedVariant] = useState<any>(null);
    // Hàm xử lý việc chọn biến thể
   const handleVariantSelected = (variant: any | null) => {
@@ -86,9 +88,8 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
     }
   }
 
-  // Add to cart price
-
-  
+  // isOpen
+  useDisableScroll(isOpen);
 
   return (
     <div className=" product-modal">

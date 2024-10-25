@@ -339,6 +339,7 @@ export default function Collection() {
                 // onClick={onClose} 
               />
               <div className="modal-content">
+
                 {isModalOpen && (
                   <Suspense fallback={
                     <div className="modal product-modal loading">
@@ -355,11 +356,14 @@ export default function Collection() {
                           onClose={closeModal}
                           product={product}
                           loading={fetcher.state === 'loading'}
+                          isOpen = {isModalOpen}
+                          
                         />
                       )}
                     </Await>
                   </Suspense>
                 )}
+
               </div>
             </div>
             

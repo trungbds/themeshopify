@@ -171,7 +171,8 @@ form {
 .swiper {
   width: 100%;
   height: auto;
-  border-radius: 0px;
+  border-radius: 0px ;
+  position: relative;
 }
 
 .swiper-wrapper {
@@ -2500,11 +2501,6 @@ table td.number {
   margin-top: 12px;
 }
 
-.swiper {
-  position: relative;
-  border-radius: 8px;
-}
-
 .carousel-btn-prev, .carousel-btn-next {
   position: absolute;
   top: 50%;
@@ -3569,7 +3565,7 @@ table td.number {
 }
 
 .modal.open .modal-content {
-  transform: translateY(0%);
+  transform: translate(-50%, -50%)
 }
 
 .modal-overlay {
@@ -4818,6 +4814,10 @@ table td.number {
     min-width: unset;
   }
 
+  .modal.open .modal-content {
+    transform: translateY(0%);
+  }
+  
   .modal .modal-content {
     width: 100%;
     height: 90%;
