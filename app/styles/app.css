@@ -185,7 +185,7 @@ form {
 }
 
 .swiper-css-mode.swiper-horizontal > .swiper-wrapper {
-  scroll-snap-type: none !important;
+  /* scroll-snap-type: none !important; */
 }
 .swiper-css-mode > .swiper-wrapper > .swiper-slide {
   scroll-snap-align: none !important;

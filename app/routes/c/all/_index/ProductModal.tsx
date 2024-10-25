@@ -141,7 +141,9 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
               slidesPerView : 'auto',
               cssMode: true,
               freeMode: true, 
-              spaceBetween: 4
+              spaceBetween: 4,
+              freeModeMomentum: true,  // Thêm quán tính khi trượt nhanh
+              freeModeMomentumBounce: true,
 
             }
           }}
