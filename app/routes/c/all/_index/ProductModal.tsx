@@ -123,6 +123,12 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
           modules={[Navigation, PaginationSwiper, FreeMode]}
           spaceBetween={16} 
           slidesPerView={1}
+          freeMode={{
+            enabled: true,
+            momentum: true,
+            momentumRatio: 0.5,  // Điều chỉnh quán tính mượt hơn
+            momentumVelocityRatio: 1, // Tăng tốc độ quán tính
+          }}
           navigation= {{
             prevEl: '.carousel-btn-prev',
             nextEl: '.carousel-btn-next',
@@ -142,9 +148,6 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
               cssMode: true,
               freeMode: true, 
               spaceBetween: 4,
-              freeModeMomentum: true,  // Thêm quán tính khi trượt nhanh
-              freeModeMomentumBounce: true,
-
             }
           }}
 
