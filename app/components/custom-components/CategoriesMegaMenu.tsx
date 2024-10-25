@@ -6,7 +6,6 @@ import iconcategories from '~/assets/fonts/icons/icon-categories.svg';
 import { IconCategories } from './icons/IconCategories';
 import { IconDefaultClose } from './icons/default/IconDefaultClose';
 import { IconDefaultCategories } from './icons/default/IconDefaultCategories';
-import useOverlay from './helpers/useOverlay';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -74,8 +73,6 @@ export function CategoriesMegaMenu({
 
   const className = `header-menu-${viewport}`;
   const items = menu?.items || [];  // Đảm bảo rằng `items` luôn là một mảng, ngay cả khi `menu` là `undefined`.
-
-  const { overlayActive, handleMouseOver, handleMouseOut } = useOverlay(); 
 
 
   return (
