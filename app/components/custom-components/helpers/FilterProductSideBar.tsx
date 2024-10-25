@@ -232,12 +232,9 @@ export function FilterProductSideBar({ isActive, data, filtersParams, collection
         onClick={() => toggleSection('filter-form__product-content')}
         
       >
-        <h3 className="title">
-          <div className="btn">
-            <img src={iconfilter}/>
-            <img src={iconfilter}/>
-            <span>Filter</span>
-          </div>
+        <h3 className="title font-medium">
+          <img src={iconfilter}/>
+          <span>Filter</span>
 
           { selectedFilters.length > 0 && <span className="filter-count">( {selectedFilters.length} )</span> } 
         </h3>
