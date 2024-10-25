@@ -10,7 +10,7 @@ import type {MoneyV2} from '@shopify/hydrogen/storefront-api-types';
 import iconclose from '~/assets/fonts/icons/icon-close.svg';
 
 // Swiper
-import { Navigation,  Pagination as PaginationSwiper  } from 'swiper/modules';
+import { Navigation,  Pagination as PaginationSwiper, FreeMode} from 'swiper/modules';
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
 
 import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
@@ -19,8 +19,10 @@ import iconwishlist from '~/assets/fonts/icons/icon-wishlist.svg';
 import iconwishlistactived from '~/assets/fonts/icons/icon-wishlist__active.svg';
 
 import iconforward from '~/assets/fonts/icons/icon-forward.svg';
+import iconback from '~/assets/fonts/icons/icon-back.svg';
 
 import { ProductPriceV3 } from './ProductPriceV3';
+import { RatingCount } from '~/routes/p/$handle/RatingCount';
 
 // type Loading = 'loading' | 'idle' | 'submitting';
 
@@ -118,9 +120,11 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
         <div className="product-modal__detail">
           {/* Hiển thị hình ảnh sản phẩm */}
           <div className="carousel">
-          <Swiper className='product-image flex-auto' 
-            modules={[Navigation, PaginationSwiper]}
-            spaceBetween={50} 
+        
+          <Swiper 
+            className='product-image flex-auto' 
+            modules={[Navigation, PaginationSwiper, FreeMode]}
+            spaceBetween={16} 
             slidesPerView={1}
             navigation= {{
               prevEl: '.carousel-btn-prev',
@@ -130,6 +134,17 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
             pagination={{ 
               el: '.images-pagination',
               type: 'fraction' 
+            }}
+
+            breakpoints={{
+              768: { // Trên 768px, không sử dụng cssMode
+                cssMode: false,
+              },
+              0: { // Dưới 768px, bật cssMode
+                slidesPerView : 'auto',
+                cssMode: true,
+                freeMode: true, // Bật chế độ freeMode
+              }
             }}
 
           >
@@ -147,10 +162,10 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
               </SwiperSlide>
             ))}
             <div className="carousel-btn-prev">
-              <img src={iconchevronleft} alt="" width='24px' height='auto' />
+              <img src={iconback} alt="" width='24px' height='auto' />
             </div>
             <div className="carousel-btn-next">
-              <img src={iconchevronright} alt=""  width='24px' height='auto'/>
+              <img src={iconforward} alt=""  width='24px' height='auto'/>
             </div>
             <div className="images-pagination"></div>
           </Swiper>
@@ -160,13 +175,15 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
       
             <div className="product-header">
               <div className='product-title'>
-                <div className='brand'> Brand: <strong>{productItem.vendor}</strong>  </div>
                 <h2>{productItem.title}</h2>
+                <div className='brand'> Brand: <strong>{productItem.vendor}</strong></div>
               </div>
               <button className='btn-wishlist' onClick={handleWistlistClick}>
                 <img src={iconWishlist}  width={'20px'} />
               </button>
             </div>
+
+            <RatingCount />
 
             <ProductPriceV3 
               discountSelected={DiscountMetafieldSelected}

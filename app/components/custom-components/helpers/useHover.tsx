@@ -5,11 +5,15 @@ const useHover = () => {
 
   const handleMouseOver = () => setHovering(true);
   const handleMouseOut = () => setHovering(false);
+  const handleTouchStart = () => setHovering(true);
+  const handleTouchEnd = () => setHovering(false);
 
   return {
     hovering,
     handleMouseOver,
     handleMouseOut,
+    handleTouchStart,
+    handleTouchEnd,
   };
 };
 

@@ -331,27 +331,29 @@ export default function Collection() {
 
             </div>
             {/* product modal  -- click "Add to cart()"*/}
-            {isModalOpen && (
-              <Suspense fallback={
-                <div className="modal product-modal loading">
-                  <div className="modal-overlay" />
-                  <div>Loading product item...</div>
-                </div>
-              }>
-                <Await
-                  resolve={fetcher.data}
-                  errorElement="There was a problem loading product"  
-                >
-                  {(product) => (
-                    <ProductModal
-                      onClose={closeModal}
-                      product={product}
-                      loading={fetcher.state === 'loading'}
-                    />
-                  )}
-                </Await>
-              </Suspense>
-            )}
+            <div className='product_modal__cover'>
+              {isModalOpen && (
+                <Suspense fallback={
+                  <div className="modal product-modal loading">
+                    <div className="modal-overlay" />
+                    <div>Loading product item...</div>
+                  </div>
+                }>
+                  <Await
+                    resolve={fetcher.data}
+                    errorElement="There was a problem loading product"  
+                  >
+                    {(product) => (
+                      <ProductModal
+                        onClose={closeModal}
+                        product={product}
+                        loading={fetcher.state === 'loading'}
+                      />
+                    )}
+                  </Await>
+                </Suspense>
+              )}
+            </div>
             
             <Analytics.CollectionView
               data={{

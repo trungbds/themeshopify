@@ -36,6 +36,7 @@ export default function RecentlyViewedProducts({ viewedProducts }: RecentlyViewe
                   prevEl: '.carousel-btn-prev.recently-viewed-swiper__btn-prev',
                   nextEl: '.carousel-btn-next.recently-viewed-swiper__btn-next',
               }}
+              
               pagination={{ 
                   el: '.images-pagination',
                   type: 'fraction' 

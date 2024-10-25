@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
-const useOverLay = () => {
-  const [hovering, setHovering] = useState(false);
+const useOverlay = () => {
+  const [overlayActive, setOverlayActive] = useState(false);
 
-  const handleMouseOver = () => setHovering(true);
-  const handleMouseOut = () => setHovering(false);
+  const handleMouseOver = () => setOverlayActive(true);
+  const handleMouseOut = () => setOverlayActive(false);
 
   return {
-    hovering,
+    overlayActive,
     handleMouseOver,
     handleMouseOut,
   };
 };
 
-export default useOverLay;
+export default useOverlay;

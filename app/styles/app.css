@@ -182,6 +182,10 @@ form {
   will-change: transform;
 }
 
+.swiper-css-mode.swiper-horizontal > .swiper-wrapper {
+  scroll-snap-type: none;
+}
+
 
 /*
 * --------------------------------------------------
@@ -2491,8 +2495,7 @@ table td.number {
   position: absolute;
   top: 50%;
   z-index: 2;
-  padding: 2px;
-  background: #00000085;
+  padding: 4px;
   border-radius: 20px;
   cursor: pointer;
   transform: translateY(-50%);
@@ -3620,7 +3623,7 @@ table td.number {
 }
 
 .product-modal .product-header .product-title .brand {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .product-modal .product-price {
@@ -4549,7 +4552,6 @@ table td.number {
   }
 
   .product-item .price-detail .before-discount {
-    font-size: 12px;
   }
   .product-price .discount-label {
   }
@@ -4777,6 +4779,7 @@ table td.number {
     top: 0;
     z-index: 10;
     background-color: #fff;
+
   }
 
   .modal-content .product-modal__header .btn-close {
@@ -4787,7 +4790,7 @@ table td.number {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
   }
   .modal-content .product-modal__header .product-modal__title .btn{
     flex: 0 0 auto;

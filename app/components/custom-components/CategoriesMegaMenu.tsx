@@ -4,6 +4,9 @@ import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {MenuExpand} from './MenuExpand';
 import iconcategories from '~/assets/fonts/icons/icon-categories.svg';
 import { IconCategories } from './icons/IconCategories';
+import { IconDefaultClose } from './icons/default/IconDefaultClose';
+import { IconDefaultCategories } from './icons/default/IconDefaultCategories';
+import useOverlay from './helpers/useOverlay';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -36,10 +39,10 @@ export function CategoriesMegaMenu({
   const handleMenuClick = () => {
     if (activeMenu === 'menu') {
       setActiveMenu('closed');
-      closeOverlayClick(); // Gọi hàm khi đóng
+      closeOverlayClick();
     } else {
       setActiveMenu('menu');
-      openOverlayClick(); // Gọi hàm khi mở
+      openOverlayClick(); 
     }
   };
 
@@ -72,6 +75,9 @@ export function CategoriesMegaMenu({
   const className = `header-menu-${viewport}`;
   const items = menu?.items || [];  // Đảm bảo rằng `items` luôn là một mảng, ngay cả khi `menu` là `undefined`.
 
+  const { overlayActive, handleMouseOver, handleMouseOut } = useOverlay(); 
+
+
   return (
     <nav ref={navRef} className={className} role="navigation">
       <button 
@@ -79,10 +85,9 @@ export function CategoriesMegaMenu({
         type="button" 
         className="categories-btn hover:bg-[#f3f4f6]/90 focus:ring-4 focus:outline-none focus:ring-[#f3f4f6]/50 px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#f3f4f6]/55 me-2 mb-2"
       >
-        <IconCategories 
-          // color='#fff'
-        />
+        {(activeMenu === 'menu' && items.length > 0)? <IconDefaultClose /> : <IconDefaultCategories />}
         <span>Categories</span>
+
         {activeMenu === 'menu' && items.length > 0 && (
           <MenuExpand 
             primaryDomainUrl={primaryDomainUrl}
@@ -90,6 +95,7 @@ export function CategoriesMegaMenu({
             items={items}
           />
         )}
+        
       </button>
     </nav>
   );
