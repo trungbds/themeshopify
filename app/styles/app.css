@@ -4817,9 +4817,10 @@ table td.number {
 
   .modal-content .product-modal__header .product-modal__title {
     display: flex;
-    width: 100%;
+    width: calc(100% - 40px);
     justify-content: space-between;
     align-items: baseline;
+    flex: 1 1 calc(100% - 40px);
   }
   .modal-content .product-modal__header .product-modal__title .btn{
     flex: 0 0 auto;
@@ -4832,14 +4833,10 @@ table td.number {
 
   .modal-content .product-modal__header .product-modal__title .title{
     font-size: 14px;
-    max-height: 40px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    text-overflow: ellipsis;
-    opacity: .75;
-    line-height: 1.2;
+    white-space: nowrap;       
+    overflow: hidden;         
+    text-overflow: ellipsis;  
+    color: var(--p-secondary);
   }
 
 
