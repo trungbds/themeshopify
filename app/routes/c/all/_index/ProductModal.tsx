@@ -122,7 +122,7 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
           <div className="carousel">
         
           <Swiper 
-            className='product-image flex-auto' 
+            className='product-images flex-auto' 
             modules={[Navigation, PaginationSwiper, FreeMode]}
             spaceBetween={16} 
             slidesPerView={1}
@@ -140,10 +140,10 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
               768: { // Trên 768px, không sử dụng cssMode
                 cssMode: false,
               },
-              0: { // Dưới 768px, bật cssMode
+              0: { 
                 slidesPerView : 'auto',
                 cssMode: true,
-                freeMode: true, // Bật chế độ freeMode
+                freeMode: true, 
               }
             }}
 

@@ -14,7 +14,9 @@
 
   --effect-color: #2d66ed;
 
-  --p-secondary: #787878
+  --bg-hover: #efefef;
+
+  --p-secondary: #787878; 
 }
 
 img {
@@ -26,7 +28,6 @@ body,html {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.5;
-  background-color: var(--primary-color);
 }
 small {
   font-size: 12px;
@@ -170,6 +171,7 @@ form {
 .swiper {
   width: 100%;
   height: auto;
+  border-radius: 0px;
 }
 
 .swiper-wrapper {
@@ -183,7 +185,10 @@ form {
 }
 
 .swiper-css-mode.swiper-horizontal > .swiper-wrapper {
-  scroll-snap-type: none;
+  scroll-snap-type: none !important;
+}
+.swiper-css-mode > .swiper-wrapper > .swiper-slide {
+  scroll-snap-align: none !important;
 }
 
 
@@ -193,7 +198,6 @@ form {
 * --------------------------------------------------
 */
 
-/* HTML: <div class="loader"></div> */
 .loader {
   width: 50px;
   padding: 8px;
@@ -721,12 +725,16 @@ button.reset:hover:before {
   visibility: visible;
 }
 
+.all-results-predictive p:hover {
+  background-color: var(--bg-hover);
+}
+
 .all-results-predictive p{
   display: flex;
   align-items: center;
   gap: 4px;
   color: var(--p-secondary);
-  padding: 4px 12px;
+  padding: 8px 12px;
 }
 
 .all-results-predictive p q {
@@ -755,7 +763,7 @@ button.reset:hover:before {
 }
 
 .predictive-search-result.queries ul li:hover{
-  background-color: var(--color-gray-100, #f3f4f6);
+  background-color: var(--bg-hover);
 }
 
 .predictive-search-result.queries ul li img {
@@ -1254,11 +1262,16 @@ button.reset:hover:before {
   color: var(--p-secondary);
   font-size: 14px;
   padding: 0px 12px;
+  margin-bottom: 4px;
 }
 
 .predictive-search-result-item {
-  margin-bottom: 0.5rem;
-  padding: 0 12px;
+  margin-bottom: 2px;
+  padding: 4px 12px;
+}
+
+.predictive-search-result-item:hover {
+  background-color: var(--bg-hover);
 }
 
 .predictive-search-result-item a {
@@ -2870,7 +2883,7 @@ table td.number {
   display: flex;
   gap: 16px;
   justify-content: center;
-  background: #efefef;
+  background: var(--bg-hover);
 }
 
 .image-number-list .image-number-btn{
@@ -3131,7 +3144,7 @@ table td.number {
 }
 
 .menu-expand .menu-item:hover{
-  background-color: #efefef;
+  background-color: var(--bg-hover);
 }
 
 
@@ -3300,7 +3313,7 @@ table td.number {
 }
 .box-sort__expand a.active,
 .box-sort__expand a:hover {
-  background-color: #efefef;
+  background-color: var(--bg-hover);
 }
 .box-sort__expand a.active {
   font-weight: 600;
@@ -3976,7 +3989,7 @@ table td.number {
 }
 
 .header-cta__block-expand a:hover {
-  background-color: #efefef
+  background-color: var(--bg-hover)
 }
 
 .btn-user button {
@@ -4821,9 +4834,14 @@ table td.number {
     height: 100%;
     flex-direction: column;
   }
+
+  .product-images img {
+    border-radius: 0;
+  }
   .product-modal__detail .product-images {
     width: 100%;
     min-width: unset;
+    padding: 0;
   }
 
   .product-modal__detail .content {
