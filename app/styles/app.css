@@ -2135,6 +2135,7 @@ button.reset:hover:before {
   margin: 8px auto 8px 0;
   border-radius: 8px;
   color: var(--primary-color);
+  padding: 4px 0 8px;
 }
 
 .product-item .btn-quickadd svg {
@@ -3270,6 +3271,11 @@ table td.number {
   transition: opacity,background-color .15s ease-in-out;
   opacity: 1;
   background-color: transparent;
+  color: var(--p-secondary);
+}
+.box-sort .box-sort__btn button span {
+  font-weight: 500;
+  color: #000
 }
 
 .box-sort .box-sort__btn button:hover {
@@ -3635,10 +3641,15 @@ table td.number {
 }
 
 .product-modal .product-header {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.product-modal .rating-tilte{
+  width: 100%;
+    font-size: 14px;
+    color: #787878;
+    margin-bottom: 8px;
+    line-height: 1;
 }
 
 .product-modal  .product-header .product-title {
@@ -3649,20 +3660,31 @@ table td.number {
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 8px;
-  line-height: 1.2;
+  line-height: 1.375;
 }
 
 .product-modal .product-header .product-title .brand {
   font-size: 14px;
+  margin-bottom: 4px;
+  color: var(--p-secondary);
+}
+
+.product-modal .product-header .product-title .brand strong {
+  font-weight: 400;
 }
 
 .product-modal .product-price {
-  margin: 8px 0 16px;
+  margin: 0 0 8px; 
 }
 
 .product-modal .product-price .price-detail {
-  display: block;
-  font-size: 14px;
+  font-size: 18px;
+  display: flex;
+  flex-flow: row-reverse;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  line-height: 1;
 }
 
 .product-modal .product-price .price-detail .before-discount, .product-modal .product-price .price-detail .after-discount  {
@@ -3691,13 +3713,15 @@ table td.number {
 
 
 .product-modal .product-form .product-form__item--header {
-  color: #686868;
+  color: var(--p-secondary);
   font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 12px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 .product-modal .product-form .product-form__item--header span{
   color: #000;
+  font-weight: 500;
 }
 
 .product-modal .product-form .product-form__item--header span.no-selection {
@@ -4819,15 +4843,17 @@ table td.number {
     display: flex;
     width: calc(100% - 40px);
     justify-content: space-between;
-    align-items: baseline;
     flex: 1 1 calc(100% - 40px);
+    align-items: center;
   }
+
   .modal-content .product-modal__header .product-modal__title .btn{
     flex: 0 0 auto;
     width: auto;
     padding: 6px;
     display: inline-flex;
     align-items: center;
+    font-size: 14px;
 
   }
 
@@ -5164,7 +5190,7 @@ table td.number {
   }
 
   .box-sort .box-sort__expand {
-    left: 0;
+    right: 0;
   }
 
   .collection-result__header {

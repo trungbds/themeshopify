@@ -63,7 +63,7 @@ export function BoxSort({ selectedSort = "Featured", countProducts }: BoxSortPro
           onClick={toggleMenu}
         >
           <img src={iconswap} alt="Sort Icon" />
-          Sort: <span><strong>{sortKeyLabels[currentSortKey] || sortKeyLabels['PRICE_ASC']}</strong></span>
+          Sort: <span>{sortKeyLabels[currentSortKey] || sortKeyLabels['PRICE_ASC']}</span>
           <img className='icon' src={icondropdown} alt="Dropdown Icon" />
         </button>
         {isOpen && (

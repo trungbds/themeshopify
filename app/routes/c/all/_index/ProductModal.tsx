@@ -179,12 +179,12 @@ export function ProductModal({ onClose, product, loading }: ModalProps) {
     
           <div className="product-header">
             <div className='product-title'>
-              <h2>{productItem.title}</h2>
               <div className='brand'> Brand: <strong>{productItem.vendor}</strong></div>
+              <h2>{productItem.title}</h2>
             </div>
-            <button className='btn-wishlist' onClick={handleWistlistClick}>
+            {/* <button className='btn-wishlist' onClick={handleWistlistClick}>
               <img src={iconWishlist}  width={'20px'} />
-            </button>
+            </button> */}
           </div>
 
           <RatingCount />
