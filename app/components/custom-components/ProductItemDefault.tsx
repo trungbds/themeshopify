@@ -5,6 +5,8 @@ import type {ProductItemFragment} from 'storefrontapi.generated';
 import noVariantColor from '~/assets/images/no-variant-color.png';
 import { ProductPriceV3 } from '~/routes/c/all/_index/ProductPriceV3';
 import iconcart from '~/assets/fonts/icons/icon-cart.svg';
+import { RatingCount } from '~/routes/p/$handle/RatingCount';
+import { IconDefaultCart } from './icons/default/IconDefaultCart';
 
 
 interface ProductItemProps {
@@ -56,40 +58,61 @@ export function ProductItemDefault({
   }
 
   return (
+
+    
+
     <div className="product-item">
-      <Link prefetch="intent" to={variantUrl}>
-      {product.featuredImage ? (
-        <Image
-          alt={product.featuredImage.altText || product.title}
-          aspectRatio="1/1"
-          data={product.featuredImage}
-          loading={loading}
-          sizes="(min-width: 45em) 400px, 100vw"
-        />
-      ) : (
-        <img
-          src={noVariantColor}
-          alt={`No image available for ${product.title}`}
-        />
-      )}
-        <RenderColorVariants colorVariants={colorVariants} />
-        <div className='product-item__header'>
-          <h4 title={product.title}>{product.title}</h4>
-        </div>
-          <ProductPriceV3 
-            discountSelected={DiscountMetafieldSelected}
-            priceRange={product.priceRange}
+      <Link 
+        prefetch="intent" 
+        to={variantUrl}
+        className="product__featured-img"
+      >
+        {product.featuredImage ? (
+          <Image
+            alt={product.featuredImage.altText || product.title}
+            aspectRatio="1/1"
+            data={product.featuredImage}
+            loading={loading}
+            sizes="(min-width: 45em) 400px, 100vw"
           />
+        ) : (
+          <img
+            src={noVariantColor}
+            alt={`No image available for ${product.title}`}
+          />
+        )}
+        <RenderColorVariants colorVariants={colorVariants} />
       </Link>
 
-      {/* Thêm nút Add to Cart */}
-      <button
-        className = "btn btn-quickadd" 
-        onClick={() => onSelectProduct && onSelectProduct(product.handle)}
-      >
-          <img src={iconcart}/>
-          Add to Cart
-      </button>
+      <div className="product-item__details">
+        <Link
+          prefetch="intent" 
+          to={variantUrl}
+          className='product-item__header'
+        >
+          <h4 title={product.title}>
+            {/* {renderDiscount && <div className='discount-label inline-flex'>{renderDiscount}</div>} */}
+            {product.title}
+          </h4>
+        </Link>
+        <RatingCount />
+
+        <ProductPriceV3 
+          discountSelected={DiscountMetafieldSelected}
+          priceRange={product.priceRange}
+        />
+        <button
+          className = "btn btn-quickadd" 
+          onClick={() => onSelectProduct && onSelectProduct(product.handle)}
+        >
+          <IconDefaultCart 
+            width='18'
+            height='18'
+          />
+          <span> Add to cart</span>
+        </button>
+
+      </div>
     </div>
   );
 }

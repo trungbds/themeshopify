@@ -4315,8 +4315,7 @@ table td.number {
 }
 
 .help-contact__title p {
-  color: #fff;
-  color: var(--p-secondary);
+  color: #dadada;
   font-weight: 300;
 }
 
