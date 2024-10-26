@@ -18,6 +18,7 @@ import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
 import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
 import iconadd from '~/assets/fonts/icons/icon-add.svg';
 import iconremove from '~/assets/fonts/icons/icon-remove.svg';
+import useDisableScroll from './custom-components/helpers/useDisableScroll';
 
 
 
@@ -82,15 +83,11 @@ export function Header({
             viewport="desktop"
             primaryDomainUrl={header.shop.primaryDomain.url}
             publicStoreDomain={publicStoreDomain}
-            openOverlayClick={openOverlayClick}
-            closeOverlayClick={closeOverlayClick}
           />
         </div>
 
         <div className="col-span-2 md:col-span-6 flex items-center justify-center">
           <SearchHeader 
-            openOverlayClick={openOverlayClick}
-            closeOverlayClick={closeOverlayClick}
           />
         </div>
 
@@ -280,12 +277,23 @@ function HeaderCtas({
 
 function HeaderMenuMobileToggle() {
   const {open} = useAside();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  useDisableScroll(isMenuOpen);
+
+  const toggleMenu = () => {
+    if (!isMenuOpen) {
+      open('mobile'); 
+    }
+    setIsMenuOpen(!isMenuOpen); 
+  };
+
+
   return (
     <button
       className="header-menu-mobile-toggle"
-      onClick={() => open('mobile')}
+      onClick={toggleMenu}
     >
-      <img src={iconmenu} alt="" />
+      <img src={iconmenu} alt="Menu" />
     </button>
   );
 }

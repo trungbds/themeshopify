@@ -1,57 +1,57 @@
 import iconsearch from '~/assets/fonts/icons/icon-search.svg';
 import React, { useRef, useEffect } from 'react';
-
-import {Link} from '@remix-run/react';
+import { Link } from '@remix-run/react';
 import {
   SEARCH_ENDPOINT,
   SearchFormPredictive,
 } from '~/components/SearchFormPredictive';
-import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
-import {SearchHeaderExpand, useSearchExpand} from '~/components/custom-components/SearchHeaderExpand'
+import { SearchResultsPredictive } from '~/components/SearchResultsPredictive';
+import { SearchHeaderExpand, useSearchExpand } from '~/components/custom-components/SearchHeaderExpand';
 import { IconDefaultArrowForward } from './icons/default/IconDefaultArrowForward';
+import useHeaderOverlay from './helpers/useHeaderOverlay';
 
-export function SearchHeader(
-  {openOverlayClick,closeOverlayClick }: { 
-    openOverlayClick : () => void,
-    closeOverlayClick: () => void
-  }
-){
-  const {open, close} = useSearchExpand();
-  const activeSearch = () => { 
+export function SearchHeader() {
+  const [isOverlayOpen, openOverlay, closeOverlay] = useHeaderOverlay(); // Sử dụng hook
+  const { open, close } = useSearchExpand();
+  const searchRef = useRef<HTMLDivElement | null>(null);
+
+  const activeSearch = () => {
     open('search');
-    openOverlayClick();
-  }
-  const closeSearchHeader = () => { 
-    close();
-    closeOverlayClick();
-  }
+    openOverlay(); // Gọi hàm mở overlay
+  };
 
-  const searchRef = useRef<HTMLDivElement | null>(null); // Chỉ định rõ kiểu HTMLDivElement hoặc null
-  // Sự kiện kích hoạt bên ngoài DOM
+  const closeSearchHeader = () => {
+    close();
+    closeOverlay(); // Gọi hàm đóng overlay
+  };
+
+  // Sự kiện kích hoạt bên ngoài DOM và cuộn trang
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Kiểm tra nếu nhấn vào ngoài search box và searchRef không phải là null
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         closeSearchHeader();
       }
     };
 
-    // Thêm event listener cho document
-    document.addEventListener('mousedown', handleClickOutside);
+    const handleScroll = () => {
+      closeSearchHeader();
+    };
 
-    // Cleanup khi component unmount
+    if (isOverlayOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      window.addEventListener('scroll', handleScroll);
+    }
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [closeSearchHeader]);
-
+  }, [isOverlayOpen, closeSearchHeader]);
 
   return (
     <div className='search-header' ref={searchRef}>
-
-      {/* Search button */}
       <SearchFormPredictive>
-        {({fetchResults, goToSearch, inputRef}) => (
+        {({ fetchResults, goToSearch, inputRef }) => (
           <div
             className="search-header__btn max-w-md mx-auto"
             onClick={activeSearch}
@@ -59,10 +59,10 @@ export function SearchHeader(
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"> Search </label>
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none z-6">
-                  <img src={iconsearch} width="20px" height="auto"/>
+                <img src={iconsearch} width="20px" height="auto" />
               </div>
               <input
-                className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="What can we help you find?"
                 name="q"
                 onChange={fetchResults}
@@ -70,25 +70,22 @@ export function SearchHeader(
                 ref={inputRef}
                 type="search"
               />
-            </div>          
+            </div>
           </div>
         )}
       </SearchFormPredictive>
-      {/* Search Results */}
       <SearchResultsExpand />
     </div>
-
   );
 }
-
 
 function SearchResultsExpand() {
   return (
     <SearchHeaderExpand type="search" heading="SEARCH">
       <div className="predictive-search">
         <SearchResultsPredictive>
-          {({items, total, term, state, inputRef, closeSearch}) => {
-            const {articles, collections, pages, products, queries} = items;
+          {({ items, total, term, state, inputRef, closeSearch }) => {
+            const { articles, collections, pages, products, queries } = items;
 
             if (state === 'loading' && term.current) {
               return <div>Loading...</div>;
@@ -140,8 +137,6 @@ function SearchResultsExpand() {
           }}
         </SearchResultsPredictive>
       </div>
-
     </SearchHeaderExpand>
   );
 }
-

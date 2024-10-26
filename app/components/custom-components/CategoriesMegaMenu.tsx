@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import {NavLink} from '@remix-run/react';
-import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
-import {MenuExpand} from './MenuExpand';
+import { NavLink } from '@remix-run/react';
+import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated';
+import { MenuExpand } from './MenuExpand';
 import iconcategories from '~/assets/fonts/icons/icon-categories.svg';
 import { IconCategories } from './icons/IconCategories';
 import { IconDefaultClose } from './icons/default/IconDefaultClose';
 import { IconDefaultCategories } from './icons/default/IconDefaultCategories';
+import useHeaderOverlay from './helpers/useHeaderOverlay';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -22,26 +23,25 @@ export function CategoriesMegaMenu({
   primaryDomainUrl,
   viewport,
   publicStoreDomain,
-  openOverlayClick,
-  closeOverlayClick
 }: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderProps['header']['shop']['primaryDomain']['url'];
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
-  openOverlayClick: () => void;
-  closeOverlayClick: () => void;
 }) {
   const [activeMenu, setActiveMenu] = useState<MenuState>('closed');
-  const navRef = useRef<HTMLDivElement>(null); // Ref để theo dõi thành phần `nav`
+  const navRef = useRef<HTMLDivElement>(null);
+
+  // Sử dụng useHeaderOverlay để quản lý overlay khi dropdown mở
+  const [isOverlayOpen, openOverlay, closeOverlay] = useHeaderOverlay();
 
   const handleMenuClick = () => {
     if (activeMenu === 'menu') {
       setActiveMenu('closed');
-      closeOverlayClick();
+      closeOverlay();
     } else {
       setActiveMenu('menu');
-      openOverlayClick(); 
+      openOverlay();
     }
   };
 
@@ -50,30 +50,28 @@ export function CategoriesMegaMenu({
     function handleClickOutside(event: MouseEvent) {
       if (navRef.current && !navRef.current.contains(event.target as Node)) {
         setActiveMenu('closed');
-        closeOverlayClick(); // Gọi hàm khi nhấp bên ngoài
+        closeOverlay();
       }
     }
 
     function handleScroll() {
       setActiveMenu('closed');
-      closeOverlayClick(); // Gọi hàm khi cuộn trang
+      closeOverlay();
     }
 
     if (activeMenu === 'menu') {
       document.addEventListener('click', handleClickOutside);
-      // window.addEventListener('scroll', handleScroll);
+      window.addEventListener('scroll', handleScroll);
     }
 
-    // Cleanup event listeners
     return () => {
       document.removeEventListener('click', handleClickOutside);
-      // window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [activeMenu, closeOverlayClick]);
+  }, [activeMenu, closeOverlay]);
 
   const className = `header-menu-${viewport}`;
-  const items = menu?.items || [];  // Đảm bảo rằng `items` luôn là một mảng, ngay cả khi `menu` là `undefined`.
-
+  const items = menu?.items || [];
 
   return (
     <nav ref={navRef} className={className} role="navigation">
@@ -82,7 +80,7 @@ export function CategoriesMegaMenu({
         type="button" 
         className="categories-btn hover:bg-[#f3f4f6]/90 focus:ring-4 focus:outline-none focus:ring-[#f3f4f6]/50 px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#f3f4f6]/55 me-2 mb-2"
       >
-        {(activeMenu === 'menu' && items.length > 0)? <IconDefaultClose /> : <IconDefaultCategories />}
+        {(activeMenu === 'menu' && items.length > 0) ? <IconDefaultClose /> : <IconDefaultCategories />}
         <span>Categories</span>
 
         {activeMenu === 'menu' && items.length > 0 && (
@@ -92,7 +90,6 @@ export function CategoriesMegaMenu({
             items={items}
           />
         )}
-        
       </button>
     </nav>
   );
