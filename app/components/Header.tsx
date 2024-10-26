@@ -18,7 +18,6 @@ import iconchevronright from '~/assets/fonts/icons/icon-chevron-right.svg';
 import iconchevronleft from '~/assets/fonts/icons/icon-chevron-left.svg';
 import iconadd from '~/assets/fonts/icons/icon-add.svg';
 import iconremove from '~/assets/fonts/icons/icon-remove.svg';
-import useDisableScroll from './custom-components/helpers/useDisableScroll';
 
 
 
@@ -277,23 +276,12 @@ function HeaderCtas({
 
 function HeaderMenuMobileToggle() {
   const {open} = useAside();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  useDisableScroll(isMenuOpen);
-
-  const toggleMenu = () => {
-    if (!isMenuOpen) {
-      open('mobile'); 
-    }
-    setIsMenuOpen(!isMenuOpen); 
-  };
-
-
   return (
     <button
       className="header-menu-mobile-toggle"
-      onClick={toggleMenu}
+      onClick={() => open('mobile')}
     >
-      <img src={iconmenu} alt="Menu" />
+      <img src={iconmenu} alt="" />
     </button>
   );
 }
